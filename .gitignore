@@ -1,4 +1,4 @@
 
-target/ThostMdUserApi_CTest/.vs/
-target/ThostMdUserApi_CTest/bin/
-target/ThostMdUserApi_CTest/obj/
+test/ThostMdUserApi_CTest/.vs/
+test/ThostMdUserApi_CTest/bin/
+test/ThostMdUserApi_CTest/obj/
