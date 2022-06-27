@@ -1,4 +1,7 @@
 
-test/ThostMdUserApi_CTest/.vs/
-test/ThostMdUserApi_CTest/bin/
-test/ThostMdUserApi_CTest/obj/
+*/*/.vs/*
+*/*/bin/*
+*/*/obj/*
+*/.vs/*
+*/bin/*
+*/obj/*

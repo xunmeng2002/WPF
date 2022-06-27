@@ -1,0 +1,24 @@
+﻿<Window x:Class="Client.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Client"
+        mc:Ignorable="d"
+        Name="MyWindow"
+        Title="MainWindow" Height="450" Width="800" Closing="MyWindow_Closing">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="3*"/>
+        </Grid.RowDefinitions>
+        <Button x:Name="connectButton" Click="connectButton_Click">单击连接</Button>
+        <Button x:Name="disconnectButton" Grid.Column="1" Click="disconnectButton_Click">断开连接</Button>
+        <TextBox x:Name="sendData" Grid.Row="1">Send</TextBox>
+        <TextBox x:Name="recvData" Grid.Row="1" Grid.Column="1">Recv</TextBox>
+    </Grid>
+</Window>
