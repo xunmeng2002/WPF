@@ -1,21 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Sockets;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TcpIOCPServer
+namespace CommonLibrary
 {
-    public class BufferPool
+    public class SocketAsyncEventArgsPool
     {
-        Stack<byte[]> m_pool;
-        int m_bufferSize;
-        public BufferPool(int capacity, int bufferSize)
+        Stack<SocketAsyncEventArgs> m_pool;
+        public SocketAsyncEventArgsPool(int capacity)
         {
-            m_pool = new Stack<byte[]>(capacity);
-            m_bufferSize = bufferSize;
+            m_pool = new Stack<SocketAsyncEventArgs>(capacity);
         }
-        public void Push(byte[] item)
+        public void Push(SocketAsyncEventArgs item)
         {
             if (item == null)
             {
@@ -26,13 +25,13 @@ namespace TcpIOCPServer
                 m_pool.Push(item);
             }
         }
-        public byte[] Pop()
+        public SocketAsyncEventArgs? Pop()
         {
             lock (m_pool)
             {
-                if (m_pool.Count == 0)
+                if(m_pool.Count == 0)
                 {
-                    return new byte[m_bufferSize];
+                    return null;
                 }
                 return m_pool.Pop();
             }

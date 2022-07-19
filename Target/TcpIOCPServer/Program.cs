@@ -17,15 +17,6 @@ namespace TcpIOCPServer
             Console.WriteLine("Hello World!");
             Console.ReadLine();
         }
-        static void ThreadProc(object? tcpIOCPServer)
-        {
-            if (tcpIOCPServer == null)
-            {
-                Console.WriteLine("TcpIOCPServer is NULL");
-                return;
-            }
-            ((TcpIOCPServer)tcpIOCPServer).Start();
-        }
     }
 }
 
