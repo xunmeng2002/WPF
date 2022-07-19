@@ -10,7 +10,7 @@ namespace TcpServer
         {
             TcpListener server = new TcpListener(IPAddress.Any, 10000);
             server.Start();
-            Byte[] bytes = new Byte[256];
+            byte[] bytes = new byte[256];
             String data = null;
             try
             {

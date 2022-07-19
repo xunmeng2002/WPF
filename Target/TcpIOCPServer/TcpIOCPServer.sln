@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32616.157
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TcpIOCPServer", "TcpIOCPServer.csproj", "{885229C9-B7FC-4137-BBC8-BF50ECA74122}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{885229C9-B7FC-4137-BBC8-BF50ECA74122}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{885229C9-B7FC-4137-BBC8-BF50ECA74122}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{885229C9-B7FC-4137-BBC8-BF50ECA74122}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{885229C9-B7FC-4137-BBC8-BF50ECA74122}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F8221E3B-5EF7-415F-B96E-B4D428905E70}
+	EndGlobalSection
+EndGlobal
