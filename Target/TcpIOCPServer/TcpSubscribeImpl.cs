@@ -16,9 +16,9 @@ namespace TcpIOCPServer
         }
 
         private CommonLibrary.TcpIOCPServer TcpIOCPServer { get; set; }
-        public void OnConnected(long sessionID, IPEndPoint ipEndPoint)
+        public void OnConnected(UserToken userToken)
         {
-            Console.WriteLine($"OnConnected SessionID:{sessionID}, IPEndPoint:{ipEndPoint}");
+            Console.WriteLine($"OnConnected SessionID:{userToken.SessionID}, IPEndPoint:{userToken.IPEndPoint}");
         }
 
         public void OnDisconnected(long sessionID)

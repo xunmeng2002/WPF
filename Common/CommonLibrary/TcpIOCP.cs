@@ -132,7 +132,7 @@ namespace CommonLibrary
             {
                 m_Connects.Add(userToken.SessionID, userToken);
             }
-            m_TcpSubscribe?.OnConnected(userToken.SessionID, userToken.IPEndPoint);
+            m_TcpSubscribe?.OnConnected(userToken);
         }
         protected void RemoveConnect(long sessionID)
         {
@@ -303,7 +303,7 @@ namespace CommonLibrary
             {
                 SocketAsyncEventArgs recvEventArgs = GetRecvEventArgs();
                 long sessionID = ++m_MaxSessionID;
-                UserToken userToken = new UserToken(sessionID, acceptEventArg.AcceptSocket, (IPEndPoint?)acceptEventArg.RemoteEndPoint);
+                UserToken userToken = new UserToken(sessionID, acceptEventArg.AcceptSocket, (IPEndPoint?)acceptEventArg.AcceptSocket.RemoteEndPoint);
                 recvEventArgs.UserToken = userToken;
                 AddConnect(userToken);
                 PostRecv(recvEventArgs);

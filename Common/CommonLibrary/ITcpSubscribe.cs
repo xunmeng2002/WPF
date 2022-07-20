@@ -9,7 +9,7 @@ namespace CommonLibrary
 {
     public interface ITcpSubscribe
     {
-        public void OnConnected(long sessionID, IPEndPoint ipEndPoint);
+        public void OnConnected(UserToken userToken);
         public void OnDisconnected(long sessionID);
         public void OnRecv(long sessionID, byte[] msg, int offset, int len);
     }

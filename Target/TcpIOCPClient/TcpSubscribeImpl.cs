@@ -18,16 +18,16 @@ namespace TcpIOCPClient
         private List<long> m_Connects;
 
         private CommonLibrary.TcpIOCPClient TcpIOCPClient { get; set; }
-        public void OnConnected(long sessionID, IPEndPoint ipEndPoint)
+        public void OnConnected(UserToken userToken)
         {
-            Console.WriteLine($"OnConnected SessionID:{sessionID}, IPEndPoint:{ipEndPoint}");
+            Console.WriteLine($"OnConnected SessionID:{userToken.SessionID}, IPEndPoint:{userToken.IPEndPoint}");
             lock (m_Connects)
             {
-                m_Connects.Add(sessionID);
+                m_Connects.Add(userToken.SessionID);
             }
             if (TcpIOCPClient != null)
             {
-                TcpIOCPClient.Send(sessionID, "Hello World!");
+                TcpIOCPClient.Send(userToken.SessionID, "Hello World!");
             }
         }
         public void OnDisconnected(long sessionID)
