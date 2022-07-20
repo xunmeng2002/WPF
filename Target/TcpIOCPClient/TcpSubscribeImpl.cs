@@ -5,19 +5,23 @@ using System.Text;
 using System.Threading.Tasks;
 using CommonLibrary;
 
-namespace TcpIOCPServer
+namespace TcpIOCPClient
 {
     public class TcpSubscribeImpl : ITcpSubscribe
     {
-        public TcpSubscribeImpl(CommonLibrary.TcpIOCPServer tcpIOCPServer)
+        public TcpSubscribeImpl(CommonLibrary.TcpIOCPClient tcpIOCPClient)
         {
-            TcpIOCPServer = tcpIOCPServer;
+            TcpIOCPClient = tcpIOCPClient;
         }
 
-        private CommonLibrary.TcpIOCPServer TcpIOCPServer { get; set; }
+        private CommonLibrary.TcpIOCPClient TcpIOCPClient { get; set; }
         public void OnConnected(long sessionID)
         {
             Console.WriteLine($"OnConnected SessionID:{sessionID}");
+            if (TcpIOCPClient != null)
+            {
+                TcpIOCPClient.Send(sessionID, "Hello World!");
+            }
         }
 
         public void OnDisconnected(long sessionID)
@@ -29,10 +33,6 @@ namespace TcpIOCPServer
         {
             string recvMsg = Encoding.UTF8.GetString(msg, offset, len);
             Console.WriteLine($"OnRecv {recvMsg}");
-            if (TcpIOCPServer != null)
-            {
-                TcpIOCPServer.Send(sessionID, "Server Response:" + recvMsg);
-            }
         }
     }
 }

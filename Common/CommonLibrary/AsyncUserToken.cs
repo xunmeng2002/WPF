@@ -9,12 +9,12 @@ namespace CommonLibrary
 {
     public class AsyncUserToken
     {
-        public AsyncUserToken(int sessionID, Socket socket)
+        public AsyncUserToken(long sessionID, Socket socket)
         {
             SessionID = sessionID;
             Socket = socket;
         }
-        public int SessionID { get; set; }
+        public long SessionID { get; set; }
         public Socket Socket { get; set; }
     }
 }
