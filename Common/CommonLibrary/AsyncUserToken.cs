@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace CommonLibrary
 {
-    public class AsyncUserToken
+    public class UserToken
     {
-        public AsyncUserToken(long sessionID, Socket socket)
+        public UserToken(long sessionID, Socket socket)
         {
             SessionID = sessionID;
             Socket = socket;

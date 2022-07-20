@@ -60,7 +60,7 @@ namespace CommonLibrary
             }
 
             SocketAsyncEventArgs sendEventArgs = GetSendEventArgs();
-            sendEventArgs.UserToken = new AsyncUserToken(sessionID, socket);
+            sendEventArgs.UserToken = new UserToken(sessionID, socket);
             sendEventArgs.SetBuffer(msg, offset, len);
             PostSend(sendEventArgs);
             return true;
@@ -76,7 +76,7 @@ namespace CommonLibrary
             }
 
             SocketAsyncEventArgs sendEventArgs = GetSendEventArgs();
-            sendEventArgs.UserToken = new AsyncUserToken(sessionID, socket);
+            sendEventArgs.UserToken = new UserToken(sessionID, socket);
             byte[] sendData = Encoding.UTF8.GetBytes(msg);
             sendEventArgs.SetBuffer(sendData);
             PostSend(sendEventArgs);
@@ -147,8 +147,8 @@ namespace CommonLibrary
         protected void PostConnect(IPEndPoint ipEndPoint)
         {
             Socket socket = new Socket(ipEndPoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
-            AsyncUserToken token = new AsyncUserToken(++m_MaxSessionID, socket);
-            SocketAsyncEventArgs connectEventArg = CreateEventArgs();
+            UserToken token = new UserToken(++m_MaxSessionID, socket);
+            SocketAsyncEventArgs connectEventArg = GetConnectEventArgs();
             connectEventArg.RemoteEndPoint = ipEndPoint;
             connectEventArg.UserToken = token;
 
@@ -156,6 +156,36 @@ namespace CommonLibrary
             if (!willRaiseEvent)
             {
                 ConnectCompleted(connectEventArg);
+            }
+        }
+        protected void PostDisconnect(long sessionID)
+        {
+            Socket? socket = GetConnect(sessionID);
+            if (socket == null)
+            {
+                Console.WriteLine($"Connect not exist for SessionID:{sessionID}");
+                return;
+            }
+            UserToken token = new UserToken(sessionID, socket);
+            SocketAsyncEventArgs disconnectEventArg = GetConnectEventArgs();
+            disconnectEventArg.UserToken = token;
+
+            bool willRaiseEvent = socket.DisconnectAsync(disconnectEventArg);
+            if (!willRaiseEvent)
+            {
+                DisconnectCompleted(disconnectEventArg);
+            }
+        }
+        protected void PostDisconnect(long sessionID, Socket socket)
+        {
+            UserToken token = new UserToken(sessionID, socket);
+            SocketAsyncEventArgs disconnectEventArg = GetConnectEventArgs();
+            disconnectEventArg.UserToken = token;
+
+            bool willRaiseEvent = socket.DisconnectAsync(disconnectEventArg);
+            if (!willRaiseEvent)
+            {
+                DisconnectCompleted(disconnectEventArg);
             }
         }
         protected void PostAccept(SocketAsyncEventArgs? acceptEventArg)
@@ -184,7 +214,7 @@ namespace CommonLibrary
             {
                 throw new ArgumentException("PostSend Failed for UserToken is null");
             }
-            AsyncUserToken token = (AsyncUserToken)sendEventArg.UserToken;
+            UserToken token = (UserToken)sendEventArg.UserToken;
             bool willRaiseEvent = token.Socket.SendAsync(sendEventArg);
             if (!willRaiseEvent)
             {
@@ -197,7 +227,7 @@ namespace CommonLibrary
             {
                 throw new ArgumentException("PostRecv Failed for UserToken is null");
             }
-            AsyncUserToken token = (AsyncUserToken)recvEventArg.UserToken;
+            UserToken token = (UserToken)recvEventArg.UserToken;
             bool willRaiseEvent = token.Socket.ReceiveAsync(recvEventArg);
             if (!willRaiseEvent)
             {
@@ -210,6 +240,9 @@ namespace CommonLibrary
             {
                 case SocketAsyncOperation.Connect:
                     ConnectCompleted(e);
+                    break;
+                case SocketAsyncOperation.Disconnect:
+                    DisconnectCompleted(e);
                     break;
                 case SocketAsyncOperation.Accept:
                     AcceptCompleted(e);
@@ -240,7 +273,7 @@ namespace CommonLibrary
                 }
                 else
                 {
-                    AsyncUserToken token = (AsyncUserToken)connectEventArgs.UserToken;
+                    UserToken token = (UserToken)connectEventArgs.UserToken;
                     if(token.Socket != connectEventArgs.ConnectSocket)
                     {
                         throw new ArgumentException("Recv Error, Buffer is null");
@@ -251,23 +284,32 @@ namespace CommonLibrary
                 }
             }
         }
+        protected void DisconnectCompleted(SocketAsyncEventArgs disconnectEventArgs)
+        {
+            Console.WriteLine($"DisconnectCompleted SocketError:{disconnectEventArgs.SocketError}");
+            CloseClientSocket(disconnectEventArgs);
+        }
         protected void AcceptCompleted(SocketAsyncEventArgs acceptEventArg)
         {
             Console.WriteLine($"AcceptCompleted RemoteEndPoint:{acceptEventArg.AcceptSocket?.RemoteEndPoint?.ToString()}");
-
-            if (acceptEventArg.SocketError == SocketError.Success && acceptEventArg.AcceptSocket != null)
+            if (acceptEventArg.SocketError != SocketError.Success)
             {
-                SocketAsyncEventArgs recvEventArgs = GetRecvEventArgs();
-                long sessionID = ++m_MaxSessionID;
-                recvEventArgs.UserToken = new AsyncUserToken(sessionID, acceptEventArg.AcceptSocket);
-                AddConnect(sessionID, acceptEventArg.AcceptSocket);
-                PostRecv(recvEventArgs);
+                Console.WriteLine($"AcceptCompleted Failed. SocketError:{acceptEventArg.SocketError}, AcceptSocket:{acceptEventArg.AcceptSocket}");
+                return;
+            }
+            else if(acceptEventArg.AcceptSocket == null)
+            {
+                throw new ArgumentException("AcceptSocket is null");
             }
             else
             {
-                Console.WriteLine($"AcceptCompleted Failed. SocketError:{acceptEventArg.SocketError}, AcceptSocket:{acceptEventArg.AcceptSocket}");
+                SocketAsyncEventArgs recvEventArgs = GetRecvEventArgs();
+                long sessionID = ++m_MaxSessionID;
+                recvEventArgs.UserToken = new UserToken(sessionID, acceptEventArg.AcceptSocket);
+                AddConnect(sessionID, acceptEventArg.AcceptSocket);
+                PostRecv(recvEventArgs);
+                PostAccept(acceptEventArg);
             }
-            PostAccept(acceptEventArg);
         }
         protected void SendCompleted(SocketAsyncEventArgs sendEventArg)
         {
@@ -307,7 +349,7 @@ namespace CommonLibrary
                 }
                 else
                 {
-                    AsyncUserToken token = (AsyncUserToken)recvEventArg.UserToken;
+                    UserToken token = (UserToken)recvEventArg.UserToken;
                     m_TcpSubscribe?.OnRecv(token.SessionID, recvEventArg.Buffer, recvEventArg.Offset, recvEventArg.BytesTransferred);
                 }
                 PostRecv(recvEventArg);
@@ -320,17 +362,16 @@ namespace CommonLibrary
             {
                 throw new ArgumentException($"CloseClientSocket Error For UserToken is null.");
             }
-            AsyncUserToken token = (AsyncUserToken)e.UserToken;
+            UserToken token = (UserToken)e.UserToken;
             Console.WriteLine($"CloseClientSocket SessionID:{token.SessionID}, Socket:{token.Socket.Handle.ToInt64()}");
-            token.Socket.Shutdown(SocketShutdown.Send);
             token.Socket.Close();
             RemoveConnect(token.SessionID);
 
-            if (e.LastOperation == SocketAsyncOperation.Connect)
+            if (e.LastOperation == SocketAsyncOperation.Connect || e.LastOperation == SocketAsyncOperation.Disconnect)
             {
                 m_ConnectPool.Push(e);
             }
-            if (e.LastOperation == SocketAsyncOperation.Receive)
+            else if (e.LastOperation == SocketAsyncOperation.Receive)
             {
                 m_RecvPool.Push(e);
             }

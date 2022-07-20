@@ -10,7 +10,7 @@ namespace CommonLibrary
 {
     public class TcpIOCPServer : TcpIOCP, ITcpServer
     {
-        public TcpIOCPServer(int numConnections, int receiveBufferSize)
+        public TcpIOCPServer(int numConnections = 10, int receiveBufferSize = 64 * 1024)
             :base(numConnections, receiveBufferSize)
         {
             
@@ -26,6 +26,20 @@ namespace CommonLibrary
             for (int i = 0; i < m_NumConnections; i++)
             {
                 PostAccept(null);
+            }
+        }
+        public void Stop()
+        {
+            lock(m_Connects)
+            {
+                foreach (var item in m_Connects)
+                {
+                    PostDisconnect(item.Key, item.Value);
+                }
+            }
+            if (m_ListenSocket != null)
+            {
+                m_ListenSocket.Close();
             }
         }
     }

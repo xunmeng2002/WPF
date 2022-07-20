@@ -15,6 +15,9 @@ namespace TcpIOCPServer
             tcpIOCPServer.Init();
             tcpIOCPServer.Start(ipEndPoint);
 
+            Thread.Sleep(10000);
+            tcpIOCPServer.Stop();
+
             Console.WriteLine("Hello World!");
             Console.ReadLine();
         }

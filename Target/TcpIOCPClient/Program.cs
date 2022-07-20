@@ -12,10 +12,13 @@ namespace TcpIOCPClient
             tcpIOCPClient.RegisterSubscribe(tcpSubscribeImpl);
             IPEndPoint ipEndPoint = new IPEndPoint(IPAddress.Parse("127.0.0.1"), 10000);
             tcpIOCPClient.Init();
-            for(int i = 0; i < 10; i++)
+            for(int i = 0; i < 2; i++)
             {
                 tcpIOCPClient.Connect(ipEndPoint);
             }
+            Thread.Sleep(10000);
+            tcpSubscribeImpl.Close();
+
 
             Console.WriteLine("Hello World!");
             Console.ReadLine();

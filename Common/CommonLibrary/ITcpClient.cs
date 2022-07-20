@@ -9,6 +9,7 @@ namespace CommonLibrary
 {
     public interface ITcpClient : ITcp
     {
-        void Connect(IPEndPoint ipEndPoint);
+        public void Connect(IPEndPoint ipEndPoint);
+        public void Disconnect(long sessionID);
     }
 }

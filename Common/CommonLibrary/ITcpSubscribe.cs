@@ -8,8 +8,8 @@ namespace CommonLibrary
 {
     public interface ITcpSubscribe
     {
-        void OnConnected(long sessionID);
-        void OnDisconnected(long sessionID);
-        void OnRecv(long sessionID, byte[] msg, int offset, int len);
+        public void OnConnected(long sessionID);
+        public void OnDisconnected(long sessionID);
+        public void OnRecv(long sessionID, byte[] msg, int offset, int len);
     }
 }

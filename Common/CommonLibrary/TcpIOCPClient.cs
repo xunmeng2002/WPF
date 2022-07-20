@@ -9,7 +9,7 @@ namespace CommonLibrary
 {
     public class TcpIOCPClient : TcpIOCP, ITcpClient
     {
-        public TcpIOCPClient(int numConnections, int receiveBufferSize)
+        public TcpIOCPClient(int numConnections = 10, int receiveBufferSize = 64 * 1024)
             : base(numConnections, receiveBufferSize)
         {
 
@@ -17,6 +17,11 @@ namespace CommonLibrary
         public void Connect(IPEndPoint ipEndPoint)
         {
             PostConnect(ipEndPoint);
+        }
+
+        public void Disconnect(long sessionID)
+        {
+            PostDisconnect(sessionID);
         }
     }
 }

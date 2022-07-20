@@ -9,6 +9,7 @@ namespace CommonLibrary
 {
     public interface ITcpServer : ITcp
     {
-        void Start(IPEndPoint ipEndPoint);
+        public void Start(IPEndPoint ipEndPoint);
+        public void Stop();
     }
 }
