@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using CommonLibrary;
@@ -15,9 +16,9 @@ namespace TcpIOCPServer
         }
 
         private CommonLibrary.TcpIOCPServer TcpIOCPServer { get; set; }
-        public void OnConnected(long sessionID)
+        public void OnConnected(long sessionID, IPEndPoint ipEndPoint)
         {
-            Console.WriteLine($"OnConnected SessionID:{sessionID}");
+            Console.WriteLine($"OnConnected SessionID:{sessionID}, IPEndPoint:{ipEndPoint}");
         }
 
         public void OnDisconnected(long sessionID)

@@ -21,7 +21,7 @@ namespace CommonLibrary
         protected SocketAsyncEventArgsPool m_ConnectPool;
         protected SocketAsyncEventArgsPool m_SendPool;
         protected SocketAsyncEventArgsPool m_RecvPool;
-        protected Dictionary<long, Socket> m_Connects = new Dictionary<long, Socket>();
+        protected Dictionary<long, UserToken> m_Connects = new Dictionary<long, UserToken>();
 
         public TcpIOCP(int numConnections, int receiveBufferSize)
         {
@@ -52,15 +52,15 @@ namespace CommonLibrary
         }
         public bool Send(long sessionID, byte[] msg, int offset, int len)
         {
-            Socket? socket = GetConnect(sessionID);
-            if (socket == null)
+            UserToken? userToken = GetConnect(sessionID);
+            if (userToken == null)
             {
                 Console.WriteLine($"GetConnect Failed For SessionID:{sessionID}");
                 return false;
             }
 
             SocketAsyncEventArgs sendEventArgs = GetSendEventArgs();
-            sendEventArgs.UserToken = new UserToken(sessionID, socket);
+            sendEventArgs.UserToken = userToken;
             sendEventArgs.SetBuffer(msg, offset, len);
             PostSend(sendEventArgs);
             return true;
@@ -68,15 +68,15 @@ namespace CommonLibrary
 
         public bool Send(long sessionID, string msg)
         {
-            Socket? socket = GetConnect(sessionID);
-            if (socket == null)
+            UserToken? userToken = GetConnect(sessionID);
+            if (userToken == null)
             {
                 Console.WriteLine($"GetConnect Failed For SessionID:{sessionID}");
                 return false;
             }
 
             SocketAsyncEventArgs sendEventArgs = GetSendEventArgs();
-            sendEventArgs.UserToken = new UserToken(sessionID, socket);
+            sendEventArgs.UserToken = userToken;
             byte[] sendData = Encoding.UTF8.GetBytes(msg);
             sendEventArgs.SetBuffer(sendData);
             PostSend(sendEventArgs);
@@ -117,22 +117,22 @@ namespace CommonLibrary
             eventArgs.Completed += new EventHandler<SocketAsyncEventArgs>(IO_Completed);
             return eventArgs;
         }
-        protected Socket? GetConnect(long sessionID)
+        protected UserToken? GetConnect(long sessionID)
         {
-            Socket? socket;
+            UserToken? userToken;
             lock (m_Connects)
             {
-                m_Connects.TryGetValue(sessionID, out socket);
+                m_Connects.TryGetValue(sessionID, out userToken);
             }
-            return socket;
+            return userToken;
         }
-        protected void AddConnect(long sessionID, Socket socket)
+        protected void AddConnect(UserToken userToken)
         {
             lock (m_Connects)
             {
-                m_Connects.Add(sessionID, socket);
+                m_Connects.Add(userToken.SessionID, userToken);
             }
-            m_TcpSubscribe?.OnConnected(sessionID);
+            m_TcpSubscribe?.OnConnected(userToken.SessionID, userToken.IPEndPoint);
         }
         protected void RemoveConnect(long sessionID)
         {
@@ -147,7 +147,7 @@ namespace CommonLibrary
         protected void PostConnect(IPEndPoint ipEndPoint)
         {
             Socket socket = new Socket(ipEndPoint.AddressFamily, SocketType.Stream, ProtocolType.Tcp);
-            UserToken token = new UserToken(++m_MaxSessionID, socket);
+            UserToken token = new UserToken(++m_MaxSessionID, socket, ipEndPoint);
             SocketAsyncEventArgs connectEventArg = GetConnectEventArgs();
             connectEventArg.RemoteEndPoint = ipEndPoint;
             connectEventArg.UserToken = token;
@@ -160,29 +160,27 @@ namespace CommonLibrary
         }
         protected void PostDisconnect(long sessionID)
         {
-            Socket? socket = GetConnect(sessionID);
-            if (socket == null)
+            UserToken? userToken = GetConnect(sessionID);
+            if (userToken == null)
             {
                 Console.WriteLine($"Connect not exist for SessionID:{sessionID}");
                 return;
             }
-            UserToken token = new UserToken(sessionID, socket);
             SocketAsyncEventArgs disconnectEventArg = GetConnectEventArgs();
-            disconnectEventArg.UserToken = token;
+            disconnectEventArg.UserToken = userToken;
 
-            bool willRaiseEvent = socket.DisconnectAsync(disconnectEventArg);
+            bool willRaiseEvent = userToken.Socket.DisconnectAsync(disconnectEventArg);
             if (!willRaiseEvent)
             {
                 DisconnectCompleted(disconnectEventArg);
             }
         }
-        protected void PostDisconnect(long sessionID, Socket socket)
+        protected void PostDisconnect(UserToken userToken)
         {
-            UserToken token = new UserToken(sessionID, socket);
             SocketAsyncEventArgs disconnectEventArg = GetConnectEventArgs();
-            disconnectEventArg.UserToken = token;
+            disconnectEventArg.UserToken = userToken;
 
-            bool willRaiseEvent = socket.DisconnectAsync(disconnectEventArg);
+            bool willRaiseEvent = userToken.Socket.DisconnectAsync(disconnectEventArg);
             if (!willRaiseEvent)
             {
                 DisconnectCompleted(disconnectEventArg);
@@ -278,7 +276,7 @@ namespace CommonLibrary
                     {
                         throw new ArgumentException("Recv Error, Buffer is null");
                     }
-                    AddConnect(token.SessionID, token.Socket);
+                    AddConnect(token);
                     connectEventArgs.SetBuffer(m_BufferPool.Pop(), 0, m_ReceiveBufferSize);
                     PostRecv(connectEventArgs);
                 }
@@ -305,8 +303,9 @@ namespace CommonLibrary
             {
                 SocketAsyncEventArgs recvEventArgs = GetRecvEventArgs();
                 long sessionID = ++m_MaxSessionID;
-                recvEventArgs.UserToken = new UserToken(sessionID, acceptEventArg.AcceptSocket);
-                AddConnect(sessionID, acceptEventArg.AcceptSocket);
+                UserToken userToken = new UserToken(sessionID, acceptEventArg.AcceptSocket, (IPEndPoint?)acceptEventArg.RemoteEndPoint);
+                recvEventArgs.UserToken = userToken;
+                AddConnect(userToken);
                 PostRecv(recvEventArgs);
                 PostAccept(acceptEventArg);
             }
