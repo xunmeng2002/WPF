@@ -1,0 +1,3 @@
+<pumplist>
+	<pump dest="./Common/OfferCommonLibrary/Its/ItsTables.cs" tpl="./Common/OfferCommonLibrary/Its/ItsTables.tpl" model="./Model/Its/ItsProtocol.xml"/>
+</pumplist>
