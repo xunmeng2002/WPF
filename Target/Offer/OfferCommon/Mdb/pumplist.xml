@@ -1,0 +1,4 @@
+<pumplist>
+	<pump dest="./Target/Offer/OfferCommon/Mdb/MdbEnums.cs" tpl="./Target/Offer/OfferCommon/Mdb/MdbEnums.tpl" model="./Model/Mdb/MdbEnumDict.xml"/>
+	<pump dest="./Target/Offer/OfferCommon/Mdb/MdbTables.cs" tpl="./Target/Offer/OfferCommon/Mdb/MdbTables.tpl" model="./Model/Mdb/Mdb.xml"/>
+</pumplist>

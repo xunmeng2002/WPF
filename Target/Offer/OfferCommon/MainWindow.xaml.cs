@@ -1,12 +1,10 @@
-﻿using CommonLibrary;
-using Microsoft.Extensions.Logging;
-using OfferCommonLibrary.Mdb;
+﻿using Microsoft.Extensions.Logging;
+using OfferCommon.Mdb;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
-using System.Net;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,12 +17,12 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace OfferCommonLibrary
+namespace OfferCommon
 {
     /// <summary>
     /// MainWindow.xaml 的交互逻辑
     /// </summary>
-    public partial class MainWindow : Window, INotifyPropertyChanged, IMdbInterface, ITcpSubscribe
+    public partial class MainWindow : Window, INotifyPropertyChanged, IMdbInterface
     {
         public MainWindow(ILogger<MainWindow> logger)
         {
@@ -68,7 +66,7 @@ namespace OfferCommonLibrary
             order.IsSwapOrder = 0;
             Orders.Add(order);
         }
-        private ILogger<MainWindow> Logger { get; set; }
+        public ILogger<MainWindow> Logger { get; set; }
 
         public ObservableCollection<Order> Orders { get; set; } = new ObservableCollection<Order>();
         public ObservableCollection<Trade> Trades { get; set; } = new ObservableCollection<Trade>();
@@ -89,37 +87,30 @@ namespace OfferCommonLibrary
 
         public void OnConnected()
         {
-            Logger.LogInformation("OnConnected");
             Status = "Connect";
         }
         public void OnDisconnected()
         {
-            Logger.LogInformation("OnDisconnected");
             Status = "DisConnect";
         }
         public void OnLogin()
         {
-            Logger.LogInformation("OnLogin");
             Status = "Login";
         }
         public void OnLogout()
         {
-            Logger.LogInformation("OnLogout");
             Status = "Logout";
         }
         public void OnRtnOrder(Order order)
         {
-            Logger.LogInformation("OnRtnOrder");
             Dispatcher.BeginInvoke(UpdateOrder, order);
         }
         public void OnRtnTrade(Trade trade)
         {
-            Logger.LogInformation("OnRtnTrade");
             Dispatcher.BeginInvoke(UpdateTrade, trade);
         }
         public void OnErrRtnOrderCancel(OrderCancel orderCancel)
         {
-            Logger.LogInformation("OnErrRtnOrderCancel");
             Dispatcher.BeginInvoke(UpdateOrderCancel, orderCancel);
         }
         private void UpdateOrder(Order order)
@@ -169,26 +160,11 @@ namespace OfferCommonLibrary
             }
         }
 
-        public void OnConnected(long sessionID, IPEndPoint ipEndPoint)
-        {
-            throw new NotImplementedException();
-        }
-        public void OnDisconnected(long sessionID)
-        {
-            throw new NotImplementedException();
-        }
-        public void OnRecv(long sessionID, byte[] msg, int offset, int len)
-        {
-            throw new NotImplementedException();
-        }
-
         public event PropertyChangedEventHandler? PropertyChanged;
         protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
-
-        
     }
 }
 

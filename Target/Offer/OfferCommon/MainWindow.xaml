@@ -1,0 +1,82 @@
+﻿<Window x:Class="OfferCommon.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:OfferCommon"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="800" Width="1200" Name="mainWindow">
+    <Window.Resources>
+        <ResourceDictionary Source="/OfferCommon;component/CommonDictionary.xaml"></ResourceDictionary>
+    </Window.Resources>
+    <Grid DataContext="{Binding ElementName=mainWindow, Mode=OneWay}">
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="40"/>
+        </Grid.RowDefinitions>
+        <TabControl HorizontalAlignment="Stretch" HorizontalContentAlignment="Left" ScrollViewer.HorizontalScrollBarVisibility="Visible" ScrollViewer.CanContentScroll="True">
+            <TabItem Header="Orders" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.CanContentScroll="True">
+                <DataGrid x:Name="gridOrders" IsReadOnly="True" ItemsSource="{Binding Orders}">
+                    <!--<DataGrid.Columns>
+                        <DataGridTextColumn Header="TradingDay" Binding="{Binding TradingDay}"></DataGridTextColumn>
+                        <DataGridTextColumn Header="AccountID" Binding="{Binding AccountID}"></DataGridTextColumn>
+                        <DataGridTextColumn Header="ExchangeID" Binding="{Binding ExchangeID}"></DataGridTextColumn>
+                        <DataGridTextColumn Header="InstrumentID" Binding="{Binding InstrumentID}"></DataGridTextColumn>
+                        <DataGridTextColumn Header="OrderLocalID" Binding="{Binding OrderLocalID}"></DataGridTextColumn>
+                        <DataGridTextColumn Header="OrderSysID" Binding="{Binding OrderSysID}"></DataGridTextColumn>
+                        <DataGridTextColumn Header="Direction" Binding="{Binding Direction}"></DataGridTextColumn>
+                        <DataGridTextColumn Header="OffsetFlag" Binding="{Binding OffsetFlag}"></DataGridTextColumn>
+                        <DataGridTextColumn Header="HedgeFlag" Binding="{Binding HedgeFlag}"></DataGridTextColumn>
+                        <DataGridTextColumn Header="OrderPriceType" Binding="{Binding OrderPriceType}"></DataGridTextColumn>
+                        <DataGridTextColumn Header="Price" Binding="{Binding Price}"></DataGridTextColumn>
+                        <DataGridTextColumn Header="Volume" Binding="{Binding Volume}"></DataGridTextColumn>
+                        <DataGridTextColumn Header="VolumeTraded" Binding="{Binding VolumeTraded}"></DataGridTextColumn>
+                        <DataGridTextColumn Header="OrderStatus" Binding="{Binding OrderStatus}"></DataGridTextColumn>
+                        <DataGridTextColumn Header="ErrorID" Binding="{Binding ErrorID}"></DataGridTextColumn>
+                        <DataGridTextColumn Header="ErrorMsg" Binding="{Binding ErrorMsg}"></DataGridTextColumn>
+                        <DataGridTextColumn Header="StatusMsg" Binding="{Binding StatusMsg}"></DataGridTextColumn>
+                        <DataGridTextColumn Header="RequestID" Binding="{Binding RequestID}"></DataGridTextColumn>
+                        <DataGridTextColumn Header="FrontID" Binding="{Binding FrontID}"></DataGridTextColumn>
+                        <DataGridTextColumn Header="SessionID" Binding="{Binding SessionID}"></DataGridTextColumn>
+                        <DataGridTextColumn Header="InsertDate" Binding="{Binding InsertDate}"></DataGridTextColumn>
+                        <DataGridTextColumn Header="InsertTime" Binding="{Binding InsertTime}"></DataGridTextColumn>
+                        <DataGridTextColumn Header="ExchangeInsertDate" Binding="{Binding ExchangeInsertDate}"></DataGridTextColumn>
+                        <DataGridTextColumn Header="ExchangeInsertTime" Binding="{Binding ExchangeInsertTime}"></DataGridTextColumn>
+                        <DataGridTextColumn Header="CancelDate" Binding="{Binding CancelDate}"></DataGridTextColumn>
+                        <DataGridTextColumn Header="CancelTime" Binding="{Binding CancelTime}"></DataGridTextColumn>
+                        <DataGridTextColumn Header="ForceCloseReason" Binding="{Binding ForceCloseReason}"></DataGridTextColumn>
+                        <DataGridTextColumn Header="IsLocalOrder" Binding="{Binding IsLocalOrder}"></DataGridTextColumn>
+                        <DataGridTextColumn Header="UserProductInfo" Binding="{Binding UserProductInfo}"></DataGridTextColumn>
+                        <DataGridTextColumn Header="TimeCondition" Binding="{Binding TimeCondition}"></DataGridTextColumn>
+                        <DataGridTextColumn Header="GTDDate" Binding="{Binding GTDDate}"></DataGridTextColumn>
+                        <DataGridTextColumn Header="VolumeCondition" Binding="{Binding VolumeCondition}"></DataGridTextColumn>
+                        <DataGridTextColumn Header="MinVolume" Binding="{Binding MinVolume}"></DataGridTextColumn>
+                        <DataGridTextColumn Header="ContingentCondition" Binding="{Binding ContingentCondition}"></DataGridTextColumn>
+                        <DataGridTextColumn Header="StopPrice" Binding="{Binding StopPrice}"></DataGridTextColumn>
+                        <DataGridTextColumn Header="IsSwapOrder" Binding="{Binding IsSwapOrder}"></DataGridTextColumn>
+                    </DataGrid.Columns>-->
+                </DataGrid>
+            </TabItem>
+            <TabItem Header="Trade">
+                <DataGrid x:Name="gridTrades" IsReadOnly="True" ItemsSource="{Binding Trades}"></DataGrid>
+            </TabItem>
+            <TabItem Header="OrderCancel">
+                <DataGrid x:Name="gridOrderCancels" IsReadOnly="True" ItemsSource="{Binding OrderCancels}"></DataGrid>
+            </TabItem>
+        </TabControl>
+        <Grid Grid.Row="4">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="auto"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Column="0" x:Name="infoBlock" FontSize="20" FontWeight="Bold"></TextBlock>
+            <TextBlock Grid.Column="1" FontSize="20" FontWeight="Bold">ConnectStatus:</TextBlock>
+            <TextBlock Grid.Column="2" x:Name="statusBlock" MinWidth="50" TextAlignment="Right" Text="{Binding Status}"
+                       Foreground="Red" FontWeight="Bold" FontStyle="Italic" FontSize="20"></TextBlock>
+        </Grid>
+    </Grid>
+</Window>
