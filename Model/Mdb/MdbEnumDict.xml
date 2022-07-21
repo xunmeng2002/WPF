@@ -1,0 +1,82 @@
+<root>
+	<enums>
+		<enum name="OrderStatus">
+			<item name="Inserting" value="0" desc="正在申报"/>
+			<item name="Inserted" value="1" desc="已报"/>
+			<item name="PartTraded" value="2" desc="部成"/>
+			<item name="AllTraded" value="3" desc="已成"/>
+			<item name="Canceled" value="4" desc="已撤"/>
+			<item name="PartTradedCanceled" value="5" desc="部成部撤"/>
+			<item name="Error" value="e" desc="废单"/>
+			<item name="NotTouched" value="p" desc="未触发"/>
+			<item name="Touched" value="t" desc="已触发"/>
+			<item name="Unknown" value="x" desc="未知"/>
+		</enum>
+		<enum name="Direction">
+			<item name="Buy" value="0" desc="买"/>
+			<item name="Sell" value="1" desc="卖"/>
+		</enum>
+		<enum name="HedgeFlag">
+			<item name="Speculation" value="1" desc="投机"/>
+			<item name="Arbitrage" value="2" desc="套利"/>
+			<item name="Hedge" value="3" desc="保值"/>
+		</enum>
+		<enum name="OrderPriceType">
+			<item name="Anyprice" value="1" desc="市价"/>
+			<item name="LimitPrice" value="2" desc="限价"/>
+			<item name="BestPrice" value="3" desc="最优价"/>
+			<item name="LastPrice" value="4" desc="最新价"/>
+		</enum>
+		<enum name="OffsetFlag">
+			<item name="Open" value="0" desc="开仓"/>
+			<item name="Close" value="1" desc="平仓"/>
+			<item name="CloseToday" value="2" desc="平今"/>
+		</enum>
+		<enum name="ContingentCondition">
+			<item name="Immediately" value="1" desc="立即"/>
+			<item name="Touch" value="2" desc="止损"/>
+			<item name="TouchProfit" value="3" desc="止赢"/>
+			<item name="ParkedOrder" value="4" desc="预埋单"/>
+		</enum>
+		<enum name="TimeCondition">
+			<item name="IOC" value="1" desc="立即完成，否则撤销"/>
+			<item name="GFS" value="2" desc="本节有效"/>
+			<item name="GFD" value="3" desc="当日有效"/>
+			<item name="GTD" value="4" desc="指定日期前有效"/>
+			<item name="GTC" value="5" desc="撤销前有效"/>
+			<item name="GFA" value="6" desc="集合竞价有效"/>
+		</enum>
+		<enum name="VolumeCondition">
+			<item name="AV" value="1" desc="任何数量"/>
+			<item name="MV" value="2" desc="最小数量"/>
+			<item name="CV" value="3" desc="全部数量"/>
+		</enum>
+		<enum name="ForceCloseReason">
+			<item name="NotForceClose" value="0" desc="非强平"/>
+			<item name="LackDeposit" value="1" desc="资金不足"/>
+			<item name="ClientOverPositionLimit" value="2" desc="客户超仓"/>
+			<item name="MemberOverPositionLimit" value="3" desc="会员超仓"/>
+			<item name="NotMultiple" value="4" desc="持仓非整数倍"/>
+			<item name="Violation" value="5" desc="违规"/>
+			<item name="Other" value="6" desc="其它"/>
+			<item name="PersonDeliv" value="7" desc="自然人临近交割"/>
+		</enum>
+		<enum name="TradeType">
+			<item name="Common" value="0" desc="普通成交"/>
+			<item name="OptionsExecution" value="1" desc="期权执行"/>
+			<item name="OTC" value="2" desc="OTC成交"/>
+			<item name="EFPDerived" value="3" desc="期转现衍生成交"/>
+			<item name="CombinationDerived" value="4" desc="组合衍生成交"/>
+		</enum>
+		<enum name="MarginPriceType">
+			<item name="PreSettlementPrice" value="1" desc="昨结算价"/>
+			<item name="SettlementPrice" value="2" desc="最新价"/>
+			<item name="AveragePrice" value="3" desc="成交均价"/>
+			<item name="OpenPrice" value="4" desc="开仓价"/>
+		</enum>
+		<enum name="IsLocalOrder">
+			<item name="Others" value="0" desc="外部"/>
+			<item name="Local" value="1" desc="本地"/>
+		</enum>
+	</enums>
+</root>

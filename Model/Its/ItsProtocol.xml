@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="utf-8"?>
+<protocols>
+	<DataBase  len="32">
+		<field name="ReqQryPrimaryAccountInfo" protocolType="R" demo="R|169|6568|||||||1|18|">
+			<items>
+				<item name="ProtocolType" value="R" desc="协议类型"/>
+				<item name="Command" value="169" desc="指令代码"/>
+				<item name="SequenceNo" value="6568" desc="序号"/>
+				<item name="Reserve1" value="" desc="保留字段"/>
+				<item name="Reserve2" value="" desc="保留字段"/>
+				<item name="Reserve3" value="" desc="保留字段"/>
+				<item name="Reserve4" value="" desc="保留字段"/>
+				<item name="Reserve5" value="" desc="保留字段"/>
+				<item name="Reserve6" value="" desc="保留字段"/>
+				<item name="Unknown" value="1" desc="未知"/>
+				<item name="ChannelID" value="18" desc="上手编号"/>
+			</items>
+			<primarykey>
+				<item name="SequenceNo"/>
+			</primarykey>
+		</field>
+		<field name="RspQryPrimaryAccountInfo" protocolType="A" demo="A|6568|0|0|0||18|1001006|888888|16210|">
+			<items>
+				<item name="ProtocolType" value="A" desc="协议类型"/>
+				<item name="SequenceNo" value="6568" desc="序号"/>
+				<item name="IsLast" value="0" desc="是否结束"/>
+				<item name="Reserve1" value="0" desc="是否需回复"/>
+				<item name="ErrorCode" value="0" desc="错误代码"/>
+				<item name="ErrorMessage" value="" desc="错误信息"/>
+				<item name="ChannelID" value="18" desc="上手编号"/>
+				<item name="PrimaryAccountID" value="1001006" desc="主账号"/>
+				<item name="Password" value="888888" desc="密码"/>
+				<item name="Port" value="16210" desc="端口"/>
+			</items>
+			<primarykey>
+				<item name="SequenceNo"/>
+			</primarykey>
+		</field>
+	</DataBase>
+	<Its len="32">
+		<field name="InsertOrder" funcName="ReqInsertOrder" protocolType="R" demo="R|216|10|||||||CME|CL2109|73.03|0||1|1|2|111||3|0|1|0|0|0|9894|">
+			<items>
+				<item name="ProtocolType" value="R" desc=""/>
+				<item name="Command" value="216" desc="指令代码"/>
+				<item name="SequenceNo" value="10" desc="序号"/>
+				<item name="Reserve1" value="" desc="保留字段 MAC"/>
+				<item name="Reserve2" value="" desc="保留字段"/>
+				<item name="Reserve3" value="" desc="保留字段"/>
+				<item name="Reserve4" value="" desc="保留字段"/>
+				<item name="Reserve5" value="" desc="保留字段 客户号"/>
+				<item name="Reserve6" value="" desc="保留字段 密码"/>
+				<item name="ExchangeID" value="CME" desc="交易所"/>
+				<item name="InstrumentID" value="CL2201" desc="合约代码"/>
+				<item name="Price" value="73.03" desc="价格"/>
+				<item name="Direction" value="0" desc="买卖方向"/>
+				<item name="Reserve7" value="" desc="保留字段 开平标志，目前始终为开仓"/>
+				<item name="CombHedgeFlag" value="1" desc="组合投保标志"/>
+				<item name="Volume" value="1" desc="数量"/>
+				<item name="OrderPriceType" value="2" desc="报单价格类型"/>
+				<item name="RequestID" value="111" desc="请求编号"/>
+				<item name="Reserve8" value="" desc="保留字段 InsertTick"/>
+				<item name="TimeCondition" value="3" desc="有效期类型"/>
+				<item name="GTDDate" value="0" desc="GTD日期"/>
+				<item name="VolumeCondition" value="1" desc="成交量类型"/>
+				<item name="MinVolume" value="0" desc="最小成交量"/>
+				<item name="IsSwapOrder" value="0" desc="是否互换单"/>
+				<item name="ForceCloseReason" value="0" desc="强平原因"/>
+				<item name="AccountID" value="9894" desc="账号代码"/>
+				<item name="TradingDay" value="20211021" desc="交易日"/>
+			</items>
+			<primarykey>
+				<item name="TradingDay"/>
+				<item name="RequestID"/>
+			</primarykey>
+		</field>
+		<field name="InsertOrderCancel" funcName="ReqInsertOrderCancel" protocolType="R" demo="R|217|29050||||||||0|0|HKEX|||1|">
+			<items>
+				<item name="ProtocolType" value="R" desc="协议类型"/>
+				<item name="Command" value="217" desc="指令代码"/>
+				<item name="SequenceNo" value="29050" desc="序号"/>
+				<item name="Reserve1" value="" desc="保留字段 MAC"/>
+				<item name="Reserve2" value="" desc="保留字段"/>
+				<item name="Reserve3" value="" desc="保留字段"/>
+				<item name="Reserve4" value="" desc="保留字段"/>
+				<item name="Reserve5" value="" desc="保留字段 客户号"/>
+				<item name="Reserve6" value="" desc="保留字段 密码"/>
+				<item name="OrderRef" value="" desc="报单引用"/>
+				<item name="FrontID" value="0" desc="前置编号"/>
+				<item name="SessionID" value="0" desc="会话编号"/>
+				<item name="ExchangeID" value="HKEX" desc="交易所"/>
+				<item name="OrderSysID" value="" desc="交易所报单编号"/>
+				<item name="BrokerOrderID" value="" desc="柜台报单编号"/>
+				<item name="ProcessorOrderID" value="1" desc="处理机报单编号"/>
+				<item name="InstrumentID" value="1" desc="合约代码"/>
+				<item name="Direction" value="1" desc="买卖方向"/>
+				<item name="TradingDay" value="20211021" desc="交易日"/>
+			</items>
+			<primarykey>
+				<item name="TradingDay"/>
+				<item name="SequenceNo"/>
+			</primarykey>
+		</field>
+		<field name="RspOrder"  fucnName="OnRspOrder" protocolType="A" demo="A|217|1|0|-1|报盘机发送命令失败|">
+			<items>
+				<item name="ProtocolType" value="A" desc="协议类型"/>
+				<item name="SequenceNo" value="217" desc="序号"/>
+				<item name="Reserve1" value="" desc="保留字段"/>
+				<item name="Reserve2" value="" desc="保留字段"/>
+				<item name="ErrorID" value="-1" desc="错误代码"/>
+				<item name="ErrorMsg" value="报盘机发送命令失败" desc="错误信息" len="255"/>
+				<item name="TradingDay" value="20211021" desc="交易日	协议本身不存在，增加做主键使用"/>
+			</items>
+			<primarykey>
+				<item name="TradingDay"/>
+				<item name="SequenceNo"/>
+			</primarykey>
+		</field>
+		<field name="Order" fucnName="OnRtnOrder" protocolType="B"
+		demo="B|52|||||18|CME|CL2108|           1|06:53:43||           1|全部成交|0|0|1|2|3|0|105|16777343|1570679412|164|1|1|20210701|20210701|73.5800000|0|boyee 1.0|3||1|0|1|0.0000000|0|0|">
+			<items>
+				<item name="ProtocolType" value="B" desc="协议类型"/>
+				<item name="Command" value="52" desc="指令代码"/>
+				<item name="Reserve1" value="" desc="保留字段"/>
+				<item name="Reserve2" value="" desc="保留字段"/>
+				<item name="Reserve3" value="" desc="保留字段"/>
+				<item name="Reserve4" value="" desc="保留字段"/>
+				<item name="ChannelID" value="18" desc="上手编号"/>
+				<item name="ExchangeID" value="CME" desc="交易所"/>
+				<item name="InstrumentID" value="CL2108" desc="合约代码"/>
+				<item name="OrderRef" value="           1" desc="报单引用"/>
+				<item name="InsertTime" value="06:53:43" desc="委托时间"/>
+				<item name="CancelTime" value="" desc="撤销时间"/>
+				<item name="OrderSysID" value="           1" desc="交易所报单编号"/>
+				<item name="StatusMsg" value="全部成交" desc="状态信息"/>
+				<item name="Direction" value="0" desc="买卖方向"/>
+				<item name="CombOffsetFlag" value="0" desc="开平标志"/>
+				<item name="CombHedgeFlag" value="1" desc="投保标志"/>
+				<item name="OrderPriceType" value="2" desc="报单价格条件"/>
+				<item name="OrderStatus" value="3" desc="报单状态"/>
+				<item name="ForceCloseReason" value="0" desc="强平原因"/>
+				<item name="RequestID" value="105" desc="请求编号"/>
+				<item name="FrontID" value="16777343" desc="前置编号"/>
+				<item name="SessionID" value="1570679412" desc="会话编号"/>
+				<item name="BrokerOrderID" value="164" desc="柜台报单编号"/>
+				<item name="VolumeTotalOriginal" value="1" desc="数量"/>
+				<item name="VolumeTraded" value="1" desc="今成交数量"/>
+				<item name="InsertDate" value="20210701" desc="报单日期"/>
+				<item name="TradingDay" value="20210701" desc="交易日"/>
+				<item name="LimitPrice" value="73.5800000" desc="价格"/>
+				<item name="IsLocalOrder" value="0" desc="保留字段"/>
+				<item name="UserProductInfo" value="boyee 1.0" desc="用户端产品信息"/>
+				<item name="TimeCondition" value="3" desc="有效期类型"/>
+				<item name="GTDDate" value="" desc=""/>
+				<item name="VolumeCondition" value="1" desc="成交量类型"/>
+				<item name="MinVolume" value="0" desc="最小成交量"/>
+				<item name="ContingentCondition" value="1" desc="触发条件"/>
+				<item name="StopPrice" value="0.0000000" desc="止损价"/>
+				<item name="IsSwapOrder" value="0" desc="互换单标志"/>
+				<item name="Reserve5" value="0" desc="保留字段"/>
+			</items>
+			<primarykey>
+				<item name="TradingDay"/>
+				<item name="ExchangeID"/>
+				<item name="InstrumentID"/>
+				<item name="Direction"/>
+				<item name="BrokerOrderID"/>
+			</primarykey>
+		</field>
+		<field name="Trade" fucnName="OnRtnTrade" protocolType="B" 
+		demo="B|53|||||18|CME|CL2108|           1|           1|06:53:43|                   2|0|0|1|164|1|20210701|20210701|73.5800000|0|0||0||">
+			<items>
+				<item name="ProtocolType" value="B" desc="协议类型"/>
+				<item name="Command" value="53" desc="指令代码"/>
+				<item name="Reserve1" value="" desc="保留字段"/>
+				<item name="Reserve2" value="" desc="保留字段"/>
+				<item name="Reserve3" value="" desc="保留字段"/>
+				<item name="Reserve4" value="" desc="保留字段"/>
+				<item name="ChannelID" value="18" desc="上手编号"/>
+				<item name="ExchangeID" value="CME" desc="交易所"/>
+				<item name="InstrumentID" value="CL2108" desc="合约代码"/>
+				<item name="OrderRef" value="           1" desc="报单引用"/>
+				<item name="OrderSysID" value="           1" desc="交易所报单编号"/>
+				<item name="TradeTime" value="06:53:43" desc="成交时间"/>
+				<item name="TradeID" value="                   2" desc="成交编号"/>
+				<item name="Direction" value="0" desc="买卖方向"/>
+				<item name="OffsetFlag" value="0" desc="开平标志"/>
+				<item name="HedgeFlag" value="1" desc="投保标志"/>
+				<item name="BrokerOrderID" value="164" desc="柜台报单编号"/>
+				<item name="Volume" value="1" desc="数量"/>
+				<item name="TradeDate" value="20210701" desc="成交日期"/>
+				<item name="TradingDay" value="20210701" desc="交易日"/>
+				<item name="Price" value="73.5800000" desc="价格"/>
+				<item name="Reserve5" value="0" desc="保留字段"/>
+				<item name="TradeType" value="0" desc="成交类型"/>
+				<item name="ExchangeTradeID" value="" desc="交易所成交编号"/>
+				<item name="Reserve7" value="0" desc="保留字段"/>
+				<item name="Reserve8" value="" desc="保留字段"/>
+			</items>
+			<primarykey>
+				<item name="TradingDay"/>
+				<item name="ExchangeID"/>
+				<item name="InstrumentID"/>
+				<item name="Direction"/>
+				<item name="TradeID"/>
+			</primarykey>
+		</field>
+		<field name="ErrRtnOrderCancel"  fucnName="OnErrRtnOrderCancel" protocolType="B" demo="">
+			<items>
+				<item name="ProtocolType" value="B" desc="协议类型"/>
+				<item name="Command" value="54" desc="指令代码"/>
+				<item name="Reserve1" value="" desc="保留字段"/>
+				<item name="Reserve2" value="" desc="保留字段"/>
+				<item name="Reserve3" value="" desc="保留字段"/>
+				<item name="Reserve4" value="" desc="保留字段"/>
+				<item name="ChannelID" value="18" desc="上手编号"/>
+				<item name="BrokerOrderID" value="" desc="柜台报单编号"/>
+				<item name="OrderRef" value="" desc="报单引用"/>
+				<item name="FrontID" value="" desc="前置编号"/>
+				<item name="SessionID" value="" desc="会话编号"/>
+				<item name="ExchangeID" value="" desc="交易所"/>
+				<item name="OrderSysID" value="" desc="交易所报单编号"/>
+				<item name="Reserve5" value="" desc="保留字段"/>
+				<item name="ErrorID" value="" desc="错误代码"/>
+				<item name="ErrorMsg" value="" desc="错误信息" len="255"/>
+				<item name="TradingDay" value="20211021" desc="交易日	协议本身不存在，增加做主键使用"/>
+			</items>
+			<primarykey>
+				<item name="TradingDay"/>
+				<item name="ExchangeID"/>
+				<item name="BrokerOrderID"/>
+				<item name="OrderSysID"/>
+				<item name="OrderRef"/>
+			</primarykey>
+		</field>
+	</Its>
+</protocols>

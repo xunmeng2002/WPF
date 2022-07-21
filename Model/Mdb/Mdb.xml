@@ -1,0 +1,104 @@
+<root>
+	<tables len="32">
+		<table name="OrderSequence">
+			<items>
+				<item name="TradingDay" type="string"/>
+				<item name="MaxOrderLocalID" type="int"/>
+			</items>
+			<primarykey>
+				<item name="TradingDay"/>
+			</primarykey>
+		</table>
+		<table name="Order">
+			<items>
+				<item name="TradingDay" type="string"/>
+				<item name="AccountID" type="string"/>
+				<item name="ExchangeID" type="string"/>
+				<item name="InstrumentID" type="string"/>
+				<item name="OrderLocalID" type="string"/>
+				<item name="OrderSysID" len ="64" type="string"/>
+				<item name="Direction" type="enum"/>
+				<item name="OffsetFlag" type="enum"/>
+				<item name="HedgeFlag" type="enum"/>
+				<item name="OrderPriceType" type="enum"/>
+				<item name="Price" type="double"/>
+				<item name="Volume" type="int"/>
+				<item name="VolumeTraded" type="int"/>
+				<item name="OrderStatus" type="enum"/>
+				<item name="ErrorID" type="int"/>
+				<item name="ErrorMsg" type="string" len="255"/>
+				<item name="StatusMsg" len="255" type="string"/>
+				<item name="RequestID" type="string"/>
+				<item name="FrontID" type="string"/>
+				<item name="SessionID" type="int"/>
+				<item name="InsertDate" type="string"/>
+				<item name="InsertTime" type="string"/>
+				<item name="ExchangeInsertDate" type="string"/>
+				<item name="ExchangeInsertTime" type="string"/>
+				<item name="CancelDate" type="string"/>
+				<item name="CancelTime" type="string"/>
+				<item name="ForceCloseReason" type="enum"/>
+				<item name="IsLocalOrder" type="enum"/>
+				<item name="UserProductInfo" type="string"/>
+				<item name="TimeCondition" type="enum"/>
+				<item name="GTDDate" type="string"/>
+				<item name="VolumeCondition" type="enum"/>
+				<item name="MinVolume" type="int"/>
+				<item name="ContingentCondition" type="enum"/>
+				<item name="StopPrice" type="double"/>
+				<item name="IsSwapOrder" type="int"/>
+			</items>
+			<primarykey>
+				<item name="TradingDay"/>
+				<item name="OrderLocalID"/>
+			</primarykey>
+		</table>
+		<table name="OrderCancel">
+			<items>
+				<item name="TradingDay" type="string"/>
+				<item name="AccountID" type="string"/>
+				<item name="ExchangeID" type="string"/>
+				<item name="InstrumentID" type="string"/>
+				<item name="OrderLocalID" type="string"/>
+				<item name="OrigOrderLocalID" type="string"/>
+				<item name="OrderSysID" len ="64" type="string"/>
+				<item name="Direction" type="enum"/>
+				<item name="OrderRef" type="string"/>
+				<item name="FrontID" type="string"/>
+				<item name="SessionID" type="int"/>
+				<item name="ErrorID" type="int"/>
+				<item name="ErrorMsg" type="string" len="255"/>
+				<item name="InsertDate" type="string"/>
+				<item name="CancelDate" type="string"/>
+			</items>
+			<primarykey>
+				<item name="TradingDay"/>
+				<item name="OrderLocalID"/>
+			</primarykey>
+		</table>
+		<table name="Trade">
+			<items>
+				<item name="TradingDay" type="string"/>
+				<item name="AccountID" type="string"/>
+				<item name="ExchangeID" type="string"/>
+				<item name="InstrumentID" type="string"/>
+				<item name="TradeID" type="string"/>
+				<item name="Direction" type="enum"/>
+				<item name="OffsetFlag" type="enum"/>
+				<item name="HedgeFlag" type="enum"/>
+				<item name="Price" type="double"/>
+				<item name="Volume" type="int"/>
+				<item name="OrderLocalID" type="string"/>
+				<item name="OrderSysID" len ="64" type="string"/>
+				<item name="TradeTime" type="string"/>
+				<item name="TradeDate" type="string"/>
+			</items>
+			<primarykey>
+				<item name="TradingDay"/>
+				<item name="TradeDate"/>
+				<item name="OrderSysID"/>
+				<item name="TradeID"/>
+			</primarykey>
+		</table>
+	</tables>
+</root>
