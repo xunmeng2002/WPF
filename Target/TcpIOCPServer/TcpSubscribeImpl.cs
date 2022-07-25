@@ -21,18 +21,18 @@ namespace TcpIOCPServer
             Console.WriteLine($"OnConnected SessionID:{userToken.SessionID}, IPEndPoint:{userToken.IPEndPoint}");
         }
 
-        public void OnDisconnected(long sessionID)
+        public void OnDisconnected(UserToken userToken)
         {
-            Console.WriteLine($"OnDisconnected SessionID:{sessionID}");
+            Console.WriteLine($"OnDisconnected SessionID:{userToken.SessionID}");
         }
 
-        public void OnRecv(long sessionID, byte[] msg, int offset, int len)
+        public void OnRecv(UserToken userToken, byte[] msg, int offset, int len)
         {
             string recvMsg = Encoding.UTF8.GetString(msg, offset, len);
             Console.WriteLine($"OnRecv {recvMsg}");
             if (TcpIOCPServer != null)
             {
-                TcpIOCPServer.Send(sessionID, "Server Response:" + recvMsg);
+                TcpIOCPServer.Send(userToken, "Server Response:" + recvMsg);
             }
         }
     }

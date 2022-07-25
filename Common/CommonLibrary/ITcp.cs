@@ -11,7 +11,7 @@ namespace CommonLibrary
     {
         public void Init();
         public void RegisterSubscribe(ITcpSubscribe tcpSubscribe);
-        public bool Send(long sessionID, byte[] msg, int offset, int len);
-        public bool Send(long sessionID, string msg);
+        public bool Send(UserToken userToken, byte[] msg, int offset, int len);
+        public bool Send(UserToken userToken, string msg);
     }
 }

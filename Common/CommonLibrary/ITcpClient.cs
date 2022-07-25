@@ -10,6 +10,6 @@ namespace CommonLibrary
     public interface ITcpClient : ITcp
     {
         public void Connect(IPEndPoint ipEndPoint);
-        public void Disconnect(long sessionID);
+        public void Disconnect(UserToken userToken);
     }
 }

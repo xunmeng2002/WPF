@@ -34,7 +34,7 @@ namespace CommonLibrary
             {
                 foreach (var item in m_Connects)
                 {
-                    PostDisconnect(item.Value);
+                    PostDisconnect(item);
                 }
             }
             if (m_ListenSocket != null)

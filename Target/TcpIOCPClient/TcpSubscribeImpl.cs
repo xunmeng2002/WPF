@@ -13,9 +13,8 @@ namespace TcpIOCPClient
         public TcpSubscribeImpl(CommonLibrary.TcpIOCPClient tcpIOCPClient)
         {
             TcpIOCPClient = tcpIOCPClient;
-            m_Connects = new List<long>();
         }
-        private List<long> m_Connects;
+        private List<UserToken> m_Connects = new List<UserToken>();
 
         private CommonLibrary.TcpIOCPClient TcpIOCPClient { get; set; }
         public void OnConnected(UserToken userToken)
@@ -23,22 +22,22 @@ namespace TcpIOCPClient
             Console.WriteLine($"OnConnected SessionID:{userToken.SessionID}, IPEndPoint:{userToken.IPEndPoint}");
             lock (m_Connects)
             {
-                m_Connects.Add(userToken.SessionID);
+                m_Connects.Add(userToken);
             }
             if (TcpIOCPClient != null)
             {
-                TcpIOCPClient.Send(userToken.SessionID, "Hello World!");
+                TcpIOCPClient.Send(userToken, "Hello World!");
             }
         }
-        public void OnDisconnected(long sessionID)
+        public void OnDisconnected(UserToken userToken)
         {
-            Console.WriteLine($"OnDisconnected SessionID:{sessionID}");
+            Console.WriteLine($"OnDisconnected SessionID:{userToken.SessionID}");
             lock (m_Connects)
             {
-                m_Connects.Remove(sessionID);
+                m_Connects.Remove(userToken);
             }
         }
-        public void OnRecv(long sessionID, byte[] msg, int offset, int len)
+        public void OnRecv(UserToken userToken, byte[] msg, int offset, int len)
         {
             string recvMsg = Encoding.UTF8.GetString(msg, offset, len);
             Console.WriteLine($"OnRecv {recvMsg}");
@@ -47,9 +46,9 @@ namespace TcpIOCPClient
         {
             lock(m_Connects)
             {
-                foreach (var sessionID in m_Connects)
+                foreach (var item in m_Connects)
                 {
-                    TcpIOCPClient.Disconnect(sessionID);
+                    TcpIOCPClient.Disconnect(item);
                 }
             }
         }

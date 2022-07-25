@@ -19,9 +19,9 @@ namespace CommonLibrary
             PostConnect(ipEndPoint);
         }
 
-        public void Disconnect(long sessionID)
+        public void Disconnect(UserToken userToken)
         {
-            PostDisconnect(sessionID);
+            PostDisconnect(userToken);
         }
     }
 }
