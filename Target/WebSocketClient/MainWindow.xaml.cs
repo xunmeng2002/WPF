@@ -24,70 +24,72 @@ namespace WebSocketClient
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window, INotifyPropertyChanged
+    public partial class MainWindow : Window
     {
         public MainWindow()
         {
             InitializeComponent();
+            webSocket = new WebSocket(this);
             Init();
         }
         private void Init()
         {
-            
+            InitViewModel();
         }
-        public ObservableCollection<Order> Orders { get; set; } = new ObservableCollection<Order>();
-        private ClientWebSocket clientWebSocket = new ClientWebSocket();
-        //private string address = "ws://127.0.0.1:10000";
-        //private string address = "ws://192.168.137.129:9000";
-        private string address = "ws://27.109.125.235:9000";
-        private Uri? uri;
-        private CancellationToken token = new CancellationToken();
-        private byte[] recvBuff = new byte[4096];
-        private string connectStatus = "None";
-        public string ConnectStatus
+        private void InitViewModel()
         {
-            get => connectStatus;
-            set
+            OrderViewModel.PropertyChanged += (sender, e) =>
             {
-                if (connectStatus == value)
-                    return;
-                connectStatus = value;
-                OnPropertyChanged();
-            }
+                if (e.PropertyName == nameof(OrderViewModel.IsAllOrderSelected) && sender != null)
+                    orderCheckBox.IsChecked = ((OrderViewModel)sender).IsAllOrderSelected;
+            };
         }
+        public OrderViewModel OrderViewModel { get; set; } = new OrderViewModel();
 
+        private WebSocket webSocket;
+        private string address = "ws://127.0.0.1:10000";
+        //private string address = "ws://192.168.137.129:9000";
+        //private string address = "ws://27.109.125.235:9000";
+        private Uri? uri;
+        
         private async void Connect_Click(object sender, RoutedEventArgs e)
         {
             try
             {
                 address = addressTextBox.Text;
                 uri = new Uri(address);
-                await Connect();
+                await webSocket.Connect(uri);
             }
             catch (Exception ex)
             {
                 infoBlock.Text = ex.Message;
-                ConnectStatus = clientWebSocket.State.ToString();
+                webSocket.UpdateConnectStatus();
+                MessageBox.Show(infoBlock.Text);
             }
         }
         private async void Send_Click(object sender, RoutedEventArgs e)
         {
-            if (clientWebSocket.State != WebSocketState.Open)
+            if (webSocket.clientWebSocket.State != WebSocketState.Open)
             {
                 infoBlock.Text = "Send Failed. Please Check Connect Status.";
                 return;
             }
             ReqOrder reqOrder = GeneratorReqOrder();
-            AddOrderFromReqOrder(reqOrder);
             string msg = JsonSerializer.Serialize(reqOrder);
+            await webSocket.Send(msg);
+            //AddOrderFromReqOrder(reqOrder);
             sendContentBox.Text = msg;
-            await Send(msg);
+            infoBlock.Text = "Send Success.";
+        }
+        private void Login_Click(object sender, RoutedEventArgs e)
+        {
+
         }
         private ReqOrder GeneratorReqOrder()
         {
             ReqOrder reqOrder = new ReqOrder();
             reqOrder.type = "reqorder";
-            reqOrder.customer = "customer";
+            reqOrder.customerId = "customer";
             reqOrder.acctType = '1';
             reqOrder.investid = "A188800000";
             reqOrder.market = '1';
@@ -99,13 +101,13 @@ namespace WebSocketClient
             reqOrder.ordType = priceTypeCombBox.SelectedIndex == 0 ? '1' : '2';
             return reqOrder;
         }
-        private void AddOrderFromReqOrder(ReqOrder reqOrder)
+        public void AddOrderFromReqOrder(ReqOrder reqOrder)
         {
             Order order = new Order();
             order.type = "order";
             order.reqid = 0;
             order.envno = 0;
-            order.customerId = reqOrder.customer;
+            order.customerId = reqOrder.customerId;
             order.investid = reqOrder.investid;
             order.plotid = 0;
             order.localId = 0;
@@ -121,98 +123,23 @@ namespace WebSocketClient
             order.cnfTime = 0;
             order.errorId = 0;
             order.errorMsg = "";
-            Orders.Add(order);
+
+            OrderViewModel.AddOrder(order);
         }
 
-
-        public async Task Connect()
+        public void OnStatusMsg(string statusMsg)
         {
-            ConnectStatus = "Connecting";
-            await clientWebSocket.ConnectAsync(uri, token);
-            ConnectStatus = clientWebSocket.State.ToString();
-            await Recv();
+            infoBlock.Text = statusMsg;
         }
-        public async Task Send(string msg)
+        public void OnRecv(string msg)
         {
-            ConnectStatus = clientWebSocket.State.ToString();
-            byte[] sendArray = Encoding.UTF8.GetBytes(msg);
-            await clientWebSocket.SendAsync(sendArray, WebSocketMessageType.Binary, true, token);
-            infoBlock.Text = "Send Success.";
-            await Recv();
-        }
-        public async Task Recv()
-        {
-            ConnectStatus = clientWebSocket.State.ToString();
-            WebSocketReceiveResult webSocketReceiveResult = await clientWebSocket.ReceiveAsync(recvBuff, token);
-            
-            string msg = Encoding.UTF8.GetString(recvBuff, 0, webSocketReceiveResult.Count);
             recvContentBox.Text = msg;
-            ParseBuff(msg);
         }
-        private void ParseBuff(string msg)
-        {
-            JsonDocument jsonDocument = JsonDocument.Parse(msg);
-            string? type = jsonDocument.RootElement.GetProperty("type").GetString();
-            switch(type)
-            {
-                case "reqorder":
-                    ReqOrder? reqOrder = jsonDocument.Deserialize<ReqOrder>();
-                    infoBlock.Text = (reqOrder != null ? "Recv " : "Failed to Deserialize ") + type;
-                    return;
-                case "order":
-                    Order? order = jsonDocument.Deserialize<Order>();
-                    infoBlock.Text = (order != null ? "Recv " : "Failed to Deserialize ") + type;
-                    if(order != null)
-                    {
-                        infoBlock.Text = "Recv Order, LocalID: {0} " + order.localId.ToString();
-                        OnRtnOrder(order);
-                    }
-                    else
-                    {
-                        infoBlock.Text = "Failed to Deserialize Order";
-                    }
-                    return;
 
-            }
-        }
-        private void OnRtnOrder(Order order)
+
+        private void orderCheckBox_CheckedChange(object sender, RoutedEventArgs e)
         {
-            List<Order> orders = Orders.Where(o => o.localId == order.localId).ToList();
-            if(orders.Count > 0)
-            {
-                Order oldOrder = orders.First();
-                UpdateOrder(oldOrder, order);
-            }
-            else
-            {
-                Orders.Add(order);
-            }
-        }
-        private void UpdateOrder(Order oldOrder, Order newOrder)
-        {
-            oldOrder.reqid = newOrder.reqid;
-            oldOrder.envno = newOrder.envno;
-            oldOrder.customerId = newOrder.customerId;
-            oldOrder.investid = newOrder.investid;
-            oldOrder.plotid = newOrder.plotid;
-            oldOrder.localId = newOrder.localId;
-            oldOrder.market = newOrder.market;
-            oldOrder.securityId = newOrder.securityId;
-            oldOrder.ordQty = newOrder.ordQty;
-            oldOrder.ordPrice = newOrder.ordPrice;
-            oldOrder.tradeQty = newOrder.tradeQty;
-            oldOrder.tradeAvgPx = newOrder.tradeAvgPx;
-            oldOrder.sendLocTime = newOrder.sendLocTime;
-            oldOrder.cnfLocTime = newOrder.cnfLocTime;
-            oldOrder.sendTime = newOrder.sendTime;
-            oldOrder.cnfTime = newOrder.cnfTime;
-            oldOrder.errorId = newOrder.errorId;
-            oldOrder.errorMsg = newOrder.errorMsg;
-        }
-        public event PropertyChangedEventHandler? PropertyChanged;
-        protected virtual void OnPropertyChanged([CallerMemberName] string? propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            OrderViewModel.IsAllOrderSelected = orderCheckBox.IsChecked;
         }
     }
 }

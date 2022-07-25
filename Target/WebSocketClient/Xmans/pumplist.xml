@@ -1,0 +1,3 @@
+<pumplist>
+	<pump dest="./Target/WebSocketClient/Xmans/Xmans.cs" tpl="./Target/WebSocketClient/Xmans/Xmans.tpl" model="./Model/Xmans/XmansProtocol.xml"/>
+</pumplist>

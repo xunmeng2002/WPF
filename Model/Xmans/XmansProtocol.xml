@@ -1,0 +1,57 @@
+<root>
+	<ReqPackages>
+		<Package name="ReqLogin">
+			<Field name="Type" type="string"/>
+			<Field name="Username" type="string"/>
+			<Field name="Password" type="string"/>
+		</Package>
+		<Package name="ReqOrder">
+			<Field name="Type" type="string"/>
+			<Field name="CustomerId" type="string"/>
+			<Field name="AcctType" type="int"/>
+			<Field name="BsType" type="int"/>
+			<Field name="Investid" type="string"/>
+			<Field name="IsCancel" type="int"/>
+			<Field name="Market" type="int"/>
+			<Field name="SecurityId" type="string"/>
+			<Field name="OrdPrice" type="int"/>
+			<Field name="OrdQty" type="int"/>
+			<Field name="OrdType" type="int"/>
+		</Package>
+	</ReqPackages>
+	<RtnPackages>
+		<Package name="RspLogin">
+			<Field name="Type" type="string"/>
+			<Field name="Reqid" type="int"/>
+			<Field name="Errno" type="int"/>
+			<Field name="Errmsg" type="string"/>
+			<Field name="Data" type="string"/>
+			<Field name="TradeDay" type="int"/>
+			<Field name="Updatetime" type="int"/>
+			<Field name="Sessionid" type="int"/>
+		</Package>
+		<Package name="Order">
+			<Field name="IsSelected" type="bool" value = "false"/>
+			<Field name="Type" type="string"/>
+			<Field name="Reqid" type="int"/>
+			<Field name="Envno" type="int"/>
+			<Field name="CustomerId" type="string"/>
+			<Field name="Investid" type="string"/>
+			<Field name="Plotid" type="int"/>
+			<Field name="LocalId" type="int"/>
+			<Field name="OrderStatus" type="int"/>
+			<Field name="Market" type="int"/>
+			<Field name="SecurityId" type="string"/>
+			<Field name="OrdQty" type="int"/>
+			<Field name="OrdPrice" type="int"/>
+			<Field name="TradeQty" type="int"/>
+			<Field name="TradeAvgPx" type="int"/>
+			<Field name="SendLocTime" type="int"/>
+			<Field name="CnfLocTime" type="int"/>
+			<Field name="SendTime" type="int"/>
+			<Field name="CnfTime" type="int"/>
+			<Field name="ErrorId" type="int"/>
+			<Field name="ErrorMsg" type="string"/>
+		</Package>
+	</RtnPackages>
+</root>
