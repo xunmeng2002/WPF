@@ -11,13 +11,17 @@
     </Window.Resources>
     <Grid DataContext="{Binding ElementName=mainWindow, Mode=OneWay}">
         <Grid.RowDefinitions>
-            <RowDefinition />
+            <RowDefinition Height="200"/>
+            <RowDefinition Height="*"/>
             <RowDefinition Height="40"/>
             <RowDefinition Height="40"/>
             <RowDefinition Height="40"/>
             <RowDefinition Height="40"/>
         </Grid.RowDefinitions>
-        <TabControl HorizontalAlignment="Stretch" HorizontalContentAlignment="Left" ScrollViewer.HorizontalScrollBarVisibility="Visible" ScrollViewer.CanContentScroll="True">
+        <DataGrid Grid.Row="0" ItemsSource="{Binding ElementName=mainWindow, Path=m_TtsTcpSubscribe.m_Connects}" AutoGenerateColumns="True" IsReadOnly="True">
+            
+        </DataGrid>
+        <TabControl Grid.Row="1" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left" ScrollViewer.HorizontalScrollBarVisibility="Visible" ScrollViewer.CanContentScroll="True">
             <TabItem Header="Orders" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.CanContentScroll="True">
                 <DataGrid x:Name="gridOrders" IsReadOnly="True" ItemsSource="{Binding Orders}">
                     <!--<DataGrid.Columns>
@@ -67,7 +71,7 @@
                 <DataGrid x:Name="gridOrderCancels" IsReadOnly="True" ItemsSource="{Binding OrderCancels}"></DataGrid>
             </TabItem>
         </TabControl>
-        <Grid Grid.Row="4">
+        <Grid Grid.Row="5">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="auto"/>

@@ -24,7 +24,7 @@ namespace OfferCommonLibrary
     /// <summary>
     /// MainWindow.xaml 的交互逻辑
     /// </summary>
-    public partial class MainWindow : Window, INotifyPropertyChanged, IMdbInterface, ITcpSubscribe
+    public partial class MainWindow : Window, INotifyPropertyChanged, IMdbInterface
     {
         public MainWindow(ILogger<MainWindow> logger)
         {
@@ -73,6 +73,7 @@ namespace OfferCommonLibrary
         public ObservableCollection<Order> Orders { get; set; } = new ObservableCollection<Order>();
         public ObservableCollection<Trade> Trades { get; set; } = new ObservableCollection<Trade>();
         public ObservableCollection<OrderCancel> OrderCancels { get; set; } = new ObservableCollection<OrderCancel>();
+        public ItsTcpSubscribe m_TtsTcpSubscribe { get; set; }
 
         private string status = "None";
         public string Status

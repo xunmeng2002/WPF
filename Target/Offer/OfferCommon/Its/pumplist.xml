@@ -1,3 +1,0 @@
-<pumplist>
-	<pump dest="./Target/Offer/OfferCommon/Its/ItsTables.cs" tpl="./Target/Offer/OfferCommon/Its/ItsTables.tpl" model="./Model/Its/ItsProtocol.xml"/>
-</pumplist>
