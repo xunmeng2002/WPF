@@ -5,11 +5,11 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:OfferCommonLibrary"
         mc:Ignorable="d"
-        Title="MainWindow" Height="800" Width="1200" Name="mainWindow">
+        Title="MainWindow" Height="800" Width="1200">
     <Window.Resources>
         <ResourceDictionary Source="/OfferCommonLibrary;component/CommonDictionary.xaml"></ResourceDictionary>
     </Window.Resources>
-    <Grid DataContext="{Binding ElementName=mainWindow, Mode=OneWay}">
+    <Grid DataContext="{Binding ElementName=mainWindow}">
         <Grid.RowDefinitions>
             <RowDefinition Height="200"/>
             <RowDefinition Height="*"/>
@@ -18,12 +18,18 @@
             <RowDefinition Height="40"/>
             <RowDefinition Height="40"/>
         </Grid.RowDefinitions>
-        <DataGrid Grid.Row="0" ItemsSource="{Binding ElementName=mainWindow, Path=m_TtsTcpSubscribe.m_Connects}" AutoGenerateColumns="True" IsReadOnly="True">
-            
-        </DataGrid>
-        <TabControl Grid.Row="1" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left" ScrollViewer.HorizontalScrollBarVisibility="Visible" ScrollViewer.CanContentScroll="True">
+        <GroupBox Header="ItsConnects">
+            <DataGrid Grid.Row="0" Name="itsConnectsDataGrid" AutoGenerateColumns="False" IsReadOnly="True">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="SessionID" Binding="{Binding SessionID}"></DataGridTextColumn>
+                    <DataGridTextColumn Header="Socket" Binding="{Binding Socket}"></DataGridTextColumn>
+                    <DataGridTextColumn Header="IPEndPoint" Binding="{Binding IPEndPoint}"></DataGridTextColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+        </GroupBox>
+        <TabControl Grid.Row="1" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left">
             <TabItem Header="Orders" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.CanContentScroll="True">
-                <DataGrid x:Name="gridOrders" IsReadOnly="True" ItemsSource="{Binding Orders}">
+                <DataGrid x:Name="gridOrders" IsReadOnly="True">
                     <!--<DataGrid.Columns>
                         <DataGridTextColumn Header="TradingDay" Binding="{Binding TradingDay}"></DataGridTextColumn>
                         <DataGridTextColumn Header="AccountID" Binding="{Binding AccountID}"></DataGridTextColumn>
@@ -64,11 +70,11 @@
                     </DataGrid.Columns>-->
                 </DataGrid>
             </TabItem>
-            <TabItem Header="Trade">
-                <DataGrid x:Name="gridTrades" IsReadOnly="True" ItemsSource="{Binding Trades}"></DataGrid>
-            </TabItem>
             <TabItem Header="OrderCancel">
-                <DataGrid x:Name="gridOrderCancels" IsReadOnly="True" ItemsSource="{Binding OrderCancels}"></DataGrid>
+                <DataGrid x:Name="gridOrderCancels" IsReadOnly="True"></DataGrid>
+            </TabItem>
+            <TabItem Header="Trade">
+                <DataGrid x:Name="gridTrades" IsReadOnly="True"></DataGrid>
             </TabItem>
         </TabControl>
         <Grid Grid.Row="5">
@@ -78,8 +84,8 @@
                 <ColumnDefinition Width="auto"/>
             </Grid.ColumnDefinitions>
             <TextBlock Grid.Column="0" x:Name="infoBlock" FontSize="20" FontWeight="Bold"></TextBlock>
-            <TextBlock Grid.Column="1" FontSize="20" FontWeight="Bold">ConnectStatus:</TextBlock>
-            <TextBlock Grid.Column="2" x:Name="statusBlock" MinWidth="50" TextAlignment="Right" Text="{Binding Status}"
+            <TextBlock Grid.Column="1" FontSize="20" FontWeight="Bold">Status:</TextBlock>
+            <TextBlock Grid.Column="2" x:Name="statusBlock" MinWidth="80" TextAlignment="Right" Text="{Binding Status}"
                        Foreground="Red" FontWeight="Bold" FontStyle="Italic" FontSize="20"></TextBlock>
         </Grid>
     </Grid>

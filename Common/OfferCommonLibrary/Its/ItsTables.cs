@@ -2,8 +2,37 @@
 
 namespace OfferCommonLibrary.Its
 {
-	public class InsertOrder
+	public class ItsInsertOrder
 	{
+		public ItsInsertOrder(string[] items)
+		{
+			SequenceNo = items[2];
+			Reserve1 = items[3];
+			Reserve2 = items[4];
+			Reserve3 = items[5];
+			Reserve4 = items[6];
+			Reserve5 = items[7];
+			Reserve6 = items[8];
+			ExchangeID = items[9];
+			InstrumentID = items[10];
+			Price = items[11];
+			Direction = items[12];
+			Reserve7 = items[13];
+			CombHedgeFlag = items[14];
+			Volume = items[15];
+			OrderPriceType = items[16];
+			RequestID = items[17];
+			Reserve8 = items[18];
+			TimeCondition = items[19];
+			GTDDate = items[20];
+			VolumeCondition = items[21];
+			MinVolume = items[22];
+			IsSwapOrder = items[23];
+			ForceCloseReason = items[24];
+			AccountID = items[25];
+			TradingDay = items[26];
+		}
+
 		public static readonly string ProtocolType = "R";
 		public static readonly string Command = "216";
 		private string sequenceNo = string.Empty;
@@ -163,8 +192,29 @@ namespace OfferCommonLibrary.Its
 			return ProtocolType + "|" + Command + "|" + SequenceNo + "|" + Reserve1 + "|" + Reserve2 + "|" + Reserve3 + "|" + Reserve4 + "|" + Reserve5 + "|" + Reserve6 + "|" + ExchangeID + "|" + InstrumentID + "|" + Price + "|" + Direction + "|" + Reserve7 + "|" + CombHedgeFlag + "|" + Volume + "|" + OrderPriceType + "|" + RequestID + "|" + Reserve8 + "|" + TimeCondition + "|" + GTDDate + "|" + VolumeCondition + "|" + MinVolume + "|" + IsSwapOrder + "|" + ForceCloseReason + "|" + AccountID + "|" + TradingDay;
 		}
 	}
-	public class InsertOrderCancel
+	public class ItsInsertOrderCancel
 	{
+		public ItsInsertOrderCancel(string[] items)
+		{
+			SequenceNo = items[2];
+			Reserve1 = items[3];
+			Reserve2 = items[4];
+			Reserve3 = items[5];
+			Reserve4 = items[6];
+			Reserve5 = items[7];
+			Reserve6 = items[8];
+			OrderRef = items[9];
+			FrontID = items[10];
+			SessionID = items[11];
+			ExchangeID = items[12];
+			OrderSysID = items[13];
+			BrokerOrderID = items[14];
+			ProcessorOrderID = items[15];
+			InstrumentID = items[16];
+			Direction = items[17];
+			TradingDay = items[18];
+		}
+
 		public static readonly string ProtocolType = "R";
 		public static readonly string Command = "217";
 		private string sequenceNo = string.Empty;
@@ -276,8 +326,18 @@ namespace OfferCommonLibrary.Its
 			return ProtocolType + "|" + Command + "|" + SequenceNo + "|" + Reserve1 + "|" + Reserve2 + "|" + Reserve3 + "|" + Reserve4 + "|" + Reserve5 + "|" + Reserve6 + "|" + OrderRef + "|" + FrontID + "|" + SessionID + "|" + ExchangeID + "|" + OrderSysID + "|" + BrokerOrderID + "|" + ProcessorOrderID + "|" + InstrumentID + "|" + Direction + "|" + TradingDay;
 		}
 	}
-	public class RspOrder
+	public class ItsRspOrder
 	{
+		public ItsRspOrder(string[] items)
+		{
+			SequenceNo = items[1];
+			Reserve1 = items[2];
+			Reserve2 = items[3];
+			ErrorID = items[4];
+			ErrorMsg = items[5];
+			TradingDay = items[6];
+		}
+
 		public static readonly string ProtocolType = "A";
 		private string sequenceNo = string.Empty;
 		private string reserve1 = string.Empty;
@@ -322,8 +382,49 @@ namespace OfferCommonLibrary.Its
 			return ProtocolType + "|" + SequenceNo + "|" + Reserve1 + "|" + Reserve2 + "|" + ErrorID + "|" + ErrorMsg + "|" + TradingDay;
 		}
 	}
-	public class Order
+	public class ItsOrder
 	{
+		public ItsOrder(string[] items)
+		{
+			Reserve1 = items[2];
+			Reserve2 = items[3];
+			Reserve3 = items[4];
+			Reserve4 = items[5];
+			ChannelID = items[6];
+			ExchangeID = items[7];
+			InstrumentID = items[8];
+			OrderRef = items[9];
+			InsertTime = items[10];
+			CancelTime = items[11];
+			OrderSysID = items[12];
+			StatusMsg = items[13];
+			Direction = items[14];
+			CombOffsetFlag = items[15];
+			CombHedgeFlag = items[16];
+			OrderPriceType = items[17];
+			OrderStatus = items[18];
+			ForceCloseReason = items[19];
+			RequestID = items[20];
+			FrontID = items[21];
+			SessionID = items[22];
+			BrokerOrderID = items[23];
+			VolumeTotalOriginal = items[24];
+			VolumeTraded = items[25];
+			InsertDate = items[26];
+			TradingDay = items[27];
+			LimitPrice = items[28];
+			IsLocalOrder = items[29];
+			UserProductInfo = items[30];
+			TimeCondition = items[31];
+			GTDDate = items[32];
+			VolumeCondition = items[33];
+			MinVolume = items[34];
+			ContingentCondition = items[35];
+			StopPrice = items[36];
+			IsSwapOrder = items[37];
+			Reserve5 = items[38];
+		}
+
 		public static readonly string ProtocolType = "B";
 		public static readonly string Command = "52";
 		private string reserve1 = string.Empty;
@@ -555,8 +656,36 @@ namespace OfferCommonLibrary.Its
 			return ProtocolType + "|" + Command + "|" + Reserve1 + "|" + Reserve2 + "|" + Reserve3 + "|" + Reserve4 + "|" + ChannelID + "|" + ExchangeID + "|" + InstrumentID + "|" + OrderRef + "|" + InsertTime + "|" + CancelTime + "|" + OrderSysID + "|" + StatusMsg + "|" + Direction + "|" + CombOffsetFlag + "|" + CombHedgeFlag + "|" + OrderPriceType + "|" + OrderStatus + "|" + ForceCloseReason + "|" + RequestID + "|" + FrontID + "|" + SessionID + "|" + BrokerOrderID + "|" + VolumeTotalOriginal + "|" + VolumeTraded + "|" + InsertDate + "|" + TradingDay + "|" + LimitPrice + "|" + IsLocalOrder + "|" + UserProductInfo + "|" + TimeCondition + "|" + GTDDate + "|" + VolumeCondition + "|" + MinVolume + "|" + ContingentCondition + "|" + StopPrice + "|" + IsSwapOrder + "|" + Reserve5;
 		}
 	}
-	public class Trade
+	public class ItsTrade
 	{
+		public ItsTrade(string[] items)
+		{
+			Reserve1 = items[2];
+			Reserve2 = items[3];
+			Reserve3 = items[4];
+			Reserve4 = items[5];
+			ChannelID = items[6];
+			ExchangeID = items[7];
+			InstrumentID = items[8];
+			OrderRef = items[9];
+			OrderSysID = items[10];
+			TradeTime = items[11];
+			TradeID = items[12];
+			Direction = items[13];
+			OffsetFlag = items[14];
+			HedgeFlag = items[15];
+			BrokerOrderID = items[16];
+			Volume = items[17];
+			TradeDate = items[18];
+			TradingDay = items[19];
+			Price = items[20];
+			Reserve5 = items[21];
+			TradeType = items[22];
+			ExchangeTradeID = items[23];
+			Reserve7 = items[24];
+			Reserve8 = items[25];
+		}
+
 		public static readonly string ProtocolType = "B";
 		public static readonly string Command = "53";
 		private string reserve1 = string.Empty;
@@ -710,8 +839,27 @@ namespace OfferCommonLibrary.Its
 			return ProtocolType + "|" + Command + "|" + Reserve1 + "|" + Reserve2 + "|" + Reserve3 + "|" + Reserve4 + "|" + ChannelID + "|" + ExchangeID + "|" + InstrumentID + "|" + OrderRef + "|" + OrderSysID + "|" + TradeTime + "|" + TradeID + "|" + Direction + "|" + OffsetFlag + "|" + HedgeFlag + "|" + BrokerOrderID + "|" + Volume + "|" + TradeDate + "|" + TradingDay + "|" + Price + "|" + Reserve5 + "|" + TradeType + "|" + ExchangeTradeID + "|" + Reserve7 + "|" + Reserve8;
 		}
 	}
-	public class ErrRtnOrderCancel
+	public class ItsRtnOrderCancel
 	{
+		public ItsRtnOrderCancel(string[] items)
+		{
+			Reserve1 = items[2];
+			Reserve2 = items[3];
+			Reserve3 = items[4];
+			Reserve4 = items[5];
+			ChannelID = items[6];
+			BrokerOrderID = items[7];
+			OrderRef = items[8];
+			FrontID = items[9];
+			SessionID = items[10];
+			ExchangeID = items[11];
+			OrderSysID = items[12];
+			Reserve5 = items[13];
+			ErrorID = items[14];
+			ErrorMsg = items[15];
+			TradingDay = items[16];
+		}
+
 		public static readonly string ProtocolType = "B";
 		public static readonly string Command = "54";
 		private string reserve1 = string.Empty;

@@ -10,12 +10,12 @@ using QuickFix;
 
 namespace CmeQuickFixOffer
 {
-    internal class QuickFixApplication : QuickFix.MessageCracker, QuickFix.IApplication
+    internal class QuickFixApplication : QuickFix.MessageCracker, QuickFix.IApplication, IMdbSubscribe
     {
-        public QuickFixApplication(ILogger<QuickFixApplication> logger, IMdbInterface mdbInterface)
+        public QuickFixApplication(ILogger<QuickFixApplication> logger, MdbEngine mdbEngine)
         {
             Logger = logger;
-            m_MdbEngine = mdbInterface;
+            m_MdbEngine = mdbEngine;
         }
         private ILogger<QuickFixApplication> Logger { get; }
         private IMdbInterface m_MdbEngine;
@@ -166,6 +166,16 @@ namespace CmeQuickFixOffer
         public void OnMessage(QuickFix.FIX42.QuoteAcknowledgement m, SessionID s)
         {
             Logger.LogInformation(m.ToString());
+        }
+
+        public void ReqInsertOrder(Order order)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void ReqInsertOrderCancel(OrderCancel orderCancel)
+        {
+            throw new NotImplementedException();
         }
         #endregion
     }

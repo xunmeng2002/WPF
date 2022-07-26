@@ -4,8 +4,20 @@ namespace OfferCommonLibrary.Its
 {
 !!entry Its!!
 !!travel!!
-	public class !!@name!!
+	public class Its!!@name!!
 	{
+		public Its!!@name!!(string[] items)
+		{
+!!entry items!!
+!!travel!!
+!!if @name != "ProtocolType" and @name != "Command":!!
+!!inc indent!!
+			!!@name!! = items[!!$pumpid!!];
+!!dec indent!!
+!!leave!!
+!!leave!!
+		}
+
 !!entry items!!
 !!travel!!
 !!lowerName = @name[0].lower() + @name[1:]!!

@@ -35,7 +35,8 @@ namespace CmeQuickFixOffer
                 }
                 AppConfig = config;
             }
-
+            BaseConfig baseConfig = new BaseConfig(AppConfig);
+            AppService.AddSingleton(baseConfig);
             AppService.AddSingleton(AppConfig);
             AppService.AddLogging(loggingBuilder => { loggingBuilder.AddNLog(Configuration); });
             MdbViewModelInit.Init(AppService);
@@ -54,20 +55,17 @@ namespace CmeQuickFixOffer
 
             MdbEngine? mdbEngine = AppServiceProvider.GetService<MdbEngine>();
             ItsEngine? itsEngine = AppServiceProvider.GetService<ItsEngine>();
-            if(mdbEngine != null || itsEngine != null)
+            application = AppServiceProvider.GetService<QuickFixApplication>();
+
+            if (mdbEngine == null || itsEngine == null || application == null)
             {
-                throw new Exception($"Create MdbEngine:{mdbEngine} Or ItsEngine:{itsEngine}  Failed.");
+                throw new Exception($"Create MdbEngine:{mdbEngine} Or ItsEngine:{itsEngine} Or QuickFixApplication:{application} Failed.");
             }
-            mdbEngine.Init(itsEngine);
+            mdbEngine.Init(itsEngine, application);
             itsEngine.Init(mdbEngine);
             itsEngine.Start();
 
 
-            application = AppServiceProvider.GetService<QuickFixApplication>();
-            if (application == null)
-            {
-                throw new Exception("Create QuickFix Failed.");
-            }
             initiator = new SocketInitiator(application, storeFactory, settings, logFactory);
             application.Init(AppConfig, initiator);
         }

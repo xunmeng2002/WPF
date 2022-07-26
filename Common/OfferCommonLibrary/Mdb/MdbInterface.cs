@@ -1,12 +1,11 @@
 ﻿using Microsoft.Extensions.Logging;
-using OfferCommonLibrary.Mdb;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OfferCommonLibrary
+namespace OfferCommonLibrary.Mdb
 {
     public interface IMdbInterface
     {
@@ -16,6 +15,6 @@ namespace OfferCommonLibrary
         public void OnLogout();
         public void OnRtnOrder(Order order);
         public void OnRtnTrade(Trade trade);
-        public void OnErrRtnOrderCancel(OrderCancel orderCancel);
+        public void OnRtnOrderCancel(OrderCancel orderCancel);
     }
 }
