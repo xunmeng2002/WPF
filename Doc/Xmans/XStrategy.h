@@ -26,6 +26,24 @@ typedef struct _XBasket
 	XChar baskfile[100];									/**< 篮子文件地址 */
 }XBasketT,*pXBasketT;
 
+/**
+ * 修改策略，只允许修改状态，价格、数量、开始结束时间、委托间隔
+ */
+typedef struct _XStrategyReq
+{
+	XCustomer customerId;                   /**< 客户号 */
+	XPlotId plotid;
+	XNum frontId;
+	XChar status;							/**< 策略执行状态 @see eXPlotStatus */
+	XPrice ordPx;							/**< 委托价格 */
+	XPrice conPx;							/**< 条件价格 */
+	XQty ordQty;							/**< 委托数量 */
+	XLongTime gapTime;						/**< 委托间隔 */
+	XShortTime beginTime;					/**< 委托开始时间 */
+	XShortTime endTime;						/**< 结束交易时间 */
+}XStrategyReqT;
+
+
 #define MAX_GRID_LEVEL                 (20)
 //策略数据
 typedef struct _XStrategy
@@ -65,7 +83,7 @@ typedef struct _XStrategy
 	XSystemId systemId;
 } XStrategyT;
 
-typedef struct _XParams
+typedef struct _XBasketReq
 {
 	XCustomer customerId;                   				/**< 客户号 */
 	XNum frontId;											/**< 前端请求编号 */
@@ -81,10 +99,16 @@ typedef struct _XParams
 	XShortTime endTime;										/**< 结束交易时间 */
 
 	XChar baskfile[100];									/**< 篮子文件地址 */
+	XSystemId modSystemId;									/**< 修改策略时候填写，如果有值即认为修改对应策略 */
+}XBasketReqT;
 
+typedef struct _XBasketRsp
+{
+	XIdx idx;												/**< 序号 */
+	XNum sessionId;											/**< 会话编号 */
 	XSystemId systemId;										/**< 每次策略后台给的编号 */
-
-}XParamsT;
+	XBasketReqT request;
+}XBasketRspT;
 
 
 #endif /* INCLUDE_CORE_XSTRATEGY_H_ */

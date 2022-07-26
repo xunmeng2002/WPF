@@ -320,6 +320,7 @@ typedef struct _XChannelOrder {
 	XLongTime locTime;							/**<  本地时间  */
 	XChar _field[4];
 	XIdx priceIdx;								/**<  价格链的位置,方便查找  */
+	XULong _hash;
 } XChannelOrderT, *pXChannelOrderT;
 
 /**
@@ -439,7 +440,7 @@ typedef struct _XInvest {
 	XChar acctType;             				/**<  1:现货;2:两融;3:期权,4:期货,5:黄金 */
 	XChar isMain;				            	/**<  主辅账户，同一市场+账户类型，主账户唯一 */
 	XChar _field[5];
-	XInvestId investid;        					/**<  股东账户，同一客户投资者不能重复 */
+	XInvestId investId;        					/**<  股东账户，同一客户投资者不能重复 */
 	XQty mainQuota;            					/**<  新股权益 */
 	XQty kcQuota;              					/**<  科创板权益 */
 } XInvestT, *pXInvestT;
@@ -471,7 +472,7 @@ typedef struct _XCash {
 typedef struct _XHold {
 	XIdx idx;                              			/**<  编号 */
 	XCustomer customerId;    						/**<  客户号 */
-	XInvestId investid;     						/**<  股东帐户 */
+	XInvestId investId;     						/**<  股东帐户 */
 	XChar market;            						/**<  市场 @see eXMarket */
 	XChar _field[7];
 	XSecurityId securityId;    						/**<  产品代码 */
@@ -500,7 +501,7 @@ typedef struct _XOrderReq {
 	XNum sessionId;									/**< 会话ID */
 	XLocalId frontId;								/**< 前端编号，同一个会话唯一*/
 	XCustomer customerId;     						/**<  客户号 16 */
-	XInvestId investid;        						/**<  股东账户如果未指定就自动获取第一个 10 */
+	XInvestId investId;        						/**<  股东账户如果未指定就自动获取第一个 10 */
 	XNum plotType;									/**<  策略类型 */
 	XPlotId plotid;                               	/**<  策略编号,前端生成 */
 	XLocalId localId;         						/**<  客户委托流水号  */
@@ -516,7 +517,7 @@ typedef struct _XOrderReq {
 	XPrice ordPrice;             					/**<  委托价格  */
 	XNum orgEnvno;            						/**<  环境号  */
 	XLocalId orgLocalId;     						/**<  撤单时原始订单编号  */
-	XSystemId orgOrdid;     						/**<  撤单时原始订单编号  */
+	XSystemId orgOrdId;     						/**<  撤单时原始订单编号  */
 	XPrice _lastPx;									/**<  下单时带入行情价格，后续进行比对 */
 	XShortTime _lastTime;							/**<  下单时带入行情最新时间，后续进行比较 */
 } XOrderReqT, *pXOrderReqT;
@@ -528,7 +529,7 @@ typedef struct _XOrder {
 	XIdx idx;                                  		/**<   Id */
 	XNum envno;                						/**<  客户环境号 */
 	XSystemId ordid;                				/**<  柜台订单编号 */
-	XExchId exchordid;       						/**<  交易所订单编号  */
+	XExchId exchordId;       						/**<  交易所订单编号  */
 	XMoney frzAmt;               					/**<  冻结金额  */
 	XMoney frzFee;               					/**<  冻结费用 */
 	XQty locFrz;									/**<  冻结持仓，发单时记录，收到确认和拒绝时解冻，同时根据此数量更新持仓中的locFrz */
@@ -545,8 +546,8 @@ typedef struct _XOrder {
 	XLongTime sendTime;            					/**<  委托时间(柜台)  */
 	XLongTime cnfLocTime;          					/**<  确认时间(本地)  */
 	XLongTime cnfTime;           					/**<  确认时间(柜台)  */
-	XNum errorId;              						/**<  错误原因  */
-	XErrMsg errorMsg;        				     	/**<  错误原因  */
+	XNum errorno;              						/**<  错误原因  */
+	XErrMsg errmsg;        				     	/**<  错误原因  */
 	XOrderReqT request;                          	/**<  委托请求数据 */
 } XOrderT, *pXOrderT;
 
@@ -563,7 +564,7 @@ typedef struct _XTrade {
 	XChar _field;
 	XShortTime trdTime;             					/**<  成交时间 HHMMSSSsss */
 
-	XInvestId investid;       							/**<  股东帐户  */
+	XInvestId investId;       							/**<  股东帐户  */
 	XSecurityId securityId;     						/**<  证券代码 */
 
 	XQty trdQty;              							/**<  成交数量 */

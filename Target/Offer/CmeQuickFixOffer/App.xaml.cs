@@ -12,6 +12,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using NLog.Extensions.Logging;
 using OfferCommonLibrary;
+using OfferCommonLibrary.Its;
+using OfferCommonLibrary.Mdb;
 using QuickFix;
 using QuickFix.Transport;
 
@@ -36,6 +38,9 @@ namespace CmeQuickFixOffer
 
             AppService.AddSingleton(AppConfig);
             AppService.AddLogging(loggingBuilder => { loggingBuilder.AddNLog(Configuration); });
+            MdbViewModelInit.Init(AppService);
+            AppService.AddSingleton<MdbEngine>();
+            AppService.AddSingleton<ItsEngine>();
             AppService.AddSingleton<MainWindow>();
 
             AppService.AddSingleton(settings);
@@ -46,6 +51,16 @@ namespace CmeQuickFixOffer
 
 
             AppServiceProvider = AppService.BuildServiceProvider();
+
+            MdbEngine? mdbEngine = AppServiceProvider.GetService<MdbEngine>();
+            ItsEngine? itsEngine = AppServiceProvider.GetService<ItsEngine>();
+            if(mdbEngine != null || itsEngine != null)
+            {
+                throw new Exception($"Create MdbEngine:{mdbEngine} Or ItsEngine:{itsEngine}  Failed.");
+            }
+            mdbEngine.Init(itsEngine);
+            itsEngine.Init(mdbEngine);
+            itsEngine.Start();
 
 
             application = AppServiceProvider.GetService<QuickFixApplication>();

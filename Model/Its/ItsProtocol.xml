@@ -204,7 +204,7 @@
 				<item name="TradeID"/>
 			</primarykey>
 		</field>
-		<field name="ErrRtnOrderCancel"  fucnName="OnErrRtnOrderCancel" protocolType="B" demo="">
+		<field name="RtnOrderCancel"  fucnName="OnRtnOrderCancel" protocolType="B" demo="">
 			<items>
 				<item name="ProtocolType" value="B" desc="协议类型"/>
 				<item name="Command" value="54" desc="指令代码"/>

@@ -5,19 +5,20 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using OfferCommonLibrary;
+using OfferCommonLibrary.Mdb;
 using QuickFix;
 
 namespace CmeQuickFixOffer
 {
     internal class QuickFixApplication : QuickFix.MessageCracker, QuickFix.IApplication
     {
-        public QuickFixApplication(ILogger<QuickFixApplication> logger, MainWindow mainWindow)
+        public QuickFixApplication(ILogger<QuickFixApplication> logger, IMdbInterface mdbInterface)
         {
             Logger = logger;
-            MainWindow = mainWindow;
+            m_MdbEngine = mdbInterface;
         }
         private ILogger<QuickFixApplication> Logger { get; }
-        private MainWindow MainWindow { get; }
+        private IMdbInterface m_MdbEngine;
 
         public void Init(Config config, IInitiator initiator)
         {
@@ -38,12 +39,12 @@ namespace CmeQuickFixOffer
         public void OnLogout(SessionID sessionID)
         {
             Logger.LogInformation("Logout - " + sessionID.ToString());
-            MainWindow.OnLogout();
+            m_MdbEngine.OnLogout();
         }
         public void OnLogon(SessionID sessionID)
         {
             Logger.LogInformation("Logon - " + sessionID.ToString());
-            MainWindow.OnLogin();
+            m_MdbEngine.OnLogin();
         }
 
         public void FromAdmin(Message message, SessionID sessionID)
