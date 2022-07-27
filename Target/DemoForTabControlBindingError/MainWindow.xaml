@@ -1,0 +1,63 @@
+﻿<Window x:Class="DemoForTabControlBindingError.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:DemoForTabControlBindingError"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800" Name="mainWindow">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Button Click="Button_Click">Add Order</Button>
+        <TabControl Grid.Row="1">
+            <TabItem Header="First OK">
+                <DataGrid AutoGenerateColumns="False" IsReadOnly="True" ItemsSource="{Binding ElementName=mainWindow, Path=orderViewModel.Orders}">
+                    <DataGrid.Columns>
+                        <DataGridCheckBoxColumn Binding="{Binding IsSelected}">
+                            <DataGridCheckBoxColumn.Header>
+                                <!--This CheckBoxes Binding Works OK-->
+                                <CheckBox IsChecked="{Binding ElementName=mainWindow, Path=orderViewModel.IsAllOrderSelected}">Select All</CheckBox>
+                            </DataGridCheckBoxColumn.Header>
+                        </DataGridCheckBoxColumn>
+                        <DataGridTextColumn Header="Type" Binding="{Binding Type}"></DataGridTextColumn>
+                        <DataGridTextColumn Header="Reqid" Binding="{Binding Reqid}"></DataGridTextColumn>
+                        <DataGridTextColumn Header="Envno" Binding="{Binding Envno}"></DataGridTextColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </TabItem>
+            <TabItem Header="Second Error">
+                <DataGrid AutoGenerateColumns="False" IsReadOnly="True" ItemsSource="{Binding ElementName=mainWindow, Path=orderViewModel.Orders}">
+                    <DataGrid.Columns>
+                        <DataGridCheckBoxColumn Binding="{Binding IsSelected}">
+                            <DataGridCheckBoxColumn.Header>
+                                <!--This CheckBoxes Binding does not work-->
+                                <CheckBox IsChecked="{Binding ElementName=mainWindow, Path=orderViewModel.IsAllOrderSelected}">Select All</CheckBox>
+                            </DataGridCheckBoxColumn.Header>
+                        </DataGridCheckBoxColumn>
+                        <DataGridTextColumn Header="Type" Binding="{Binding Type}"></DataGridTextColumn>
+                        <DataGridTextColumn Header="Reqid" Binding="{Binding Reqid}"></DataGridTextColumn>
+                        <DataGridTextColumn Header="Envno" Binding="{Binding Envno}"></DataGridTextColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </TabItem>
+            <TabItem Header="Third Error">
+                <DataGrid AutoGenerateColumns="False" IsReadOnly="True" ItemsSource="{Binding ElementName=mainWindow, Path=orderViewModel.Orders}">
+                    <DataGrid.Columns>
+                        <DataGridCheckBoxColumn Binding="{Binding IsSelected}">
+                            <DataGridCheckBoxColumn.Header>
+                                <!--This CheckBoxes Binding does not work-->
+                                <CheckBox IsChecked="{Binding ElementName=mainWindow, Path=orderViewModel.IsAllOrderSelected}">Select All</CheckBox>
+                            </DataGridCheckBoxColumn.Header>
+                        </DataGridCheckBoxColumn>
+                        <DataGridTextColumn Header="Type" Binding="{Binding Type}"></DataGridTextColumn>
+                        <DataGridTextColumn Header="Reqid" Binding="{Binding Reqid}"></DataGridTextColumn>
+                        <DataGridTextColumn Header="Envno" Binding="{Binding Envno}"></DataGridTextColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+            </TabItem>
+        </TabControl>
+    </Grid>
+</Window>
