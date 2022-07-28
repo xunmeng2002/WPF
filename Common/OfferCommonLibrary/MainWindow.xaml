@@ -9,7 +9,7 @@
     <Window.Resources>
         <ResourceDictionary Source="/OfferCommonLibrary;component/CommonDictionary.xaml"></ResourceDictionary>
     </Window.Resources>
-    <Grid DataContext="{Binding ElementName=mainWindow}">
+    <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="200"/>
             <RowDefinition Height="*"/>

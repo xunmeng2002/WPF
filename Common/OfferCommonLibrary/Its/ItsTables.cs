@@ -4,6 +4,8 @@ namespace OfferCommonLibrary.Its
 {
 	public class ItsInsertOrder
 	{
+		public ItsInsertOrder()
+		{}
 		public ItsInsertOrder(string[] items)
 		{
 			SequenceNo = items[2];
@@ -194,6 +196,8 @@ namespace OfferCommonLibrary.Its
 	}
 	public class ItsInsertOrderCancel
 	{
+		public ItsInsertOrderCancel()
+		{}
 		public ItsInsertOrderCancel(string[] items)
 		{
 			SequenceNo = items[2];
@@ -328,6 +332,8 @@ namespace OfferCommonLibrary.Its
 	}
 	public class ItsRspOrder
 	{
+		public ItsRspOrder()
+		{}
 		public ItsRspOrder(string[] items)
 		{
 			SequenceNo = items[1];
@@ -384,6 +390,8 @@ namespace OfferCommonLibrary.Its
 	}
 	public class ItsOrder
 	{
+		public ItsOrder()
+		{}
 		public ItsOrder(string[] items)
 		{
 			Reserve1 = items[2];
@@ -658,6 +666,8 @@ namespace OfferCommonLibrary.Its
 	}
 	public class ItsTrade
 	{
+		public ItsTrade()
+		{}
 		public ItsTrade(string[] items)
 		{
 			Reserve1 = items[2];
@@ -841,6 +851,8 @@ namespace OfferCommonLibrary.Its
 	}
 	public class ItsRtnOrderCancel
 	{
+		public ItsRtnOrderCancel()
+		{}
 		public ItsRtnOrderCancel(string[] items)
 		{
 			Reserve1 = items[2];

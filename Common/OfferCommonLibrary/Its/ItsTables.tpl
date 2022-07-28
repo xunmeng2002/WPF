@@ -6,6 +6,8 @@ namespace OfferCommonLibrary.Its
 !!travel!!
 	public class Its!!@name!!
 	{
+		public Its!!@name!!()
+		{}
 		public Its!!@name!!(string[] items)
 		{
 !!entry items!!

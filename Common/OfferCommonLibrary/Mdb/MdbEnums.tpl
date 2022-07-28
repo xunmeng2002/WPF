@@ -15,4 +15,17 @@ namespace OfferCommonLibrary.Mdb
 	}
 !!leave!!
 !!leave!!
+
+	public class MdbConvertEnums
+	{
+!!entry enums!!
+!!travel!!
+!!lowerName = @name[0].lower() + @name[1:]!!
+		public static !!@name!! ConvertTo!!@name!!(string !!$lowerName!!)
+		{
+			return (!!@name!!)(!!$lowerName!![0]);
+		}
+!!leave!!
+!!leave!!
+	}
 }

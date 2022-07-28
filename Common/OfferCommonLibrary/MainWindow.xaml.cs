@@ -34,12 +34,17 @@ namespace OfferCommonLibrary
             m_ItsEngine = itsEngine;
             m_MdbEngine = mdbEngine;
 
+            InitBindingData();
+        }
+        void InitBindingData()
+        {
             itsConnectsDataGrid.ItemsSource = m_ItsEngine.m_Connects;
             gridOrders.ItemsSource = m_MdbEngine.m_OrderViewModel.Orders;
             gridOrderCancels.ItemsSource = m_MdbEngine.m_OrderCancelViewModel.OrderCancels;
             gridTrades.ItemsSource = m_MdbEngine.m_TradeViewModel.Trades;
             statusBlock.DataContext = m_MdbEngine;
         }
+
         private ILogger<MainWindow> Logger { get; set; }
         public ItsEngine m_ItsEngine { get; set; }
         public MdbEngine m_MdbEngine { get; set; }

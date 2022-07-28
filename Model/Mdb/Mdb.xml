@@ -30,7 +30,7 @@
 				<item name="StatusMsg" len="255" type="string"/>
 				<item name="RequestID" type="string"/>
 				<item name="FrontID" type="string"/>
-				<item name="SessionID" type="int"/>
+				<item name="SessionID" type="long"/>
 				<item name="InsertDate" type="string"/>
 				<item name="InsertTime" type="string"/>
 				<item name="ExchangeInsertDate" type="string"/>
@@ -65,7 +65,7 @@
 				<item name="Direction" type="enum"/>
 				<item name="OrderRef" type="string"/>
 				<item name="FrontID" type="string"/>
-				<item name="SessionID" type="int"/>
+				<item name="SessionID" type="long"/>
 				<item name="ErrorID" type="int"/>
 				<item name="ErrorMsg" type="string" len="255"/>
 				<item name="InsertDate" type="string"/>

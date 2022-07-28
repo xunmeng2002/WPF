@@ -26,18 +26,16 @@ namespace CmeQuickFixOffer
     {
         public App()
         {
-            using (FileStream fs = new FileStream(ConfigFileName, FileMode.Open))
+            var config = Config.Load(ConfigFileName);
+            if (config == null)
             {
-                var config = JsonSerializer.Deserialize<Config>(fs);
-                if (config == null)
-                {
-                    throw new Exception("Program Start Failed For Config: " + ConfigFileName);
-                }
-                AppConfig = config;
+                throw new Exception("Program Start Failed For Config: " + ConfigFileName);
             }
-            BaseConfig baseConfig = new BaseConfig(AppConfig);
+            AppConfig = config;
+            BaseConfig baseConfig = AppConfig;
             AppService.AddSingleton(baseConfig);
             AppService.AddSingleton(AppConfig);
+
             AppService.AddLogging(loggingBuilder => { loggingBuilder.AddNLog(Configuration); });
             MdbViewModelInit.Init(AppService);
             AppService.AddSingleton<MdbEngine>();

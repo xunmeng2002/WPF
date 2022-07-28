@@ -18,13 +18,14 @@ namespace OfferCommonLibrary.Its
         {
             m_Logger = logger;
             m_BaseConfig = baseConfig;
+            m_ChannelID = baseConfig.ChannelID;
         }
         private ILogger<ItsEngine> m_Logger { get; set; }
         private BaseConfig m_BaseConfig { get; set; }
-        public TcpIOCPServer m_TcpIOCPServer { get; set; } = new TcpIOCPServer();
-        public MdbEngine? m_MdbEngine { get; set; }
+        private MdbEngine? m_MdbEngine { get; set; }
+        private TcpIOCPServer m_TcpIOCPServer { get; set; } = new TcpIOCPServer();
         public ObservableCollection<UserToken> m_Connects { get; set; } = new ObservableCollection<UserToken>();
-
+        public int m_ChannelID { get; set; }
 
         public void Init(MdbEngine mdbEngine)
         {
@@ -36,11 +37,11 @@ namespace OfferCommonLibrary.Its
         {
             m_TcpIOCPServer.Start(new IPEndPoint(IPAddress.Any, m_BaseConfig.ListenPort));
         }
-        private bool Send(UserToken userToken, byte[] msg, int offset, int len)
+        public bool Send(UserToken userToken, byte[] msg, int offset, int len)
         {
             return m_TcpIOCPServer.Send(userToken, msg, offset, len);
         }
-        private bool Send(UserToken userToken, string msg)
+        public bool Send(UserToken userToken, string msg)
         {
             return m_TcpIOCPServer.Send(userToken, msg);
         }
@@ -73,10 +74,10 @@ namespace OfferCommonLibrary.Its
             switch(cmd)
             {
                 case 216:
-                    HandleItsInsertOrder(new ItsInsertOrder(items));
+                    HandleItsInsertOrder(userToken, new ItsInsertOrder(items));
                     break;
                 case 217:
-                    HandleItsInsertOrderCancel(new ItsInsertOrderCancel(items));
+                    HandleItsInsertOrderCancel(userToken, new ItsInsertOrderCancel(items));
                     break;
                 default:
                     break;
@@ -109,13 +110,13 @@ namespace OfferCommonLibrary.Its
             }
             return true;
         }
-        void HandleItsInsertOrder(ItsInsertOrder itsInsertOrder)
+        void HandleItsInsertOrder(UserToken userToken, ItsInsertOrder itsInsertOrder)
         {
-            m_MdbEngine?.InsertOrder(itsInsertOrder);
+            m_MdbEngine?.InsertOrder(userToken, itsInsertOrder);
         }
-        void HandleItsInsertOrderCancel(ItsInsertOrderCancel itsInsertOrderCancel)
+        void HandleItsInsertOrderCancel(UserToken userToken, ItsInsertOrderCancel itsInsertOrderCancel)
         {
-            m_MdbEngine?.InsertOrderCancel(itsInsertOrderCancel);
+            m_MdbEngine?.InsertOrderCancel(userToken, itsInsertOrderCancel);
         }
 
         public void OnRtnOrder(ItsOrder field) { }

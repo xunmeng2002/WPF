@@ -254,4 +254,56 @@ namespace OfferCommonLibrary.Mdb
 		/// </summary>
 		Local = '1',
 	}
+
+	public class MdbConvertEnums
+	{
+		public static OrderStatus ConvertToOrderStatus(string orderStatus)
+		{
+			return (OrderStatus)(orderStatus[0]);
+		}
+		public static Direction ConvertToDirection(string direction)
+		{
+			return (Direction)(direction[0]);
+		}
+		public static HedgeFlag ConvertToHedgeFlag(string hedgeFlag)
+		{
+			return (HedgeFlag)(hedgeFlag[0]);
+		}
+		public static OrderPriceType ConvertToOrderPriceType(string orderPriceType)
+		{
+			return (OrderPriceType)(orderPriceType[0]);
+		}
+		public static OffsetFlag ConvertToOffsetFlag(string offsetFlag)
+		{
+			return (OffsetFlag)(offsetFlag[0]);
+		}
+		public static ContingentCondition ConvertToContingentCondition(string contingentCondition)
+		{
+			return (ContingentCondition)(contingentCondition[0]);
+		}
+		public static TimeCondition ConvertToTimeCondition(string timeCondition)
+		{
+			return (TimeCondition)(timeCondition[0]);
+		}
+		public static VolumeCondition ConvertToVolumeCondition(string volumeCondition)
+		{
+			return (VolumeCondition)(volumeCondition[0]);
+		}
+		public static ForceCloseReason ConvertToForceCloseReason(string forceCloseReason)
+		{
+			return (ForceCloseReason)(forceCloseReason[0]);
+		}
+		public static TradeType ConvertToTradeType(string tradeType)
+		{
+			return (TradeType)(tradeType[0]);
+		}
+		public static MarginPriceType ConvertToMarginPriceType(string marginPriceType)
+		{
+			return (MarginPriceType)(marginPriceType[0]);
+		}
+		public static IsLocalOrder ConvertToIsLocalOrder(string isLocalOrder)
+		{
+			return (IsLocalOrder)(isLocalOrder[0]);
+		}
+	}
 }

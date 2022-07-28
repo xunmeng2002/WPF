@@ -51,7 +51,7 @@ namespace OfferCommonLibrary.Mdb
 		private string statusMsg = string.Empty;
 		private string requestID = string.Empty;
 		private string frontID = string.Empty;
-		private int sessionID;
+		private long sessionID;
 		private string insertDate = string.Empty;
 		private string insertTime = string.Empty;
 		private string exchangeInsertDate = string.Empty;
@@ -278,7 +278,7 @@ namespace OfferCommonLibrary.Mdb
 				OnPropertyChanged();
 			}
 		}
-		public int SessionID
+		public long SessionID
 		{
 			get => sessionID;
 			set
@@ -478,7 +478,7 @@ namespace OfferCommonLibrary.Mdb
 		private Direction direction;
 		private string orderRef = string.Empty;
 		private string frontID = string.Empty;
-		private int sessionID;
+		private long sessionID;
 		private int errorID;
 		private string errorMsg = string.Empty;
 		private string insertDate = string.Empty;
@@ -594,7 +594,7 @@ namespace OfferCommonLibrary.Mdb
 				OnPropertyChanged();
 			}
 		}
-		public int SessionID
+		public long SessionID
 		{
 			get => sessionID;
 			set
