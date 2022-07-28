@@ -16,7 +16,7 @@
             <TabItem Header="First OK">
                 <DataGrid AutoGenerateColumns="False" IsReadOnly="True" ItemsSource="{Binding ElementName=mainWindow, Path=orderViewModel.Orders}">
                     <DataGrid.Columns>
-                        <DataGridCheckBoxColumn Binding="{Binding IsSelected}">
+                        <DataGridCheckBoxColumn Binding="{Binding IsSelected, UpdateSourceTrigger=PropertyChanged}">
                             <DataGridCheckBoxColumn.Header>
                                 <!--This CheckBoxes Binding Works OK-->
                                 <CheckBox IsChecked="{Binding ElementName=mainWindow, Path=orderViewModel.IsAllOrderSelected}">Select All</CheckBox>
@@ -29,12 +29,12 @@
                 </DataGrid>
             </TabItem>
             <TabItem Header="Second Error">
-                <DataGrid AutoGenerateColumns="False" IsReadOnly="True" ItemsSource="{Binding ElementName=mainWindow, Path=orderViewModel.Orders}">
+                <DataGrid x:Name="secondDataGrid" AutoGenerateColumns="False" IsReadOnly="True" ItemsSource="{Binding ElementName=mainWindow, Path=orderViewModel.Orders}">
                     <DataGrid.Columns>
-                        <DataGridCheckBoxColumn Binding="{Binding IsSelected}">
+                        <DataGridCheckBoxColumn Binding="{Binding IsSelected, UpdateSourceTrigger=PropertyChanged}">
                             <DataGridCheckBoxColumn.Header>
                                 <!--This CheckBoxes Binding does not work-->
-                                <CheckBox IsChecked="{Binding ElementName=mainWindow, Path=orderViewModel.IsAllOrderSelected}">Select All</CheckBox>
+                                <CheckBox Name="secondCheckBox" IsChecked="{Binding Path=IsAllOrderSelected}">Select All</CheckBox>
                             </DataGridCheckBoxColumn.Header>
                         </DataGridCheckBoxColumn>
                         <DataGridTextColumn Header="Type" Binding="{Binding Type}"></DataGridTextColumn>
@@ -46,7 +46,7 @@
             <TabItem Header="Third Error">
                 <DataGrid AutoGenerateColumns="False" IsReadOnly="True" ItemsSource="{Binding ElementName=mainWindow, Path=orderViewModel.Orders}">
                     <DataGrid.Columns>
-                        <DataGridCheckBoxColumn Binding="{Binding IsSelected}">
+                        <DataGridCheckBoxColumn Binding="{Binding IsSelected, UpdateSourceTrigger=PropertyChanged}">
                             <DataGridCheckBoxColumn.Header>
                                 <!--This CheckBoxes Binding does not work-->
                                 <CheckBox IsChecked="{Binding ElementName=mainWindow, Path=orderViewModel.IsAllOrderSelected}">Select All</CheckBox>

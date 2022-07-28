@@ -23,6 +23,7 @@ namespace DemoForTabControlBindingError
         public MainWindow()
         {
             InitializeComponent();
+            secondCheckBox.DataContext = orderViewModel;
             Button_Click(this, null);
             Button_Click(this, null);
             Button_Click(this, null);
