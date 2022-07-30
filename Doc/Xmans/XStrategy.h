@@ -72,8 +72,8 @@ typedef struct _XStrategy
 	XLocalId buyList[MAX_GRID_LEVEL];   /**< 买本地订单号 */
 	XLocalId sellList[MAX_GRID_LEVEL];  /**< 卖本地订单号 */
 
-	XSumQty buyTrades;					/**< 买成交 */
-	XSumQty sellTrades;					/**< 卖成交 */
+	XSumQty _buyTrades;					/**< 买成交 */
+	XSumQty _sellTrades;					/**< 卖成交 */
 	XSeqNum version;					/**< 行情版本号 */
 	union
 	{

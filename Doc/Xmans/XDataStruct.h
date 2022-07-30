@@ -263,7 +263,8 @@ typedef struct _TickOrder {
 	XChar _field[2];
 	XPrice ordPx;										/**<  成交价格 */
 	XQty ordQty;										/**<  订单数量 */
-	XLongTime locTime;									/**<  落地行情时时间 */
+	XLongTime _recvTime;								/**<  落地行情时时间 */
+	XLongTime _passedOrdTime;								/**< 传递时间*/
 } XTickOrderT, *pXTickOrderT;
 
 /**
@@ -285,7 +286,8 @@ typedef struct _XTickTrade {
 	XPrice tradePx;											/**<  成交价格 */
 	XQty tradeQty;
 	XMoney tradeMoney;
-	XLongTime locTime;										/**<  落地行情时时间 */
+	XLongTime _recvTime;										/**<  落地行情时时间 */
+	XLongTime _passedTrdTime;								/**< 传递时间*/
 } XTickTradeT, *pXTickTradeT;
 
 /**
@@ -317,7 +319,7 @@ typedef struct _XChannelOrder {
 	XQty qty;									/**<  原始委托数量  */
 	XQty leaveQty;								/**<  剩余数量  */
 	XShortTime updateTime;						/**<  更新时间  */
-	XLongTime locTime;							/**<  本地时间  */
+	XLongTime _locTime;							/**<  本地时间  */
 	XChar _field[4];
 	XIdx priceIdx;								/**<  价格链的位置,方便查找  */
 	XULong _hash;
@@ -381,7 +383,7 @@ typedef struct _XTickSnap {
 	XNum numTrades; 									/**<  成交笔数 */
 	XSumQty volumeTrade;								/**<  成交数量 */
 	XMoney amountTrade;									/**< 成交金额 */
-	XLongTime locTime;									/**<  落地行情时间ns */
+	XLongTime _locTime;									/**<  落地行情时间ns */
 	XBool _isError;
 	XChar _filed[3];
 	XNum buyLevel;										/**< 价格档位层次 */
@@ -540,12 +542,12 @@ typedef struct _XOrder {
 	XChar ordStatus;            					/**<  订单状态 @see eXOrdStatus */
 	XChar exeStatus;                         		/**<  撤单的时候，如果因某系统未交易失败需要继续撤单 @see eXExecStatus */
 	XChar counter;                           		/**<  对应使用哪家柜台;在适配器里面写死  */
-	XChar _field[4];
+	XQty _sendQty;
 
-	XLongTime sendLocTime;                          /**<  本地发送时间(本地)  */
-	XLongTime sendTime;            					/**<  委托时间(柜台)  */
-	XLongTime cnfLocTime;          					/**<  确认时间(本地)  */
-	XLongTime cnfTime;           					/**<  确认时间(柜台)  */
+	XLongTime _sendLocTime;                          /**<  本地发送时间(本地)  */
+	XLongTime _sendTime;            					/**<  委托时间(柜台)  */
+	XLongTime _cnfLocTime;          					/**<  确认时间(本地)  */
+	XLongTime _cnfTime;           					/**<  确认时间(柜台)  */
 	XNum errorno;              						/**<  错误原因  */
 	XErrMsg errmsg;        				     	/**<  错误原因  */
 	XOrderReqT request;                          	/**<  委托请求数据 */
