@@ -1,19 +1,33 @@
 <root>
+	<ReqHeader>
+		<Field name="msgtype" type="string"/>
+		<Field name="reqid" type="long"/>
+	</ReqHeader>
+	<RspHeader>
+		<Field name="msgtype" type="string"/>
+		<Field name="errno" type="int"/>
+		<Field name="errmsg" type="string"/>
+		<Field name="reqid" type="long"/>
+		<Field name="isEnd" type="int"/>
+	</RspHeader>
+	<RtnHeader>
+		<Field name="msgtype" type="string"/>
+	</RtnHeader>
 	<ReqPackages>
 		<Package name="ReqLogin">
-			<Field name="Type" type="string"/>
-			<Field name="Username" type="string"/>
-			<Field name="Password" type="string"/>
+			<Field name="username" type="string"/>
+			<Field name="password" type="string"/>
 		</Package>
 		<Package name="ReqOrder">
-			<Field name="Type" type="string"/>
-			<Field name="CustomerId" type="string"/>
-			<Field name="AcctType" type="int"/>
-			<Field name="BsType" type="int"/>
-			<Field name="Investid" type="string"/>
-			<Field name="IsCancel" type="int"/>
-			<Field name="Market" type="int"/>
-			<Field name="SecurityId" type="string"/>
+			<Field name="customerId" type="string"/>
+			<Field name="frontId" type="long"/>
+			<Field name="acctType" type="int"/>
+			<Field name="investid" type="string"/>
+			<Field name="market" type="int"/>
+			<Field name="securityId" type="string"/>
+			<Field name="bsType" type="int"/>
+			<Field name="isCancel" type="int"/>
+			
 			<Field name="OrdPrice" type="int"/>
 			<Field name="OrdQty" type="int"/>
 			<Field name="OrdType" type="int"/>

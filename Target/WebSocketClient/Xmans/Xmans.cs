@@ -6,20 +6,19 @@ namespace WebSocketClient
 {
 	public class ReqLogin : PropertyChangedNotify
 	{
-		public string? type { get; set; }
 		public string? username { get; set; }
 		public string? password { get; set; }
 	}
 	public class ReqOrder : PropertyChangedNotify
 	{
-		public string? type { get; set; }
 		public string? customerId { get; set; }
+		public long? frontId { get; set; }
 		public int? acctType { get; set; }
-		public int? bsType { get; set; }
 		public string? investid { get; set; }
-		public int? isCancel { get; set; }
 		public int? market { get; set; }
 		public string? securityId { get; set; }
+		public int? bsType { get; set; }
+		public int? isCancel { get; set; }
 		public int? ordPrice { get; set; }
 		public int? ordQty { get; set; }
 		public int? ordType { get; set; }
