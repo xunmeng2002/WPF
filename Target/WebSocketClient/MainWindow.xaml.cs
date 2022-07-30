@@ -60,6 +60,16 @@ namespace WebSocketClient
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+        private long maxRequestID;
+        public long MaxRequestID 
+        { 
+            get
+            {
+                ++maxRequestID;
+                return maxRequestID;
+            }
+        }
+        public long SessionID { get; set; }
 
         private async void Connect_Click(object sender, RoutedEventArgs e)
         {
@@ -84,6 +94,7 @@ namespace WebSocketClient
                 return;
             }
             ReqOrder reqOrder = GeneratorReqOrder();
+            AddOrder(reqOrder);
             string msg = JsonSerializer.Serialize(reqOrder);
             await webSocket.Send(msg);
             //AddOrderFromReqOrder(reqOrder);
@@ -98,8 +109,47 @@ namespace WebSocketClient
         {
             ReqOrder reqOrder = new ReqOrder();
             reqOrder.msgtype = "ReqOrder";
-            reqOrder.reqid = 1;
+            reqOrder.reqid = MaxRequestID;
+
+            ReqOrderField reqOrderField = new ReqOrderField();
+            reqOrderField.customerId = "";
+            reqOrderField.frontId = reqOrder.reqid;
+            reqOrderField.acctType = 0;
+            reqOrderField.investId = "";
+            reqOrderField.market = 0;
+            reqOrderField.securityId = securityTextBox.Text;
+            reqOrderField.bsType = bsTypeCombBox.SelectedIndex;
+            reqOrderField.isCancel = 0;
+            reqOrderField.ordType = 0;
+            reqOrderField.ordQty = int.Parse(volumeTextBox.Text);
+            reqOrderField.ordPrice = (int)(double.Parse(priceTextBox.Text) * 10000);
+            reqOrderField.orgLocalId = 0;
+            reqOrderField.orgOrdId = 0;
+            reqOrder.data.Add(reqOrderField);
+
             return reqOrder;
+        }
+        private void AddOrder(ReqOrder reqOrder)
+        {
+            ReqOrderField reqOrderField = reqOrder.data[0];
+            Order order = new Order();
+            order.AccountID = reqOrderField.customerId;
+            order.ExchangeID = reqOrderField.market.ToString();
+            order.InstrumentID = reqOrderField.securityId;
+            order.Direction = (Direction)reqOrderField.bsType;
+            order.OrderPriceType = (OrderPriceType)reqOrderField.ordType;
+            order.Price = ((double)reqOrderField.ordPrice) / 10000;
+            order.Volume = reqOrderField.ordQty;
+            order.VolumeTraded = 0;
+            order.OrderStatus = OrderStatus.Inserting;
+            order.RequestID = reqOrderField.frontId.ToString();
+            order.SessionID = SessionID;
+            order.InsertDate = "";
+            order.InsertTime = "";
+            order.ErrorID = 0;
+            order.ErrorMsg = "";
+
+            MdbEngine.OrderViewModel.Add(order);
         }
 
         public void OnStatusMsg(string statusMsg)

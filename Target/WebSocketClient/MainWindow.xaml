@@ -78,7 +78,7 @@
             </GroupBox>
 
             <GroupBox Grid.Column="4" Header="数量">
-                <TextBox Name="quantityTextBox">1200</TextBox>
+                <TextBox Name="volumeTextBox" Cursor="Arrow">1200</TextBox>
             </GroupBox>
 
             <GroupBox Grid.Column="5" Header="委托类别">

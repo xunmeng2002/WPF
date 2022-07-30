@@ -54,7 +54,7 @@ namespace WebSocketClient.Mdb
         {
             Logger.LogInformation("OnRtnOrder");
 
-            List<Order> orders = OrderViewModel.Orders.Where(o => o.OrderLocalID == order.OrderLocalID).ToList();
+            List<Order> orders = OrderViewModel.Orders.Where(o => o.SessionID == order.SessionID && o.RequestID == order.RequestID).ToList();
             if (orders.Count == 0)
             {
                 orders = OrderViewModel.Orders.Where(o => o.OrderSysID == order.OrderSysID).ToList();

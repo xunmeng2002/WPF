@@ -51,21 +51,6 @@ namespace WebSocketClient.Mdb
 				OnPropertyChanged();
 			}
 		}
-		private string orderLocalID = string.Empty;
-		/// <summary>
-		/// 
-		/// </summary>
-		public string OrderLocalID
-		{
-			get => orderLocalID;
-			set
-			{
-				if (orderLocalID == value)
-					return;
-				orderLocalID = value;
-				OnPropertyChanged();
-			}
-		}
 		private string orderSysID = string.Empty;
 		/// <summary>
 		/// 

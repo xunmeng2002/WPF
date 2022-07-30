@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
+
 namespace WebSocketClient.Xmans
 {
 !!entry Hearders!!
@@ -12,7 +13,14 @@ namespace WebSocketClient.Xmans
 		/// <summary>
 		/// !!@desc!!
 		/// </summary>
-		public !!@type!!? !!@name!!;
+!!if @type == "string":!!
+!!inc indent!!
+		public !!@type!! !!@name!! = string.Empty;
+!!dec indent!!
+!!else:!!
+!!inc indent!!
+		public !!@type!! !!@name!!;
+!!dec indent!!
 !!leave!!
 	}
 !!leave!!
@@ -27,7 +35,14 @@ namespace WebSocketClient.Xmans
 		/// <summary>
 		/// !!@desc!!
 		/// </summary>
-		public !!@type!!? !!@name!!;
+!!if @type == "string":!!
+!!inc indent!!
+		public !!@type!! !!@name!! = string.Empty;
+!!dec indent!!
+!!else:!!
+!!inc indent!!
+		public !!@type!! !!@name!!;
+!!dec indent!!
 !!leave!!
 	}
 !!leave!!

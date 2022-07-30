@@ -4,7 +4,6 @@
 			<Item name="AccountID" type="string"/>
 			<Item name="ExchangeID" type="string"/>
 			<Item name="InstrumentID" type="string"/>
-			<Item name="OrderLocalID" type="string"/>
 			<Item name="OrderSysID" len ="64" type="string"/>
 			<Item name="Direction" type="Direction"/>
 			<Item name="OrderPriceType" type="OrderPriceType"/>
