@@ -6,6 +6,7 @@ using System.Text;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
+using WebSocketClient.Xmans;
 
 namespace WebSocketClient
 {
@@ -69,7 +70,7 @@ namespace WebSocketClient
             string? type = jsonDocument.RootElement.GetProperty("type").GetString();
             switch (type)
             {
-                case "reqorder":
+                case "ReqOrder":
                     ReqOrder? reqOrder = jsonDocument.Deserialize<ReqOrder>();
                     if (reqOrder == null)
                     {
@@ -78,19 +79,17 @@ namespace WebSocketClient
                     else
                     {
                         m_MainWindow.OnStatusMsg("Recv " + type);
-                        m_MainWindow.AddOrderFromReqOrder(reqOrder);
                     }
                     return;
-                case "order":
-                    Order? order = jsonDocument.Deserialize<Order>();
-                    if (order == null)
+                case "RspOrder":
+                    RspOrder? rspOrder = jsonDocument.Deserialize<RspOrder>();
+                    if (rspOrder == null)
                     {
                         m_MainWindow.OnStatusMsg("Failed to Deserialize Order");
                     }
                     else
                     {
-                        m_MainWindow.OnStatusMsg("Recv Order, LocalID: {0} " + order.localId.ToString());
-                        m_MainWindow.OrderViewModel.OnRtnOrder(order);
+                        m_MainWindow.OnStatusMsg("Recv " + type);
                     }
                     return;
             }

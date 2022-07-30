@@ -5,8 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WebSocketClient"
         mc:Ignorable="d"
-        Title="MainWindow" Height="800" Width="1200" x:Name="mainWindow">
-    <Grid DataContext="{Binding ElementName=mainWindow}">
+        Title="MainWindow" Height="800" Width="1200">
+    <Grid x:Name="mainGrid">
         <Grid.RowDefinitions>
             <RowDefinition Height="*"/>
             <RowDefinition Height="120"/>
@@ -18,73 +18,12 @@
         </Grid.RowDefinitions>
         <TabControl HorizontalAlignment="Stretch" HorizontalContentAlignment="Left">
             <TabItem Header="持仓"></TabItem>
-            <TabItem Header="资金"></TabItem>
             <TabItem Header="委托">
-                <DataGrid IsReadOnly="True" AutoGenerateColumns="False" ItemsSource="{Binding OrderViewModel.Orders}">
-                    <DataGrid.Columns>
-                        <DataGridCheckBoxColumn Binding="{Binding isSelected, UpdateSourceTrigger=PropertyChanged}" IsReadOnly="False">
-                            <DataGridCheckBoxColumn.Header>
-                                <CheckBox Name="orderCheckBox" Checked="orderCheckBox_CheckedChange" Unchecked="orderCheckBox_CheckedChange"/>
-                            </DataGridCheckBoxColumn.Header>
-                        </DataGridCheckBoxColumn>
-                        <!--<DataGridTextColumn Header="Type" Binding="{Binding type}"></DataGridTextColumn>-->
-                        <DataGridTextColumn Header="Reqid" Binding="{Binding reqid}"></DataGridTextColumn>
-                        <DataGridTextColumn Header="Envno" Binding="{Binding envno}"></DataGridTextColumn>
-                        <DataGridTextColumn Header="CustomerId" Binding="{Binding customerId}"></DataGridTextColumn>
-                        <DataGridTextColumn Header="Investid" Binding="{Binding investid}"></DataGridTextColumn>
-                        <DataGridTextColumn Header="Plotid" Binding="{Binding plotid}"></DataGridTextColumn>
-                        <DataGridTextColumn Header="LocalId" Binding="{Binding localId}"></DataGridTextColumn>
-                        <DataGridTextColumn Header="OrderStatus" Binding="{Binding orderStatus}"></DataGridTextColumn>
-                        <DataGridTextColumn Header="Market" Binding="{Binding market}"></DataGridTextColumn>
-                        <DataGridTextColumn Header="SecurityId" Binding="{Binding securityId}"></DataGridTextColumn>
-                        <DataGridTextColumn Header="OrdQty" Binding="{Binding ordQty}"></DataGridTextColumn>
-                        <DataGridTextColumn Header="OrdPrice" Binding="{Binding ordPrice}"></DataGridTextColumn>
-                        <DataGridTextColumn Header="TradeQty" Binding="{Binding tradeQty}"></DataGridTextColumn>
-                        <DataGridTextColumn Header="TradeAvgPx" Binding="{Binding tradeAvgPx}"></DataGridTextColumn>
-                        <DataGridTextColumn Header="SendLocTime" Binding="{Binding sendLocTime}"></DataGridTextColumn>
-                        <DataGridTextColumn Header="CnfLocTime" Binding="{Binding cnfLocTime}"></DataGridTextColumn>
-                        <DataGridTextColumn Header="SendTime" Binding="{Binding sendTime}"></DataGridTextColumn>
-                        <DataGridTextColumn Header="CnfTime" Binding="{Binding cnfTime}"></DataGridTextColumn>
-                        <DataGridTextColumn Header="ErrorId" Binding="{Binding errorId}"></DataGridTextColumn>
-                        <DataGridTextColumn Header="ErrorMsg" Binding="{Binding errorMsg}"></DataGridTextColumn>
-                    </DataGrid.Columns>
-                </DataGrid>
+                <DataGrid x:Name="dataGridOrder" IsReadOnly="True" AutoGenerateColumns="True"/>
             </TabItem>
-            <TabItem Header="可撤">
-                <DataGrid IsReadOnly="True" AutoGenerateColumns="False">
-                    <!--<DataGrid.Resources>
-                        <local:BindingProxy x:Key="DataContextProxy" Data="{Binding}"/>
-                    </DataGrid.Resources>-->
-                    <DataGrid.Columns>
-                        <DataGridCheckBoxColumn Binding="{Binding isSelected, Mode=TwoWay}" IsReadOnly="False">
-                            <DataGridCheckBoxColumn.Header>
-                                <CheckBox />
-                            </DataGridCheckBoxColumn.Header>
-                        </DataGridCheckBoxColumn>
-                        <!--<DataGridTextColumn Header="Type" Binding="{Binding type}"></DataGridTextColumn>-->
-                        <DataGridTextColumn Header="Reqid" Binding="{Binding Path=reqid}"></DataGridTextColumn>
-                        <DataGridTextColumn Header="Envno" Binding="{Binding envno}"></DataGridTextColumn>
-                        <DataGridTextColumn Header="CustomerId" Binding="{Binding customerId}"></DataGridTextColumn>
-                        <DataGridTextColumn Header="Investid" Binding="{Binding investid}"></DataGridTextColumn>
-                        <DataGridTextColumn Header="Plotid" Binding="{Binding plotid}"></DataGridTextColumn>
-                        <DataGridTextColumn Header="LocalId" Binding="{Binding localId}"></DataGridTextColumn>
-                        <DataGridTextColumn Header="OrderStatus" Binding="{Binding orderStatus}"></DataGridTextColumn>
-                        <DataGridTextColumn Header="Market" Binding="{Binding market}"></DataGridTextColumn>
-                        <DataGridTextColumn Header="SecurityId" Binding="{Binding securityId}"></DataGridTextColumn>
-                        <DataGridTextColumn Header="OrdQty" Binding="{Binding ordQty}"></DataGridTextColumn>
-                        <DataGridTextColumn Header="OrdPrice" Binding="{Binding ordPrice}"></DataGridTextColumn>
-                        <DataGridTextColumn Header="TradeQty" Binding="{Binding tradeQty}"></DataGridTextColumn>
-                        <DataGridTextColumn Header="TradeAvgPx" Binding="{Binding tradeAvgPx}"></DataGridTextColumn>
-                        <DataGridTextColumn Header="SendLocTime" Binding="{Binding sendLocTime}"></DataGridTextColumn>
-                        <DataGridTextColumn Header="CnfLocTime" Binding="{Binding cnfLocTime}"></DataGridTextColumn>
-                        <DataGridTextColumn Header="SendTime" Binding="{Binding sendTime}"></DataGridTextColumn>
-                        <DataGridTextColumn Header="CnfTime" Binding="{Binding cnfTime}"></DataGridTextColumn>
-                        <DataGridTextColumn Header="ErrorId" Binding="{Binding errorId}"></DataGridTextColumn>
-                        <DataGridTextColumn Header="ErrorMsg" Binding="{Binding errorMsg}"></DataGridTextColumn>
-                    </DataGrid.Columns>
-                </DataGrid>
+            <TabItem Header="成交">
+                <DataGrid x:Name="dataGridTrade" IsReadOnly="True" AutoGenerateColumns="True"/>
             </TabItem>
-            <TabItem Header="成交"></TabItem>
         </TabControl>
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
@@ -98,7 +37,7 @@
             </Grid.RowDefinitions>
             
             <GroupBox Header="服务器地址">
-                <TextBox x:Name="addressTextBox">ws://127.0.0.1:10000</TextBox>
+                <TextBox x:Name="addressTextBox" Text="{Binding Address}"></TextBox>
             </GroupBox>
             <Button Grid.Row="1" x:Name="connectButton" Click="Connect_Click">连接</Button>
             <GroupBox Grid.Column="1" Header="用户名">
@@ -176,7 +115,7 @@
             </Grid.ColumnDefinitions>
             <TextBlock Grid.Column="0" x:Name="infoBlock" FontSize="20" FontWeight="Bold"></TextBlock>
             <TextBlock Grid.Column="1" FontSize="20" FontWeight="Bold">ConnectStatus:</TextBlock>
-            <TextBlock Grid.Column="2" x:Name="statusBlock" MinWidth="50" TextAlignment="Right" Text="{Binding ConnectStatus}"
+            <TextBlock Grid.Column="2" x:Name="statusBlock" MinWidth="50" TextAlignment="Right" Text="{Binding Status}"
                        Foreground="Red" FontWeight="Bold" FontStyle="Italic" FontSize="20"></TextBlock>
         </Grid>
     </Grid>
