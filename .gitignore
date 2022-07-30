@@ -1,4 +1,5 @@
 
+Libs/*/*.pdb
 Test/*
 */.vs/*
 */bin/*
@@ -15,3 +16,4 @@ Test/*
 */*/*/obj/*
 */*/*/libs/*
 pumptemp.py
+
