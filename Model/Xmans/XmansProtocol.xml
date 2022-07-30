@@ -1,71 +1,95 @@
 <root>
-	<ReqHeader>
-		<Field name="msgtype" type="string"/>
-		<Field name="reqid" type="long"/>
-	</ReqHeader>
-	<RspHeader>
-		<Field name="msgtype" type="string"/>
-		<Field name="errno" type="int"/>
-		<Field name="errmsg" type="string"/>
-		<Field name="reqid" type="long"/>
-		<Field name="isEnd" type="int"/>
-	</RspHeader>
-	<RtnHeader>
-		<Field name="msgtype" type="string"/>
-	</RtnHeader>
-	<ReqPackages>
-		<Package name="ReqLogin">
-			<Field name="username" type="string"/>
-			<Field name="password" type="string"/>
-		</Package>
-		<Package name="ReqOrder">
-			<Field name="customerId" type="string"/>
-			<Field name="frontId" type="long"/>
-			<Field name="acctType" type="int"/>
-			<Field name="investid" type="string"/>
-			<Field name="market" type="int"/>
-			<Field name="securityId" type="string"/>
-			<Field name="bsType" type="int"/>
-			<Field name="isCancel" type="int"/>
+	<Hearders>
+		<Header name="ReqHeader">
+			<Item name="msgtype" type="string"/>
+			<Item name="reqid" type="long"/>
+		</Header>
+		<Header name="RspHeader">
+			<Item name="msgtype" type="string"/>
+			<Item name="reqid" type="long"/>
+			<Item name="errno" type="int"/>
+			<Item name="errmsg" type="string"/>
+			<Item name="isEnd" type="int"/>
+		</Header>
+		<Header name="RtnHeader">
+			<Item name="msgtype" type="string"/>
+		</Header>
+	</Hearders>
+	<Fields>
+		<Field name="ReqLoginField">
+			<Item name="userName" type="string"/>
+			<Item name="password" type="string"/>
+		</Field >
+		<Field name="ReqOrderField">
+			<Item name="customerId" type="string"/>
+			<Item name="frontId" type="long"/>
+			<Item name="acctType" type="int"/>
+			<Item name="investId" type="string"/>
+			<Item name="market" type="int"/>
+			<Item name="securityId" type="string"/>
+			<Item name="bsType" type="int"/>
+			<Item name="isCancel" type="int"/>
+			<Item name="ordType" type="int"/>
+			<Item name="ordQty" type="int"/>
+			<Item name="ordPrice" type="int"/>
+			<Item name="orgLocalId" type="int"/>
+			<Item name="orgOrdId" type="int"/>
+		</Field>
+		<Field name="RspLoginField">
+			<Item name="customerId" type="string"/>
+			<Item name="tradeday" type="int"/>
+			<Item name="updateTime" type="int"/>
+			<Item name="Sessionid" type="int"/>
+		</Field>
+		<Field name="OrderField">
+			<Item name="idx" type="long" desc="Id"/>
+			<Item name="envno" type="int" desc="客户环境号"/>
+			<Item name="ordid" type="long" desc="柜台订单编号"/>
+			<Item name="exchordId" type="string" desc="交易所订单编号"/>
+			<Item name="frzAmt" type="long" desc="冻结金额"/>
+			<Item name="frzFee" type="long" desc="冻结费用"/>
+			<Item name="locFrz" type="int" desc="冻结持仓，发单时记录，收到确认和拒绝时解冻，同时根据此数量更新持仓中的locFrz"/>
+			<Item name="trdQty" type="int" desc="成交数量"/>
+			<Item name="trdMoney" type="long" desc="成交金额"/>
+			<Item name="productType" type="int" desc="产品类型"/>
+			<Item name="ordStatus" type="int" desc="订单状态"/>
+			<Item name="exeStatus" type="int" desc="撤单的时候，如果因某系统未交易失败需要继续撤单"/>
+			<Item name="counter" type="int" desc="对应使用哪家柜台;在适配器里面写死  "/>
+			<Item name="_sendQty" type="int" desc=""/>
+			<Item name="_sendLocTime" type="long" desc="本地发送时间(本地)"/>
+			<Item name="_sendTime" type="long" desc="委托时间(柜台)"/>
+			<Item name="_cnfLocTime" type="long" desc="确认时间(本地)"/>
+			<Item name="_cnfTime" type="long" desc="确认时间(柜台)"/>
 			
-			<Field name="OrdPrice" type="int"/>
-			<Field name="OrdQty" type="int"/>
-			<Field name="OrdType" type="int"/>
-		</Package>
-	</ReqPackages>
-	<RtnPackages>
-		<Package name="RspLogin">
-			<Field name="Type" type="string"/>
-			<Field name="Reqid" type="int"/>
-			<Field name="Errno" type="int"/>
-			<Field name="Errmsg" type="string"/>
-			<Field name="Data" type="string"/>
-			<Field name="TradeDay" type="int"/>
-			<Field name="Updatetime" type="int"/>
-			<Field name="Sessionid" type="int"/>
-		</Package>
-		<Package name="Order">
-			<Field name="IsSelected" type="bool" value = "false"/>
-			<Field name="Type" type="string"/>
-			<Field name="Reqid" type="int"/>
-			<Field name="Envno" type="int"/>
-			<Field name="CustomerId" type="string"/>
-			<Field name="Investid" type="string"/>
-			<Field name="Plotid" type="int"/>
-			<Field name="LocalId" type="int"/>
-			<Field name="OrderStatus" type="int"/>
-			<Field name="Market" type="int"/>
-			<Field name="SecurityId" type="string"/>
-			<Field name="OrdQty" type="int"/>
-			<Field name="OrdPrice" type="int"/>
-			<Field name="TradeQty" type="int"/>
-			<Field name="TradeAvgPx" type="int"/>
-			<Field name="SendLocTime" type="int"/>
-			<Field name="CnfLocTime" type="int"/>
-			<Field name="SendTime" type="int"/>
-			<Field name="CnfTime" type="int"/>
-			<Field name="ErrorId" type="int"/>
-			<Field name="ErrorMsg" type="string"/>
-		</Package>
-	</RtnPackages>
+			<Item name="reqId" type="long" desc="请求编号，订单与请求对应"/>
+			<Item name="sessionId" type="int" desc="会话ID"/>
+			<Item name="frontId" type="int" desc="前端编号，同一个会话唯一"/>
+			<Item name="customerId" type="string" desc="客户号"/>
+			<Item name="investId" type="string" desc="股东账户如果未指定就自动获取第一个"/>
+			<Item name="plotType" type="int" desc="策略类型"/>
+			<Item name="plotid" type="long" desc="策略编号,前端生成"/>
+			<Item name="localId" type="int" desc="客户委托流水号"/>
+			<Item name="clocalId" type="int" desc="客户撤单委托流水号"/>
+			<Item name="acctType" type="int" desc="账户类型:现货,两融,期权"/>
+			<Item name="bsType" type="int" desc="买卖类型, 1:买;2:卖出"/>
+			<Item name="isCancel" type="int" desc="撤单由该标志标识 1为撤单"/>
+			<Item name="ordType" type="int" desc="订单类型,市价or限价"/>
+			<Item name="_Item" type="string" desc=""/>
+			<Item name="market" type="int" desc="市场"/>
+			<Item name="securityId" type="string" desc="证券代码"/>
+			<Item name="ordQty" type="int" desc="委托数量"/>
+			<Item name="ordPrice" type="int" desc="委托价格"/>
+			<Item name="orgEnvno" type="int" desc="环境号"/>
+			<Item name="orgLocalId" type="int" desc="撤单时原始订单编号"/>
+			<Item name="orgOrdId" type="long" desc="撤单时原始订单编号"/>
+			<Item name="_lastPx" type="int" desc="下单时带入行情价格，后续进行比对"/>
+			<Item name="_lastTime" type="int" desc="下单时带入行情最新时间，后续进行比较"/>
+		</Field>
+	</Fields>
+	<Packages>
+		<Package name="ReqLogin" header="ReqHeader" data="ReqLoginField"/>
+		<Package name="ReqOrder"  header="ReqHeader" data="ReqOrderField"/>
+		<Package name="RspLogin"  header="RspHeader" data="RspLoginField"/>
+		<Package name="RspOrder"  header="RspHeader" data="OrderField"/>
+	</Packages>
 </root>

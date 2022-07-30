@@ -1,0 +1,5 @@
+<pumplist>
+	<pump dest="./Target/WebSocketClient/Mdb/MdbEnums.cs" tpl="./Target/WebSocketClient/Mdb/MdbEnums.tpl" model="./Model/Xmans/MdbEnum.xml"/>
+	<pump dest="./Target/WebSocketClient/Mdb/MdbTables.cs" tpl="./Target/WebSocketClient/Mdb/MdbTables.tpl" model="./Model/Xmans/Mdb.xml"/>
+	<pump dest="./Target/WebSocketClient/Mdb/MdbViewModels.cs" tpl="./Target/WebSocketClient/Mdb/MdbViewModels.tpl" model="./Model/Xmans/Mdb.xml"/>
+</pumplist>

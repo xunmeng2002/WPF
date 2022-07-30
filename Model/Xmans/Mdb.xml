@@ -1,0 +1,36 @@
+<Root>
+	<Tables len="32">
+		<Table name="Order">
+			<Item name="AccountID" type="string"/>
+			<Item name="ExchangeID" type="string"/>
+			<Item name="InstrumentID" type="string"/>
+			<Item name="OrderLocalID" type="string"/>
+			<Item name="OrderSysID" len ="64" type="string"/>
+			<Item name="Direction" type="Direction"/>
+			<Item name="OrderPriceType" type="OrderPriceType"/>
+			<Item name="Price" type="double"/>
+			<Item name="Volume" type="int"/>
+			<Item name="VolumeTraded" type="int"/>
+			<Item name="OrderStatus" type="OrderStatus"/>
+			<Item name="RequestID" type="string"/>
+			<Item name="SessionID" type="long"/>
+			<Item name="InsertDate" type="string"/>
+			<Item name="InsertTime" type="string"/>
+			<Item name="ErrorID" type="int"/>
+			<Item name="ErrorMsg" type="string" len="255"/>
+		</Table>
+		<Table name="Trade">
+			<Item name="AccountID" type="string"/>
+			<Item name="ExchangeID" type="string"/>
+			<Item name="InstrumentID" type="string"/>
+			<Item name="TradeID" type="string"/>
+			<Item name="Direction" type="Direction"/>
+			<Item name="Price" type="double"/>
+			<Item name="Volume" type="int"/>
+			<Item name="OrderLocalID" type="string"/>
+			<Item name="OrderSysID" len ="64" type="string"/>
+			<Item name="TradeTime" type="string"/>
+			<Item name="TradeDate" type="string"/>
+		</Table>
+	</Tables>
+</Root>

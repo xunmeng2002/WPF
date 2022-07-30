@@ -2,47 +2,42 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace WebSocketClient
+namespace WebSocketClient.Xmans
 {
-!!entry ReqPackages!!
+!!entry Hearders!!
 !!travel!!
-	public class !!@name!! : PropertyChangedNotify
+	public class !!@name!!
 	{
 !!travel!!
-!!lowerName = @name[0].lower() + @name[1:]!!
-		public !!@type!!? !!$lowerName!! { get; set; }
+		/// <summary>
+		/// !!@desc!!
+		/// </summary>
+		public !!@type!!? !!@name!!;
 !!leave!!
 	}
 !!leave!!
 !!leave!!
 
 
-!!entry RtnPackages!!
+!!entry Fields!!
 !!travel!!
-	public class !!@name!! : PropertyChangedNotify
+	public class !!@name!!
 	{
 !!travel!!
-!!if @value == "":!!
-!!inc indent!!
-		private !!@type!!? !!@name!!;
-!!dec indent!!
-!!else:!!
-!!inc indent!!
-		private !!@type!!? !!@name!! = !!@value!!;
-!!dec indent!!
-!!lowerName = @name[0].lower() + @name[1:]!!
-		public !!@type!!? !!$lowerName!!
-		{
-			get => !!@name!!;
-			set
-			{
-				if (!!@name!! == value)
-					return;
-				!!@name!! = value;
-				OnPropertyChanged();
-			}
-		}
+		/// <summary>
+		/// !!@desc!!
+		/// </summary>
+		public !!@type!!? !!@name!!;
 !!leave!!
+	}
+!!leave!!
+!!leave!!
+
+!!entry Packages!!
+!!travel!!
+	public class !!@name!! : !!@header!!
+	{
+		public List<!!@data!!> data = new List<!!@data!!>();
 	}
 !!leave!!
 !!leave!!

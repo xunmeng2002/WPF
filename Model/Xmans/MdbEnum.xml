@@ -1,0 +1,26 @@
+<Root>
+	<Enums>
+		<Enum name="Direction">
+			<Item name="Buy" value="0" desc="买"/>
+			<Item name="Sell" value="1" desc="卖"/>
+		</Enum>
+		<Enum name="OrderPriceType">
+			<Item name="Anyprice" value="1" desc="市价"/>
+			<Item name="LimitPrice" value="2" desc="限价"/>
+			<Item name="BestPrice" value="3" desc="最优价"/>
+			<Item name="LastPrice" value="4" desc="最新价"/>
+		</Enum>
+		<Enum name="OrderStatus">
+			<Item name="Inserting" value="0" desc="正在申报"/>
+			<Item name="Inserted" value="1" desc="已报"/>
+			<Item name="PartTraded" value="2" desc="部成"/>
+			<Item name="AllTraded" value="3" desc="已成"/>
+			<Item name="Canceled" value="4" desc="已撤"/>
+			<Item name="PartTradedCanceled" value="5" desc="部成部撤"/>
+			<Item name="Error" value="e" desc="废单"/>
+			<Item name="NotTouched" value="p" desc="未触发"/>
+			<Item name="Touched" value="t" desc="已触发"/>
+			<Item name="Unknown" value="x" desc="未知"/>
+		</Enum>
+	</Enums>
+</Root>
