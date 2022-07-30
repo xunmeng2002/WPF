@@ -1,0 +1,9 @@
+{
+  "profiles": {
+    "CmeQuickFixOffer": {
+      "commandName": "Project",
+      "remoteDebugEnabled": true,
+      "remoteDebugMachine": "47.100.22.94:4026"
+    }
+  }
+}

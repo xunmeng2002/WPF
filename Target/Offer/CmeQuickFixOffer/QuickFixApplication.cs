@@ -126,31 +126,31 @@ namespace CmeQuickFixOffer
         #region MessageCracker handlers
         public void OnMessage(QuickFix.FIX42.Heartbeat m, SessionID s)
         {
-            Logger.LogInformation(m.ToString());
+            Logger.LogInformation("OnMessage Heartbeat");
         }
         public void OnMessage(QuickFix.FIX42.TestRequest m, SessionID s)
         {
-            Logger.LogInformation(m.ToString());
+            Logger.LogInformation("OnMessage TestRequest");
         }
         public void OnMessage(QuickFix.FIX42.ResendRequest m, SessionID s)
         {
-            Logger.LogInformation(m.ToString());
+            Logger.LogInformation("OnMessage ResendRequest");
         }
         public void OnMessage(QuickFix.FIX42.Reject m, SessionID s)
         {
-            Logger.LogInformation(m.ToString());
+            Logger.LogInformation("OnMessage Reject");
         }
         public void OnMessage(QuickFix.FIX42.SequenceReset m, SessionID s)
         {
-            Logger.LogInformation(m.ToString());
+            Logger.LogInformation("OnMessage SequenceReset");
         }
         public void OnMessage(QuickFix.FIX42.Logon m, SessionID s)
         {
-            Logger.LogInformation(m.ToString());
+            Logger.LogInformation("OnMessage Logon");
         }
         public void OnMessage(QuickFix.FIX42.Logout m, SessionID s)
         {
-            Logger.LogInformation("Received Logout");
+            Logger.LogInformation("OnMessage Logout");
             if (m.IsSetField(QuickFix.Fields.Tags.NextExpectedMsgSeqNum))
             {
                 int nextExpectedMsgSeqNum = m.GetInt(QuickFix.Fields.Tags.NextExpectedMsgSeqNum);
@@ -162,7 +162,7 @@ namespace CmeQuickFixOffer
         }
         public void OnMessage(QuickFix.FIX42.ExecutionReport m, SessionID s)
         {
-            Logger.LogInformation("Received execution report");
+            Logger.LogInformation("OnMessage ExecutionReport");
             Order order = new Order();
 
             SenderCompID exchangeID = new SenderCompID();
@@ -199,7 +199,7 @@ namespace CmeQuickFixOffer
             order.Volume = (int)(m.OrderQty.getValue());
             order.VolumeTraded = (int)(m.CumQty.getValue());
             order.OrderStatus = CmeEnumTransfer.FromFixOrderStatus(m.OrdStatus.getValue());
-            order.StatusMsg = m.Text.getValue();
+            order.StatusMsg = GetField<string>(m.Text.Tag, m);
             order.RequestID = "";
             order.FrontID = "";
             order.SessionID = 0;
@@ -220,9 +220,10 @@ namespace CmeQuickFixOffer
             order.ForceCloseReason = ForceCloseReason.NotForceClose;
             order.IsLocalOrder = IsLocalOrder.Others;
             order.UserProductInfo = "";
-            order.TimeCondition = CmeEnumTransfer.FromFixTimeInForce(m.TimeInForce.getValue());
-            order.GTDDate = m.ExpireDate.getValue();
-            order.MinVolume = (int)(m.MinQty.getValue());
+            order.TimeCondition = CmeEnumTransfer.FromFixTimeInForce(GetField<char>(m.TimeInForce.Tag, m));
+            order.GTDDate = GetField<string>(m.ExpireDate.Tag, m);
+
+            order.MinVolume = (int)GetField<decimal>(m.MinQty.Tag, m);
             if (order.MinVolume == 0)
             {
                 order.VolumeCondition = VolumeCondition.AV;
@@ -236,7 +237,7 @@ namespace CmeQuickFixOffer
                 order.VolumeCondition = VolumeCondition.MV;
             }
             order.ContingentCondition = ContingentCondition.Immediately;
-            order.StopPrice = (double)(m.StopPx.getValue());
+            order.StopPrice = (double)(GetField<decimal>(m.StopPx.Tag, m));
             order.IsSwapOrder = 0;
             m_MdbEngine.OnRtnOrder(order);
 
@@ -244,7 +245,7 @@ namespace CmeQuickFixOffer
             {
                 Trade trade = new Trade();
                 trade.TradingDay = order.TradingDay;
-                trade.AccountID = m.Account.getValue();
+                trade.AccountID = GetField<string>(m.Account.Tag, m);
                 if (cmeInstrument != null)
                 {
                     trade.ExchangeID = cmeInstrument.ExchangeID;
@@ -271,12 +272,12 @@ namespace CmeQuickFixOffer
 
         public void OnMessage(QuickFix.FIX42.OrderCancelReject m, SessionID s)
         {
-            Logger.LogInformation("Received order cancel reject");
+            Logger.LogInformation("OnMessage OrderCancelReject");
         }
 
         public void OnMessage(QuickFix.FIX42.QuoteAcknowledgement m, SessionID s)
         {
-            Logger.LogInformation(m.ToString());
+            Logger.LogInformation("OnMessage QuoteAcknowledgement");
         }
 
         public void ReqInsertOrder(Order order)
@@ -299,7 +300,7 @@ namespace CmeQuickFixOffer
             newOrderSingle.SetField(new Symbol(cmeInstrument.ProductID));
             newOrderSingle.SetField(new SecurityType("FUT"));
             newOrderSingle.SetField(new SecurityDesc(cmeInstrument.FixInstrumentID));
-            newOrderSingle.SetField(new MaturityMonthYear(""));
+            newOrderSingle.SetField(new MaturityMonthYear(cmeInstrument.MaturityMonthYear));
             newOrderSingle.SetField(new Side(CmeEnumTransfer.ToFixDirection(order.Direction)));
             newOrderSingle.SetField(new TransactTime());
             newOrderSingle.SetField(new Account(m_Config.Account));
@@ -340,7 +341,14 @@ namespace CmeQuickFixOffer
         }
         #endregion
 
-
+        public TValue GetField<TValue>(int tag, QuickFix.Message m)
+        {
+            if (m.IsSetField(tag))
+            {
+                return m.GetField(tag);
+            }
+            return TValue();
+        }
         void PrepareHeader(QuickFix.Header header)
         {
             header.SetField(new BeginString(m_SessionID?.BeginString));

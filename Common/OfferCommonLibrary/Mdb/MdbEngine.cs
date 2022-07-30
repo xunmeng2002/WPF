@@ -123,7 +123,7 @@ namespace OfferCommonLibrary.Mdb
             order.StopPrice = 0.0;
             order.IsSwapOrder = 0;
 
-            m_OrderViewModel.Orders.Add(order);
+            m_OrderViewModel.Add(order);
             m_MdbSubscribe?.ReqInsertOrder(order);
             SendResponse(userToken, itsInsertOrder.SequenceNo);
         }
@@ -155,7 +155,7 @@ namespace OfferCommonLibrary.Mdb
                 orderCancel.InsertDate = itsInsertOrderCancel.TradingDay;
                 orderCancel.CancelDate = GetLocalDate();
 
-                m_OrderCancelViewModel.OrderCancels.Add(orderCancel);
+                m_OrderCancelViewModel.Add(orderCancel);
                 m_MdbSubscribe?.ReqInsertOrderCancel(orderCancel);
                 SendResponse(userToken, itsInsertOrderCancel.SequenceNo);
             }
@@ -243,7 +243,7 @@ namespace OfferCommonLibrary.Mdb
             }
             if (orders.Count == 0)
             {
-                m_OrderViewModel.Orders.Add(order);
+                m_OrderViewModel.Add(order);
             }
             else
             {
@@ -291,6 +291,8 @@ namespace OfferCommonLibrary.Mdb
                 itsOrder.ContingentCondition = ((int)order.ContingentCondition).ToString();
                 itsOrder.StopPrice = order.StopPrice.ToString();
                 itsOrder.IsSwapOrder = order.IsSwapOrder.ToString();
+
+                SendUdp(itsOrder);
             }
         }
         public void OnRtnOrderCancel(OrderCancel orderCancel)
@@ -298,7 +300,7 @@ namespace OfferCommonLibrary.Mdb
             List<OrderCancel> orderCancels = m_OrderCancelViewModel.OrderCancels.Where(oc => oc.OrderLocalID == orderCancel.OrderLocalID).ToList();
             if (orderCancels.Count == 0)
             {
-                m_OrderCancelViewModel.OrderCancels.Add(orderCancel);
+                m_OrderCancelViewModel.Add(orderCancel);
             }
             else
             {
@@ -306,6 +308,19 @@ namespace OfferCommonLibrary.Mdb
                 oldOrderCancel.ErrorID = orderCancel.ErrorID;
                 oldOrderCancel.ErrorMsg = orderCancel.ErrorMsg;
             }
+            ItsRtnOrderCancel itsRtnOrderCancel = new ItsRtnOrderCancel();
+            itsRtnOrderCancel.ChannelID = m_ItsEngine.m_ChannelID.ToString();
+            itsRtnOrderCancel.BrokerOrderID = orderCancel.OrigOrderLocalID;
+            itsRtnOrderCancel.OrderRef = orderCancel.OrderRef;
+            itsRtnOrderCancel.FrontID = orderCancel.FrontID;
+            itsRtnOrderCancel.SessionID = orderCancel.SessionID.ToString();
+            itsRtnOrderCancel.ExchangeID = orderCancel.ExchangeID;
+            itsRtnOrderCancel.OrderSysID = orderCancel.OrderSysID;
+            itsRtnOrderCancel.ErrorID = orderCancel.ErrorID.ToString();
+            itsRtnOrderCancel.ErrorMsg = orderCancel.ErrorMsg;
+            itsRtnOrderCancel.TradingDay = orderCancel.CancelDate;
+
+            SendUdp(itsRtnOrderCancel);
         }
         public void OnRtnTrade(Trade trade)
         {
@@ -313,8 +328,33 @@ namespace OfferCommonLibrary.Mdb
             List<Trade> trades = m_TradeViewModel.Trades.Where(t => t.TradingDay == trade.TradingDay && t.OrderSysID == trade.OrderSysID && t.TradeID == trade.TradeID).ToList();
             if (trades.Count == 0)
             {
-                m_TradeViewModel.Trades.Add(trade);
+                m_TradeViewModel.Add(trade);
             }
+
+            ItsTrade itsTrade = new ItsTrade();
+            itsTrade.ChannelID = m_ItsEngine.m_ChannelID.ToString();
+            itsTrade.ExchangeID = trade.ExchangeID;
+            itsTrade.InstrumentID = trade.InstrumentID;
+            itsTrade.OrderRef = "";
+            itsTrade.OrderSysID = trade.OrderSysID;
+            itsTrade.TradeTime = trade.TradeTime;
+            itsTrade.TradeID = trade.TradeID;
+            itsTrade.Direction = ((int)trade.Direction).ToString();
+            itsTrade.OffsetFlag = ((int)OffsetFlag.Open).ToString();
+            itsTrade.HedgeFlag = ((int)HedgeFlag.Speculation).ToString();
+            itsTrade.BrokerOrderID = trade.OrderLocalID;
+            itsTrade.Volume = trade.Volume.ToString();
+            itsTrade.TradeDate = trade.TradeDate;
+            itsTrade.TradingDay = trade.TradeDate;
+            itsTrade.Price = trade.Price.ToString();
+            itsTrade.TradeType = ((int)TradeType.Common).ToString();
+            itsTrade.ExchangeTradeID = trade.TradeID;
+
+            SendUdp(itsTrade);
+        }
+        public void SendUdp<TItsTable>(TItsTable itsTable)
+        {
+            m_ItsEngine?.m_ItsUdpClient.ZipSend(Encoding.UTF8.GetBytes(itsTable.ToString()));
         }
     }
 }

@@ -70,7 +70,7 @@ namespace CmeQuickFixOffer
         public IConfiguration Configuration { get; set; } = new ConfigurationBuilder().Build();
         public IServiceCollection AppService { get; set; } = new ServiceCollection();
         public IServiceProvider AppServiceProvider { get; set; }
-        private static readonly string ConfigFileName = "QuickFixTest.json";
+        private static readonly string ConfigFileName = "CmeQuickFixOffer.json";
         public Config AppConfig { get; set; }
         
         private static readonly string QuickFixConfigFileName = "QuickFix.cfg";

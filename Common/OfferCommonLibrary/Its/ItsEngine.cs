@@ -19,11 +19,14 @@ namespace OfferCommonLibrary.Its
             m_Logger = logger;
             m_BaseConfig = baseConfig;
             m_ChannelID = baseConfig.ChannelID;
+
+            m_ItsUdpClient.Connect(new IPEndPoint(IPAddress.Parse(baseConfig.UdpIP), baseConfig.UdpPort));
         }
         private ILogger<ItsEngine> m_Logger { get; set; }
         private BaseConfig m_BaseConfig { get; set; }
         private MdbEngine? m_MdbEngine { get; set; }
         private TcpIOCPServer m_TcpIOCPServer { get; set; } = new TcpIOCPServer();
+        public ItsUdpClient m_ItsUdpClient { get; set; } = new ItsUdpClient();
         public ObservableCollection<UserToken> m_Connects { get; set; } = new ObservableCollection<UserToken>();
         public int m_ChannelID { get; set; }
 
@@ -50,12 +53,12 @@ namespace OfferCommonLibrary.Its
         public void OnConnected(UserToken userToken)
         {
             m_Logger.LogInformation($"ItsEngine OnConnected UserToken:{userToken.ToString()}");
-            m_Connects.Add(userToken);
+            System.Windows.Application.Current.Dispatcher.Invoke(new Action(() => m_Connects.Add(userToken)));
         }
         public void OnDisconnected(UserToken userToken)
         {
             m_Logger.LogInformation($"ItsEngine OnDisconnected UserToken:{userToken.ToString()}");
-            m_Connects.Remove(userToken);
+            System.Windows.Application.Current.Dispatcher.Invoke(new Action(() => m_Connects.Remove(userToken)));
         }
         public void OnRecv(UserToken userToken, byte[] msg, int offset, int len)
         {
