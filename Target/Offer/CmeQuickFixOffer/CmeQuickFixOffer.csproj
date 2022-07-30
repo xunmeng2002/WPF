@@ -19,10 +19,10 @@
       <HintPath>..\..\..\Common\OfferCommonLibrary\bin\Debug\net6.0-windows\OfferCommonLibrary.dll</HintPath>
     </Reference>
     <Reference Include="QuickFix">
-      <HintPath>libs\QuickFix.dll</HintPath>
+      <HintPath>..\..\..\Libs\QuickFix\QuickFix.dll</HintPath>
     </Reference>
     <Reference Include="QuickFix.FIX42">
-      <HintPath>libs\QuickFix.FIX42.dll</HintPath>
+      <HintPath>..\..\..\Libs\QuickFix\QuickFix.FIX42.dll</HintPath>
     </Reference>
   </ItemGroup>
 
