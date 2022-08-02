@@ -15,6 +15,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Reference Include="CommonLibrary">
+      <HintPath>..\..\..\Common\CommonLibrary\bin\Debug\net6.0\CommonLibrary.dll</HintPath>
+    </Reference>
     <Reference Include="OfferCommonLibrary">
       <HintPath>..\..\..\Common\OfferCommonLibrary\bin\Debug\net6.0-windows\OfferCommonLibrary.dll</HintPath>
     </Reference>

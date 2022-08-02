@@ -20,12 +20,14 @@ namespace OfferCommonLibrary.Its
             m_BaseConfig = baseConfig;
             m_ChannelID = baseConfig.ChannelID;
 
+
+            m_TcpIOCPServer = new TcpIOCPServer(m_Logger);
             m_ItsUdpClient.Connect(new IPEndPoint(IPAddress.Parse(baseConfig.UdpIP), baseConfig.UdpPort));
         }
         private ILogger<ItsEngine> m_Logger { get; set; }
         private BaseConfig m_BaseConfig { get; set; }
         private MdbEngine? m_MdbEngine { get; set; }
-        private TcpIOCPServer m_TcpIOCPServer { get; set; } = new TcpIOCPServer();
+        private TcpIOCPServer m_TcpIOCPServer { get; set; }
         public ItsUdpClient m_ItsUdpClient { get; set; } = new ItsUdpClient();
         public ObservableCollection<UserToken> m_Connects { get; set; } = new ObservableCollection<UserToken>();
         public int m_ChannelID { get; set; }

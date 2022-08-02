@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "WebSocketClient": {
+      "commandName": "Project",
+      "remoteDebugEnabled": false
+    }
+  }
+}

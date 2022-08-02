@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -10,6 +11,7 @@ namespace CommonLibrary
 {
     public class TcpIOCP : ITcp
     {
+        protected ILogger Logger;
         protected long m_MaxSessionID;
         protected int m_NumConnections;
         protected BufferPool m_BufferPool;
@@ -23,8 +25,9 @@ namespace CommonLibrary
         protected SocketAsyncEventArgsPool m_RecvPool;
         protected List<UserToken> m_Connects = new List<UserToken>();
 
-        public TcpIOCP(int numConnections, int receiveBufferSize)
+        public TcpIOCP(ILogger logger, int numConnections, int receiveBufferSize)
         {
+            Logger = logger;
             m_MaxSessionID = 0;
             m_NumConnections = numConnections;
             m_ReceiveBufferSize = receiveBufferSize;
@@ -217,10 +220,10 @@ namespace CommonLibrary
         }
         protected void ConnectCompleted(SocketAsyncEventArgs connectEventArgs)
         {
-            Console.WriteLine($"ConnectCompleted RemoteEndPoint:{connectEventArgs.RemoteEndPoint?.ToString()}");
+            Logger.LogInformation($"ConnectCompleted RemoteEndPoint:{connectEventArgs.RemoteEndPoint?.ToString()}");
             if (connectEventArgs.SocketError != SocketError.Success)
             {
-                Console.WriteLine($"Connect Failed! SocketError:{connectEventArgs.SocketError}");
+                Logger.LogInformation($"Connect Failed! SocketError:{connectEventArgs.SocketError}");
                 CloseClientSocket(connectEventArgs);
             }
             else 
@@ -244,15 +247,15 @@ namespace CommonLibrary
         }
         protected void DisconnectCompleted(SocketAsyncEventArgs disconnectEventArgs)
         {
-            Console.WriteLine($"DisconnectCompleted SocketError:{disconnectEventArgs.SocketError}");
+            Logger.LogInformation($"DisconnectCompleted SocketError:{disconnectEventArgs.SocketError}");
             CloseClientSocket(disconnectEventArgs);
         }
         protected void AcceptCompleted(SocketAsyncEventArgs acceptEventArg)
         {
-            Console.WriteLine($"AcceptCompleted RemoteEndPoint:{acceptEventArg.AcceptSocket?.RemoteEndPoint?.ToString()}");
+            Logger.LogInformation($"AcceptCompleted RemoteEndPoint:{acceptEventArg.AcceptSocket?.RemoteEndPoint?.ToString()}");
             if (acceptEventArg.SocketError != SocketError.Success)
             {
-                Console.WriteLine($"AcceptCompleted Failed. SocketError:{acceptEventArg.SocketError}, AcceptSocket:{acceptEventArg.AcceptSocket}");
+                Logger.LogInformation($"AcceptCompleted Failed. SocketError:{acceptEventArg.SocketError}, AcceptSocket:{acceptEventArg.AcceptSocket}");
                 return;
             }
             else if(acceptEventArg.AcceptSocket == null)
@@ -272,10 +275,10 @@ namespace CommonLibrary
         }
         protected void SendCompleted(SocketAsyncEventArgs sendEventArg)
         {
-            Console.WriteLine($"SendCompleted, BytesTransferred: {sendEventArg.BytesTransferred}");
+            Logger.LogInformation($"SendCompleted, BytesTransferred: {sendEventArg.BytesTransferred}");
             if (sendEventArg.SocketError != SocketError.Success)
             {
-                Console.WriteLine($"Send Failed! SocketError:{sendEventArg.SocketError}");
+                Logger.LogInformation($"Send Failed! SocketError:{sendEventArg.SocketError}");
                 CloseClientSocket(sendEventArg);
             }
             else
@@ -285,15 +288,15 @@ namespace CommonLibrary
         }
         protected void RecvCompleted(SocketAsyncEventArgs recvEventArg)
         {
-            Console.WriteLine($"RecvCompleted, BytesTransferred: {recvEventArg.BytesTransferred}");
+            Logger.LogInformation($"RecvCompleted, BytesTransferred: {recvEventArg.BytesTransferred}");
             if (recvEventArg.SocketError != SocketError.Success)
             {
-                Console.WriteLine($"Recv Failed! SocketError:{recvEventArg.SocketError}");
+                Logger.LogInformation($"Recv Failed! SocketError:{recvEventArg.SocketError}");
                 CloseClientSocket(recvEventArg);
             }
             else if (recvEventArg.BytesTransferred == 0)
             {
-                Console.WriteLine($"Recv 0 byte. Do DisConnect.");
+                Logger.LogInformation($"Recv 0 byte. Do DisConnect.");
                 CloseClientSocket(recvEventArg);
             }
             else
@@ -322,7 +325,7 @@ namespace CommonLibrary
                 throw new ArgumentException($"CloseClientSocket Error For UserToken is null.");
             }
             UserToken userToken = (UserToken)e.UserToken;
-            Console.WriteLine($"CloseClientSocket SessionID:{userToken.SessionID}, Socket:{userToken.Socket.Handle.ToInt64()}");
+            Logger.LogInformation($"CloseClientSocket SessionID:{userToken.SessionID}, Socket:{userToken.Socket.Handle.ToInt64()}");
             userToken.Socket.Close();
             RemoveConnect(userToken);
 
@@ -340,7 +343,7 @@ namespace CommonLibrary
             }
             else
             {
-                Console.WriteLine($"Unexpected Operation while Close Client Socket. LastOperation:{e.LastOperation}");
+                Logger.LogInformation($"Unexpected Operation while Close Client Socket. LastOperation:{e.LastOperation}");
             }
         }
     }

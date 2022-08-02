@@ -199,7 +199,7 @@ namespace CmeQuickFixOffer
             order.Volume = (int)(m.OrderQty.getValue());
             order.VolumeTraded = (int)(m.CumQty.getValue());
             order.OrderStatus = CmeEnumTransfer.FromFixOrderStatus(m.OrdStatus.getValue());
-            order.StatusMsg = GetField<string>(m.Text.Tag, m);
+            order.StatusMsg = GetStringField(m, Text.TAG);
             order.RequestID = "";
             order.FrontID = "";
             order.SessionID = 0;
@@ -220,10 +220,10 @@ namespace CmeQuickFixOffer
             order.ForceCloseReason = ForceCloseReason.NotForceClose;
             order.IsLocalOrder = IsLocalOrder.Others;
             order.UserProductInfo = "";
-            order.TimeCondition = CmeEnumTransfer.FromFixTimeInForce(GetField<char>(m.TimeInForce.Tag, m));
-            order.GTDDate = GetField<string>(m.ExpireDate.Tag, m);
+            order.TimeCondition = CmeEnumTransfer.FromFixTimeInForce(GetCharField(m, m.TimeInForce.Tag));
+            order.GTDDate = GetStringField(m, ExpireDate.TAG);
 
-            order.MinVolume = (int)GetField<decimal>(m.MinQty.Tag, m);
+            order.MinVolume = (int)GetDecimalField(m, MinQty.TAG);
             if (order.MinVolume == 0)
             {
                 order.VolumeCondition = VolumeCondition.AV;
@@ -237,7 +237,7 @@ namespace CmeQuickFixOffer
                 order.VolumeCondition = VolumeCondition.MV;
             }
             order.ContingentCondition = ContingentCondition.Immediately;
-            order.StopPrice = (double)(GetField<decimal>(m.StopPx.Tag, m));
+            order.StopPrice = (double)GetDecimalField(m, StopPx.TAG);
             order.IsSwapOrder = 0;
             m_MdbEngine.OnRtnOrder(order);
 
@@ -245,7 +245,7 @@ namespace CmeQuickFixOffer
             {
                 Trade trade = new Trade();
                 trade.TradingDay = order.TradingDay;
-                trade.AccountID = GetField<string>(m.Account.Tag, m);
+                trade.AccountID = GetStringField(m, Account.TAG);
                 if (cmeInstrument != null)
                 {
                     trade.ExchangeID = cmeInstrument.ExchangeID;
@@ -341,13 +341,53 @@ namespace CmeQuickFixOffer
         }
         #endregion
 
-        public TValue GetField<TValue>(int tag, QuickFix.Message m)
+        public static bool GetBoolField(int tag, QuickFix.Message m)
         {
             if (m.IsSetField(tag))
             {
-                return m.GetField(tag);
+                return m.GetBoolean(tag);
             }
-            return TValue();
+            return false;
+        }
+        public static char GetCharField(QuickFix.Message m, int tag)
+        {
+            if (m.IsSetField(tag))
+            {
+                return m.GetChar(tag);
+            }
+            return '\0';
+        }
+        public static int GetIntField(QuickFix.Message m, int tag)
+        {
+            if (m.IsSetField(tag))
+            {
+                return m.GetInt(tag);
+            }
+            return 0;
+        }
+        public static decimal GetDecimalField(QuickFix.Message m, int tag)
+        {
+            if (m.IsSetField(tag))
+            {
+                return m.GetDecimal(tag);
+            }
+            return 0;
+        }
+        public static DateTime GetDateTimeField(QuickFix.Message m, int tag)
+        {
+            if (m.IsSetField(tag))
+            {
+                return m.GetDateTime(tag);
+            }
+            return DateTime.UtcNow;
+        }
+        public static string GetStringField(QuickFix.Message m, int tag)
+        {
+            if (m.IsSetField(tag))
+            {
+                return m.GetString(tag);
+            }
+            return "";
         }
         void PrepareHeader(QuickFix.Header header)
         {
