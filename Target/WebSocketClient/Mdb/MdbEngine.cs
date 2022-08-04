@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.WebSockets;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -29,15 +30,10 @@ namespace WebSocketClient.Mdb
             }
         }
 
-        public void OnConnected()
+        public void UpdateConnectStatus(WebSocketState webSocketState)
         {
-            Logger.LogInformation("OnConnected");
-            Status = "Connect";
-        }
-        public void OnDisconnected()
-        {
-            Logger.LogInformation("OnDisconnected");
-            Status = "DisConnect";
+            Logger.LogInformation($"UpdateConnectStatus {webSocketState.ToString()}");
+            Status = webSocketState.ToString();
         }
         public void OnLogin()
         {

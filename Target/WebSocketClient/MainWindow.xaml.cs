@@ -15,16 +15,14 @@ namespace WebSocketClient
     /// </summary>
     public partial class MainWindow : Window, INotifyPropertyChanged
     {
-        public MainWindow(ILogger<MainWindow> logger, MdbEngine mdbEngine, Config config)
+        public MainWindow(ILogger<MainWindow> logger, MdbEngine mdbEngine, WebSocket webSocket, Config config)
         {
             InitializeComponent();
             Logger = logger;
             MdbEngine = mdbEngine;
+            WebSocket = webSocket;
             Config = config;
-
-            Address = Config.ServerAddress;
-
-            webSocket = new WebSocket(this);
+            Address = Config.ServerAddress;            
             InitBindingData();
         }
         private void InitBindingData()
@@ -39,7 +37,7 @@ namespace WebSocketClient
         private Config Config { get; set; }
         
 
-        private WebSocket webSocket;
+        private WebSocket WebSocket;
         private Uri? uri;
         private string address = "ws://127.0.0.1:10000";
         //private string address = "ws://192.168.137.129:9000";
@@ -77,18 +75,18 @@ namespace WebSocketClient
             {
                 address = addressTextBox.Text;
                 uri = new Uri(Config.ServerAddress);
-                await webSocket.Connect(uri);
+                await WebSocket.Connect(uri);
             }
             catch (Exception ex)
             {
                 infoBlock.Text = ex.Message;
-                webSocket.UpdateConnectStatus();
+                WebSocket.UpdateConnectStatus();
                 MessageBox.Show(infoBlock.Text);
             }
         }
         private async void Send_Click(object sender, RoutedEventArgs e)
         {
-            if (webSocket.clientWebSocket.State != WebSocketState.Open)
+            if (WebSocket.ClientWebSocket.State != WebSocketState.Open)
             {
                 infoBlock.Text = "Send Failed. Please Check Connect Status.";
                 return;
@@ -96,14 +94,25 @@ namespace WebSocketClient
             ReqOrder reqOrder = GeneratorReqOrder();
             AddOrder(reqOrder);
             string msg = JsonSerializer.Serialize(reqOrder);
-            await webSocket.Send(msg);
-            //AddOrderFromReqOrder(reqOrder);
+            await WebSocket.Send(msg);
             sendContentBox.Text = msg;
             infoBlock.Text = "Send Success.";
         }
-        private void Login_Click(object sender, RoutedEventArgs e)
+        private async void Login_Click(object sender, RoutedEventArgs e)
         {
+            ReqLogin reqLogin = new ReqLogin();
+            reqLogin.msgtype = "ReqLogin";
+            reqLogin.reqid = MaxRequestID;
 
+            ReqLoginField reqLoginField = new ReqLoginField();
+            reqLoginField.userName = "xunmeng";
+            reqLoginField.password = "123456";
+            reqLogin.data.Add(reqLoginField);
+
+            string msg = JsonSerializer.Serialize(reqLogin);
+            await WebSocket.Send(msg);
+            sendContentBox.Text = msg;
+            infoBlock.Text = "Send Success.";
         }
         private ReqOrder GeneratorReqOrder()
         {
@@ -144,8 +153,8 @@ namespace WebSocketClient
             order.OrderStatus = OrderStatus.Inserting;
             order.RequestID = reqOrderField.frontId.ToString();
             order.SessionID = SessionID;
-            order.InsertDate = "";
-            order.InsertTime = "";
+            order.InsertDate = DateTime.Now.ToString("yyyyMMdd");
+            order.InsertTime = DateTime.Now.ToString("HH:mm:ss");
             order.ErrorID = 0;
             order.ErrorMsg = "";
 

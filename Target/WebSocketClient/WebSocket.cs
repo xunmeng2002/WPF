@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.WebSockets;
@@ -6,59 +7,53 @@ using System.Text;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
+using WebSocketClient.Mdb;
 using WebSocketClient.Xmans;
 
 namespace WebSocketClient
 {
     public class WebSocket : PropertyChangedNotify
     {
-        public WebSocket(MainWindow window)
+        public WebSocket(ILogger<WebSocket> logger)
         {
-            m_MainWindow = window;
+            Logger = logger;
         }
-        private MainWindow m_MainWindow;
-        public ClientWebSocket clientWebSocket = new ClientWebSocket();
-        private CancellationToken token = new CancellationToken();
-        private byte[] recvBuff = new byte[4096];
-        private string connectStatus = "None";
-        public string ConnectStatus
+        public void Init(MainWindow? mainWindow, MdbEngine? mdbEngine)
         {
-            get => connectStatus;
-            set
-            {
-                if (connectStatus == value)
-                    return;
-                connectStatus = value;
-                OnPropertyChanged();
-            }
+            MainWindow = mainWindow;
+            MdbEngine = mdbEngine;
         }
+        private ILogger<WebSocket> Logger { get; set; }
+        private MainWindow? MainWindow { get; set; }
+        private MdbEngine? MdbEngine { get; set; }
+        public ClientWebSocket ClientWebSocket = new ClientWebSocket();
+        private CancellationToken Token = new CancellationToken();
+        private byte[] RecvBuff = new byte[4096];
 
         public void UpdateConnectStatus()
         {
-            ConnectStatus = clientWebSocket.State.ToString();
+            MdbEngine?.UpdateConnectStatus(ClientWebSocket.State);
         }
         public async Task Connect(Uri uri)
         {
-            ConnectStatus = "Connecting";
-            await clientWebSocket.ConnectAsync(uri, token);
-            ConnectStatus = clientWebSocket.State.ToString();
+            await ClientWebSocket.ConnectAsync(uri, Token);
+
+            UpdateConnectStatus();
             await Recv();
         }
         public async Task Send(string msg)
         {
-            ConnectStatus = clientWebSocket.State.ToString();
             byte[] sendArray = Encoding.UTF8.GetBytes(msg);
-            await clientWebSocket.SendAsync(sendArray, WebSocketMessageType.Binary, true, token);
+            await ClientWebSocket.SendAsync(sendArray, WebSocketMessageType.Binary, true, Token);
         }
         private async Task Recv()
         {
-            ConnectStatus = clientWebSocket.State.ToString();
-            WebSocketReceiveResult webSocketReceiveResult = await clientWebSocket.ReceiveAsync(recvBuff, token);
+            WebSocketReceiveResult webSocketReceiveResult = await ClientWebSocket.ReceiveAsync(RecvBuff, Token);
 
-            string msg = Encoding.UTF8.GetString(recvBuff, 0, webSocketReceiveResult.Count);
-            m_MainWindow.OnRecv(msg);
+            string msg = Encoding.UTF8.GetString(RecvBuff, 0, webSocketReceiveResult.Count);
+            MainWindow?.OnRecv(msg);
             ParseBuff(msg);
-            if (clientWebSocket.State == WebSocketState.Open)
+            if (ClientWebSocket.State == WebSocketState.Open)
             {
                 await Recv();
             }
@@ -67,31 +62,62 @@ namespace WebSocketClient
         private void ParseBuff(string msg)
         {
             JsonDocument jsonDocument = JsonDocument.Parse(msg);
-            string? type = jsonDocument.RootElement.GetProperty("type").GetString();
+            string? type = jsonDocument.RootElement.GetProperty("msgtype").GetString();
             switch (type)
             {
+                case "ReqLogin":
+                    ReqLogin? reqLogin = jsonDocument.Deserialize<ReqLogin>();
+                    if (reqLogin == null)
+                    {
+                        MainWindow?.OnStatusMsg("Failed to Deserialize " + type);
+                    }
+                    else
+                    {
+                        MainWindow?.OnStatusMsg("Recv " + type);
+                        MdbEngine?.OnLogin();
+                    }
+                    break;
                 case "ReqOrder":
                     ReqOrder? reqOrder = jsonDocument.Deserialize<ReqOrder>();
                     if (reqOrder == null)
                     {
-                        m_MainWindow.OnStatusMsg("Failed to Deserialize " + type);
+                        MainWindow?.OnStatusMsg("Failed to Deserialize " + type);
                     }
                     else
                     {
-                        m_MainWindow.OnStatusMsg("Recv " + type);
+                        MainWindow?.OnStatusMsg("Recv " + type);
+                        var reqOrderField = reqOrder.data[0];
+
+                        Order order = new Order();
+                        order.AccountID = reqOrderField.customerId;
+                        order.ExchangeID = reqOrderField.market.ToString();
+                        order.InstrumentID = reqOrderField.securityId;
+                        order.Direction = (Direction)reqOrderField.bsType;
+                        order.OrderPriceType = (OrderPriceType)reqOrderField.ordType;
+                        order.Price = ((double)reqOrderField.ordPrice) / 10000;
+                        order.Volume = reqOrderField.ordQty;
+                        order.VolumeTraded = 0;
+                        order.OrderStatus = OrderStatus.Inserted;
+                        order.RequestID = reqOrderField.frontId.ToString();
+                        order.SessionID = MainWindow.SessionID;
+                        order.InsertDate = DateTime.Now.ToString("yyyyMMdd");
+                        order.InsertTime = DateTime.Now.ToString("HH:mm:ss");
+                        order.ErrorID = 0;
+                        order.ErrorMsg = "";
+                        MdbEngine?.OnRtnOrder(order);
                     }
-                    return;
+                    break;
                 case "RspOrder":
                     RspOrder? rspOrder = jsonDocument.Deserialize<RspOrder>();
                     if (rspOrder == null)
                     {
-                        m_MainWindow.OnStatusMsg("Failed to Deserialize Order");
+                        MainWindow?.OnStatusMsg("Failed to Deserialize Order");
                     }
                     else
                     {
-                        m_MainWindow.OnStatusMsg("Recv " + type);
+                        MainWindow?.OnStatusMsg("Recv " + type);
                     }
-                    return;
+                    break;
             }
         }
     }

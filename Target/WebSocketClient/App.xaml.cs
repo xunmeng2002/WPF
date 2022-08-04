@@ -29,6 +29,7 @@ namespace WebSocketClient
             AppService.AddSingleton(AppConfig);
             AppService.AddLogging(loggingBuilder => { loggingBuilder.AddNLog(Configuration); });
             AppService.AddSingleton<MdbEngine>();
+            AppService.AddSingleton<WebSocket>();
             AppService.AddSingleton<MainWindow>();
 
             AppServiceProvider = AppService.BuildServiceProvider();
@@ -42,10 +43,10 @@ namespace WebSocketClient
         private void Application_Startup(object sender, StartupEventArgs e)
         {
             var mainWindow = AppServiceProvider.GetService<MainWindow>();
-            if (mainWindow != null)
-            {
-                mainWindow.Show();
-            }
+            var mdbEngine = AppServiceProvider.GetService<MdbEngine>();
+            var webSocket = AppServiceProvider.GetService<WebSocket>();
+            webSocket?.Init(mainWindow, mdbEngine);
+            mainWindow?.Show();
         }
     }
 }
