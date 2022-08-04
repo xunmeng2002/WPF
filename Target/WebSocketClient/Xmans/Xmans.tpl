@@ -15,11 +15,11 @@ namespace WebSocketClient.Xmans
 		/// </summary>
 !!if @type == "string":!!
 !!inc indent!!
-		public !!@type!! !!@name!! = string.Empty;
+		public !!@type!! !!@name!!{ get; set; } = string.Empty;
 !!dec indent!!
 !!else:!!
 !!inc indent!!
-		public !!@type!! !!@name!!;
+		public !!@type!! !!@name!!{ get; set; } 
 !!dec indent!!
 !!leave!!
 	}
@@ -37,11 +37,11 @@ namespace WebSocketClient.Xmans
 		/// </summary>
 !!if @type == "string":!!
 !!inc indent!!
-		public !!@type!! !!@name!! = string.Empty;
+		public !!@type!! !!@name!!{ get; set; }  = string.Empty;
 !!dec indent!!
 !!else:!!
 !!inc indent!!
-		public !!@type!! !!@name!!;
+		public !!@type!! !!@name!!{ get; set; } 
 !!dec indent!!
 !!leave!!
 	}
@@ -52,7 +52,7 @@ namespace WebSocketClient.Xmans
 !!travel!!
 	public class !!@name!! : !!@header!!
 	{
-		public List<!!@data!!> data = new List<!!@data!!>();
+		public List<!!@data!!> data { get; set; } = new List<!!@data!!>();
 	}
 !!leave!!
 !!leave!!
