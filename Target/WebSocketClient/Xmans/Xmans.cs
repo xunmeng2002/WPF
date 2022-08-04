@@ -59,6 +59,25 @@ namespace WebSocketClient.Xmans
 		/// </summary>
 		public string password{ get; set; }  = string.Empty;
 	}
+	public class RspLoginField
+	{
+		/// <summary>
+		/// 
+		/// </summary>
+		public string customerId{ get; set; }  = string.Empty;
+		/// <summary>
+		/// 
+		/// </summary>
+		public int tradeday{ get; set; } 
+		/// <summary>
+		/// 
+		/// </summary>
+		public int updateTime{ get; set; } 
+		/// <summary>
+		/// 
+		/// </summary>
+		public int Sessionid{ get; set; } 
+	}
 	public class ReqOrderField
 	{
 		/// <summary>
@@ -113,25 +132,6 @@ namespace WebSocketClient.Xmans
 		/// 
 		/// </summary>
 		public int orgOrdId{ get; set; } 
-	}
-	public class RspLoginField
-	{
-		/// <summary>
-		/// 
-		/// </summary>
-		public string customerId{ get; set; }  = string.Empty;
-		/// <summary>
-		/// 
-		/// </summary>
-		public int tradeday{ get; set; } 
-		/// <summary>
-		/// 
-		/// </summary>
-		public int updateTime{ get; set; } 
-		/// <summary>
-		/// 
-		/// </summary>
-		public int Sessionid{ get; set; } 
 	}
 	public class OrderField
 	{
@@ -300,21 +300,107 @@ namespace WebSocketClient.Xmans
 		/// </summary>
 		public int _lastTime{ get; set; } 
 	}
+	public class ReqBasketField
+	{
+		/// <summary>
+		/// 
+		/// </summary>
+		public string customerId{ get; set; }  = string.Empty;
+		/// <summary>
+		/// 
+		/// </summary>
+		public long frontId{ get; set; } 
+		/// <summary>
+		/// 
+		/// </summary>
+		public int isForbid{ get; set; } 
+		/// <summary>
+		/// 
+		/// </summary>
+		public int plotType{ get; set; } 
+		/// <summary>
+		/// 
+		/// </summary>
+		public int zs{ get; set; } 
+		/// <summary>
+		/// 
+		/// </summary>
+		public int cjb{ get; set; } 
+		/// <summary>
+		/// 
+		/// </summary>
+		public int cdl{ get; set; } 
+		/// <summary>
+		/// 
+		/// </summary>
+		public long wcjl{ get; set; } 
+		/// <summary>
+		/// 
+		/// </summary>
+		public string formula{ get; set; }  = string.Empty;
+		/// <summary>
+		/// 
+		/// </summary>
+		public long gapTime{ get; set; } 
+		/// <summary>
+		/// 
+		/// </summary>
+		public int beginTime{ get; set; } 
+		/// <summary>
+		/// 
+		/// </summary>
+		public int endTime{ get; set; } 
+		/// <summary>
+		/// 
+		/// </summary>
+		public string baskfile{ get; set; }  = string.Empty;
+		/// <summary>
+		/// 
+		/// </summary>
+		public long modSystemId{ get; set; } 
+	}
+	public class RspBasketField
+	{
+		/// <summary>
+		/// 
+		/// </summary>
+		public long idx{ get; set; } 
+		/// <summary>
+		/// 
+		/// </summary>
+		public int sessionId{ get; set; } 
+		/// <summary>
+		/// 
+		/// </summary>
+		public long systemId{ get; set; } 
+		/// <summary>
+		/// 
+		/// </summary>
+		public ReqBasketField request{ get; set; } 
+	}
 
 	public class ReqLogin : ReqHeader
 	{
 		public List<ReqLoginField> data { get; set; } = new List<ReqLoginField>();
 	}
-	public class ReqOrder : ReqHeader
-	{
-		public List<ReqOrderField> data { get; set; } = new List<ReqOrderField>();
-	}
 	public class RspLogin : RspHeader
 	{
 		public List<RspLoginField> data { get; set; } = new List<RspLoginField>();
 	}
+	public class ReqOrder : ReqHeader
+	{
+		public List<ReqOrderField> data { get; set; } = new List<ReqOrderField>();
+	}
 	public class RspOrder : RspHeader
 	{
 		public List<OrderField> data { get; set; } = new List<OrderField>();
+	}
+	public class ReqBasket : ReqHeader
+	{
+		public List<ReqBasketField> data { get; set; } = new List<ReqBasketField>();
+	}
+	public class RspBasket : RspHeader
+	{
+		public List<RspBasketField> data { get; set; } = new List<RspBasketField>();
 	}
 }
