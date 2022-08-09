@@ -98,7 +98,7 @@ namespace WebSocketClient
                         order.Volume = reqOrderField.ordQty;
                         order.VolumeTraded = 0;
                         order.OrderStatus = OrderStatus.Inserted;
-                        order.RequestID = reqOrderField.frontId.ToString();
+                        order.RequestID = reqOrderField.frontId;
                         order.SessionID = MainWindow.SessionID;
                         order.InsertDate = DateTime.Now.ToString("yyyyMMdd");
                         order.InsertTime = DateTime.Now.ToString("HH:mm:ss");

@@ -11,7 +11,7 @@
 			<Item name="Volume" type="int"/>
 			<Item name="VolumeTraded" type="int"/>
 			<Item name="OrderStatus" type="OrderStatus"/>
-			<Item name="RequestID" type="string"/>
+			<Item name="RequestID" type="long"/>
 			<Item name="SessionID" type="long"/>
 			<Item name="InsertDate" type="string"/>
 			<Item name="InsertTime" type="string"/>
@@ -30,6 +30,33 @@
 			<Item name="OrderSysID" len ="64" type="string"/>
 			<Item name="TradeTime" type="string"/>
 			<Item name="TradeDate" type="string"/>
+		</Table>
+		<Table name="Position">
+			<item name="AccountID" type="string"/>
+			<item name="ExchangeID" type="string"/>
+			<item name="InstrumentID" type="string"/>
+			<item name="Direction" type="Direction"/>
+			<item name="OpenPrice" type="double"/>
+			<item name="LastPrice" type="double"/>
+			<item name="Volume" type="int"/>
+			<item name="Profit" type="double"/>
+		</Table>
+		<Table name="BasketStrategy">
+			<item name="AccountID" type="string"/>
+			<Item name="OrderSysID" type="string"/>
+			<Item name="ExecuteType" type="int"/>
+			<Item name="StrategyType" type="int"/>
+			<Item name="AscendSpeed" type="int"/>
+			<Item name="TradeRate" type="int"/>
+			<Item name="CancelRate" type="int"/>
+			<Item name="RemainVolume" type="int"/>
+			<item name="Formula" type="string"/>
+			<item name="GapTime" type="long"/>
+			<item name="BeginTime" type="int"/>
+			<item name="EndTime" type="int"/>
+			<item name="BasketFile" type="string"/>
+			<Item name="RequestID" type="long"/>
+			<Item name="SessionID" type="long"/>
 		</Table>
 	</Tables>
 </Root>

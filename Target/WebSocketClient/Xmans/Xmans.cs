@@ -303,74 +303,74 @@ namespace WebSocketClient.Xmans
 	public class ReqBasketField
 	{
 		/// <summary>
-		/// 
+		/// 客户号
 		/// </summary>
 		public string customerId{ get; set; }  = string.Empty;
 		/// <summary>
-		/// 
+		/// 前端请求编号
 		/// </summary>
 		public long frontId{ get; set; } 
 		/// <summary>
-		/// 
+		/// 0:执行,1:停止
 		/// </summary>
 		public int isForbid{ get; set; } 
 		/// <summary>
-		/// 
+		/// 策略类型
 		/// </summary>
 		public int plotType{ get; set; } 
 		/// <summary>
-		/// 
+		/// 涨速
 		/// </summary>
 		public int zs{ get; set; } 
 		/// <summary>
-		/// 
+		/// 成交比
 		/// </summary>
 		public int cjb{ get; set; } 
 		/// <summary>
-		/// 
+		/// 撤单率
 		/// </summary>
 		public int cdl{ get; set; } 
 		/// <summary>
-		/// 
+		/// 未成交量
 		/// </summary>
 		public long wcjl{ get; set; } 
 		/// <summary>
-		/// 
+		/// 公式
 		/// </summary>
 		public string formula{ get; set; }  = string.Empty;
 		/// <summary>
-		/// 
+		/// 委托间隔
 		/// </summary>
 		public long gapTime{ get; set; } 
 		/// <summary>
-		/// 
+		/// 委托开始时间
 		/// </summary>
 		public int beginTime{ get; set; } 
 		/// <summary>
-		/// 
+		/// 结束交易时间
 		/// </summary>
 		public int endTime{ get; set; } 
 		/// <summary>
-		/// 
+		/// 篮子文件地址
 		/// </summary>
 		public string baskfile{ get; set; }  = string.Empty;
 		/// <summary>
-		/// 
+		/// 修改策略时候填写，如果有值即认为修改对应策略
 		/// </summary>
 		public long modSystemId{ get; set; } 
 	}
 	public class RspBasketField
 	{
 		/// <summary>
-		/// 
+		/// 序号
 		/// </summary>
 		public long idx{ get; set; } 
 		/// <summary>
-		/// 
+		/// 会话编号
 		/// </summary>
 		public int sessionId{ get; set; } 
 		/// <summary>
-		/// 
+		/// 每次策略后台给的编号
 		/// </summary>
 		public long systemId{ get; set; } 
 		/// <summary>

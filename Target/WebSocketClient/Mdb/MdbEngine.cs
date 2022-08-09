@@ -15,6 +15,8 @@ namespace WebSocketClient.Mdb
             Logger = logger;
         }
         private ILogger<MdbEngine> Logger { get; set; }
+        public BasketStrategyViewModel BasketStrategyViewModel { get; set; } = new BasketStrategyViewModel();
+        public PositionViewModel PositionViewModel { get; set; } = new PositionViewModel();
         public OrderViewModel OrderViewModel { get; set; } = new OrderViewModel();
         public TradeViewModel TradeViewModel { get; set; } = new TradeViewModel();
         private string status = "None";

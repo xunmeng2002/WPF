@@ -28,6 +28,8 @@ namespace WebSocketClient
         private void InitBindingData()
         {
             mainGrid.DataContext = this;
+            dataGridBasketStrategy.ItemsSource = MdbEngine.BasketStrategyViewModel.BasketStrategys;
+            dataGridPosition.ItemsSource = MdbEngine.PositionViewModel.Positions;
             dataGridOrder.ItemsSource = MdbEngine.OrderViewModel.Orders;
             dataGridTrade.ItemsSource = MdbEngine.TradeViewModel.Trades;
             statusBlock.DataContext = MdbEngine;
@@ -151,7 +153,7 @@ namespace WebSocketClient
             order.Volume = reqOrderField.ordQty;
             order.VolumeTraded = 0;
             order.OrderStatus = OrderStatus.Inserting;
-            order.RequestID = reqOrderField.frontId.ToString();
+            order.RequestID = reqOrderField.frontId;
             order.SessionID = SessionID;
             order.InsertDate = DateTime.Now.ToString("yyyyMMdd");
             order.InsertTime = DateTime.Now.ToString("HH:mm:ss");

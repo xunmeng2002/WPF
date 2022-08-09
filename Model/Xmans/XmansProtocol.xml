@@ -86,25 +86,25 @@
 			<Item name="_lastTime" type="int" desc="下单时带入行情最新时间，后续进行比较"/>
 		</Field>
 		<Field name="ReqBasketField">
-			<Item name="customerId" type="string"/>
-			<Item name="frontId" type="long"/>
-			<Item name="isForbid" type="int"/>
-			<Item name="plotType" type="int"/>
-			<Item name="zs" type="int"/>
-			<Item name="cjb" type="int"/>
-			<Item name="cdl" type="int"/>
-			<Item name="wcjl" type="long"/>
-			<Item name="formula" type="string"/>
-			<Item name="gapTime" type="long"/>
-			<Item name="beginTime" type="int"/>
-			<Item name="endTime" type="int"/>
-			<Item name="baskfile" type="string"/>
-			<Item name="modSystemId" type="long"/>
+			<Item name="customerId" type="string" desc="客户号"/>
+			<Item name="frontId" type="long" desc="前端请求编号"/>
+			<Item name="isForbid" type="int" desc="0:执行,1:停止"/>
+			<Item name="plotType" type="int" desc="策略类型"/>
+			<Item name="zs" type="int" desc="涨速"/>
+			<Item name="cjb" type="int" desc="成交比"/>
+			<Item name="cdl" type="int" desc="撤单率"/>
+			<Item name="wcjl" type="long" desc="未成交量"/>
+			<Item name="formula" type="string" desc="公式"/>
+			<Item name="gapTime" type="long" desc="委托间隔"/>
+			<Item name="beginTime" type="int" desc="委托开始时间"/>
+			<Item name="endTime" type="int" desc="结束交易时间"/>
+			<Item name="baskfile" type="string" desc="篮子文件地址"/>
+			<Item name="modSystemId" type="long" desc="修改策略时候填写，如果有值即认为修改对应策略"/>
 		</Field>
 		<Field name="RspBasketField">
-			<Item name="idx" type="long"/>
-			<Item name="sessionId" type="int"/>
-			<Item name="systemId" type="long"/>
+			<Item name="idx" type="long" desc="序号"/>
+			<Item name="sessionId" type="int" desc="会话编号"/>
+			<Item name="systemId" type="long" desc="每次策略后台给的编号"/>
 			<Item name="request" type="ReqBasketField"/>
 		</Field>
 	</Fields>

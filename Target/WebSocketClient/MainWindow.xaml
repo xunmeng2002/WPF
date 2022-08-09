@@ -17,7 +17,12 @@
             <RowDefinition Height="40"/>
         </Grid.RowDefinitions>
         <TabControl HorizontalAlignment="Stretch" HorizontalContentAlignment="Left">
-            <TabItem Header="持仓"></TabItem>
+            <TabItem Header="篮子策略">
+                <DataGrid x:Name="dataGridBasketStrategy" IsReadOnly="True" AutoGenerateColumns="True"/>
+            </TabItem>
+            <TabItem Header="持仓">
+                <DataGrid x:Name="dataGridPosition" IsReadOnly="True" AutoGenerateColumns="True"/>
+            </TabItem>
             <TabItem Header="委托">
                 <DataGrid x:Name="dataGridOrder" IsReadOnly="True" AutoGenerateColumns="True"/>
             </TabItem>
