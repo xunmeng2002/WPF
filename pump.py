@@ -49,8 +49,6 @@ def handle_leave(in_str,entry_list):
     if last_entry == "travel":
         _indent_cnt -= 1                                
         out_str += new_line()
-        out_str += "pumpidlist.pop()"
-        out_str += new_line()
         out_str += "if curr_node != parent%d:" % (len(entry_list) + 1)
         _indent_cnt += 1
         out_str += new_line()
@@ -87,9 +85,7 @@ def handle_travel(in_str, entry_list):
     out_str=""
     entry_list.append("travel")
     out_str += new_line()
-    out_str += "pumpidlist.append(0)"
-    out_str += new_line()
-    out_str += "pumpid = -1"
+    out_str += "pumpid = -1"    #此处需要从-1开始，因为在遍历的时候，会先+1，这样才能保证第一次循环的pumpid为0
     out_str += new_line()
     out_str += "parent%d = curr_node" % len(entry_list)
     out_str += new_line()
@@ -101,8 +97,6 @@ def handle_travel(in_str, entry_list):
     out_str += "parent_map[curr_node] = parent%d" % len(entry_list)
     out_str += new_line()
     out_str += "pumpid += 1"
-    out_str += new_line()
-    out_str += "pumpidlist.append(pumpid)"
     return out_str  
         
 #获取当前节点上指定属性名称的属性值 
@@ -169,15 +163,10 @@ if __name__ == "__main__":
     out_content += "sys.setdefaultencoding(\"utf-8-sig\")\n"
     out_content += "out_file = codecs.open(\"%s\",\"w+\",\"utf-8-sig\")\n\n" % out_file_name
     #xml文件可以大于1，如果有多个xml文件，添加一个根节点，把每个xml文件的根节点挂在新加的根节点下面，新加的根节点作为当前节点
-    if len(sys.argv) == 4:
-        out_content += "tree = ET.parse(\"%s\")\n" % sys.argv[3]
-        out_content += "curr_node = tree.getroot()\n"
-    else:
-        out_content += "curr_node = ET.Element(\"root\")\n"
-        for i in range(3, len(sys.argv)):
-            out_content += "curr_node.append(ET.parse(\"%s\").getroot())\n" % sys.argv[i]
+    out_content += "curr_node = ET.Element(\"root\")\n"
+    for i in range(3, len(sys.argv)):
+        out_content += "curr_node.append(ET.parse(\"%s\").getroot())\n" % sys.argv[i]
     out_content += "parent_map = {}\n"
-    out_content += "pumpidlist = []\n"        
     
     #定义获取属性的方法，如果在当前节点无法取得，就去父节点取，知道根节点
     out_content += "def get_attr(node, name):\n"
