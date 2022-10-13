@@ -1,6 +1,7 @@
 
 Libs/*/*.pdb
 Test/*
+.vs/*
 */.vs/*
 */bin/*
 */obj/*
