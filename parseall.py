@@ -17,15 +17,15 @@ def NeedPump(model, tpl, dest):
             return True
     return False
 
-def Search(path, destFileName, exclude, destPaths):
+def Search(path, destFileName, excludes, destPaths):
     for fileName in os.listdir(path):
-        if fileName in exclude:
+        if fileName in excludes:
             continue
         fullFileName = os.path.join(path, fileName)
         if os.path.isfile(fullFileName) and fileName == destFileName:
             destPaths.append(fullFileName)
         if os.path.isdir(fullFileName):
-            Search(fullFileName, destFileName, exclude, destPaths)
+            Search(fullFileName, destFileName, excludes, destPaths)
 
 def DoParse(fileName):
     root = ET.parse(fileName).getroot()
@@ -40,8 +40,11 @@ def DoParse(fileName):
 
 
 if __name__ == "__main__":
-    exclude = ['.sv', '.vs', 'build', 'out']
+    excludes = ['.sv', '.vs', 'build', 'out']
+    includes = ["../Libs"]
     parsefiles = []
-    Search(".", "parselist.xml", exclude, parsefiles)
+    Search(".", "parselist.xml", excludes, parsefiles)
+    for include in includes:
+        Search(include, "parselist.xml", excludes, parsefiles)
     for parsefile in parsefiles:
         DoParse(parsefile)

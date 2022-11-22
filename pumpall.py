@@ -18,15 +18,15 @@ def NeedPump(model, tpl, dest):
             return True
     return False
 
-def Search(path, destFileName, exclude, destPaths):
+def Search(path, destFileName, excludes, destPaths):
     for fileName in os.listdir(path):
-        if fileName in exclude:
+        if fileName in excludes:
             continue
         fullFileName = os.path.join(path, fileName)
         if os.path.isfile(fullFileName) and fileName == destFileName:
             destPaths.append(fullFileName)
         if os.path.isdir(fullFileName):
-            Search(fullFileName, destFileName, exclude, destPaths)
+            Search(fullFileName, destFileName, excludes, destPaths)
 
 def DoPump(fileName):
     root = ET.parse(fileName).getroot()
@@ -40,8 +40,11 @@ def DoPump(fileName):
                 exit()
 
 if __name__ == "__main__":
-    exclude = ['inttools']
+    excludes = ['inttools']
+    includes = ["../Libs"]
     pumpfiles = []
-    Search(".", "pumplist.xml", exclude, pumpfiles)
+    Search(".", "pumplist.xml", excludes, pumpfiles)
+    for include in includes:
+        Search(include, "pumplist.xml", excludes, pumpfiles)
     for pumpfile in pumpfiles:
         DoPump(pumpfile)
