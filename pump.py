@@ -47,7 +47,9 @@ def handle_leave(in_str,entry_list):
     out_str += new_line()
     last_entry = entry_list.pop()
     if last_entry == "travel":
-        _indent_cnt -= 1                                
+        _indent_cnt -= 1
+        out_str += new_line()
+        out_str += "pumpid = parentpumpid"
         out_str += new_line()
         out_str += "if curr_node != parent%d:" % (len(entry_list) + 1)
         _indent_cnt += 1
@@ -84,6 +86,8 @@ def handle_travel(in_str, entry_list):
     global _indent_cnt
     out_str=""
     entry_list.append("travel")
+    out_str += new_line()    
+    out_str += "parentpumpid = pumpid"
     out_str += new_line()
     out_str += "pumpid = -1"    #此处需要从-1开始，因为在遍历的时候，会先+1，这样才能保证第一次循环的pumpid为0
     out_str += new_line()
@@ -138,7 +142,7 @@ if __name__ == "__main__":
     #打开模板文件
     pattern = re.compile(expr)        
     tpl_content = ""
-    for line in open(tpl_file_name, "rU"):
+    for line in open(tpl_file_name, "r"):
         word = line[:-1].split("!!")
         if len(word) < 3:
             tpl_content += line
@@ -159,14 +163,14 @@ if __name__ == "__main__":
     out_content += "#coding:utf-8\n" 
     out_content += "import xml.etree.cElementTree as ET\n"
     out_content += "import codecs,sys\n\n"
-    out_content += "reload(sys)\n" 
-    out_content += "sys.setdefaultencoding(\"utf-8-sig\")\n"
     out_content += "out_file = codecs.open(\"%s\",\"w+\",\"utf-8-sig\")\n\n" % out_file_name
     #xml文件可以大于1，如果有多个xml文件，添加一个根节点，把每个xml文件的根节点挂在新加的根节点下面，新加的根节点作为当前节点
     out_content += "curr_node = ET.Element(\"root\")\n"
     for i in range(3, len(sys.argv)):
         out_content += "curr_node.append(ET.parse(\"%s\").getroot())\n" % sys.argv[i]
     out_content += "parent_map = {}\n"
+    out_content += "pumpid = 0\n"
+    out_content += "parentpumpid = 0\n"
     
     #定义获取属性的方法，如果在当前节点无法取得，就去父节点取，知道根节点
     out_content += "def get_attr(node, name):\n"
